@@ -95,7 +95,16 @@ app.post("/webhook", async (req, res) => {
   if (["menu", "oi", "ola", "olá", "boa tarde", "boa noite", "bom dia"].includes(text)) {
     resposta = `Olá, ${inquilino.nome}! 👋 Como posso te ajudar?\n\nEscolha uma opção:\n1️⃣ Pagar aluguel\n2️⃣ Verificar pagamentos pendentes\n3️⃣ Ver data de vencimento`;
   } else if (text === "1") {
-    
+    try {
+    const response = await fetch(`${API_base}/pagamentos/${inquilino.id}`)
+
+    response.json();
+
+    }catch(err) {
+      if(err){
+        console.log("erro ao buscar link de pagamento");
+      }
+    }
     resposta = `💳 Link para pagamento do aluguel:\n `;
   } else if (text === "2") {
     resposta = `🔍 Verificando pendências...`;

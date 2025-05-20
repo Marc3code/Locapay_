@@ -115,6 +115,20 @@ app.get("/pagamentos", async (req, res) => {
   }
 });
 
+app.get("/pagamento/:inquilino_id", async (req,res) =>{
+  const inquilino_id = req.params;
+  const query = "SELECT link_pagamento FROM pagamentos where inquilino id = ? e status = 'pendente'"
+
+  try {
+    const result = await db.query(query, inquilino_id);
+    res.json(result);
+
+  }catch (err) {
+    console.error("Erro ao buscar link de pagamento:", err);
+    res.status(500).json({ erro: "Erro ao buscar link de pagamento" });
+  }
+})
+
 app.get("/cobrancas", async (req, res) => {
   const { data } = req.query;
   try {
