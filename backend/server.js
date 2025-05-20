@@ -108,7 +108,7 @@ app.get("/inquilinos-com-imovel", async (req, res) => {
 app.get("/pagamentos", async (req, res) => {
   try {
     const [results] = await db.query("SELECT * FROM pagamentos");
-    res.json(results);
+    res.json(results[0]);
   } catch (err) {
     console.error("Erro ao buscar pagamentos:", err);
     res.status(500).json({ erro: "Erro ao buscar pagamentos" });
