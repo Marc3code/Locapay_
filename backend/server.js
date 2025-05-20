@@ -115,9 +115,9 @@ app.get("/pagamentos", async (req, res) => {
   }
 });
 
-app.get("/pagamento/:inquilino_id", async (req,res) =>{
+app.get("/link_pagamento/:inquilino_id", async (req,res) =>{
   const inquilino_id = req.params;
-  const query = "SELECT link_pagamento FROM pagamentos where inquilino id = ? e status = 'pendente'"
+  const query = "SELECT link_pagamento FROM pagamentos where inquilino_id = ? e status = 'pendente'"
 
   try {
     const result = await db.query(query, inquilino_id);
