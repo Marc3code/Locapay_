@@ -1,6 +1,7 @@
 const dayjs = require("dayjs");
 const cron = require("node-cron");
 const notifications = require("../chatbot/notifications.js");
+const API_base = "https://backend-production-78eb.up.railway.app"
 
 function gerarProximaData(dataAtual) {
   const proxima = dayjs(dataAtual).add(1, "month").format("YYYY-MM-DD");
@@ -15,7 +16,7 @@ async function gerarCobrancasDoDia() {
   try {
     console.log("🔍 Buscando cobranças cobrancas a serem feitas")
     const cobrancas = await fetch(
-      `http://localhost:3001/cobrancas`
+      `${API_base}/cobrancas`
     )
       .then((res) => {
         console.log("✅ Resposta recebida do servidor.");
@@ -48,7 +49,7 @@ async function gerarCobrancasDoDia() {
       console.log("   - Data de vencimento:", dataVencimentoFormatada);
 
       const resInquilino = await fetch(
-        `http://localhost:3001/inquilino?id=${cobranca.inquilino_id}`
+        `${API_base}/inquilino?id=${cobranca.inquilino_id}`
       );
 
       const inquilino = (await resInquilino.json())[0];
@@ -57,7 +58,7 @@ async function gerarCobrancasDoDia() {
 
       tel_Formatado = inquilino.telefone.replace(/^(\+55\d{2})9/, "$1");
 
-      const pagamento = await fetch(`http://localhost:3001/pagamentos`, {
+      const pagamento = await fetch(`${API_base}/pagamentos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -92,7 +93,7 @@ async function gerarCobrancasDoDia() {
           `📤 Atualizando vencimento da cobrança ${cobranca.id} para ${novaDataVencimento}`
         );
 
-        await fetch(`http://localhost:3001/cobrancas/${cobranca.id}`, {
+        await fetch(`${API_base}/cobrancas/${cobranca.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ data_vencimento: novaDataVencimento }),

@@ -12,6 +12,8 @@ app.get("/", (req, res) => {
   res.send("Webhook do WhatsApp com Twilio está funcionando.");
 });
 
+const API_base = "backend-production-78eb.up.railway.app";
+
 // Rota de webhook
 app.post("/webhook", async (req, res) => {
   //contato cliente -> plataforma
@@ -48,7 +50,7 @@ app.post("/webhook", async (req, res) => {
 
   try {
     const response = await fetch(
-      `https://locapay-production.up.railway.app/getinquilino/${numeroFormatado}`
+      `API_base/getinquilino/${numeroFormatado}`
     )
       .then((res) => res.json())
       .then((data) => {
