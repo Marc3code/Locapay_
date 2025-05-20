@@ -92,7 +92,7 @@ app.post("/webhook", async (req, res) => {
     return `${dia}/${mes}/${ano}`;
   }
 
-  if ((text === "menu", "oi", "olá", "boa tarde", "bom dia", "boa noite")) {
+  if ((text === "menu" || "oi" || "olá" || "boa tarde" || "bom dia" || "boa noite")) {
     resposta = `Olá, ${inquilino.nome}! 👋 Como posso te ajudar?\n\nEscolha uma opção:\n1️⃣ Pagar aluguel\n2️⃣ Verificar pagamentos pendentes\n3️⃣ Ver data de vencimento`;
   } else if (text === "1") {
 
