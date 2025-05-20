@@ -1,11 +1,13 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const { urlencoded } = require("body-parser");
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Rota raiz (opcional)
 app.get("/", (req, res) => {
