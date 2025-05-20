@@ -50,7 +50,7 @@ app.post("/webhook", async (req, res) => {
 
   try {
     const response = await fetch(
-      `API_base/getinquilino/${numeroFormatado}`
+      `${API_base}/getinquilino/${numeroFormatado}`
     )
       .then((res) => res.json())
       .then((data) => {
