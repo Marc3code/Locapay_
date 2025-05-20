@@ -120,7 +120,7 @@ app.get("/link_pagamento/:inquilino_id", async (req,res) =>{
   const query = "SELECT link_pagamento FROM pagamentos WHERE inquilino_id = ? AND status = 'pendente'"
 
   try {
-    const result = await db.query(query, inquilino_id);
+    const [result] = await db.query(query, inquilino_id);
     res.json(result);
 
   }catch (err) {
