@@ -100,7 +100,7 @@ async function gerarCobrancasDoDia() {
           `📤 Atualizando vencimento da cobrança ${cobranca.id} para ${novaDataVencimento}`
         );
 
-        await fetch(`${API_base}/updt_data_vencimento`, {
+        await fetch(`${API_base}/updt_data_vencimento/`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ data_vencimento: novaDataVencimento, id: cobranca.id }),
