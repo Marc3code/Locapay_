@@ -150,9 +150,8 @@ app.get("/cobrancas", async (req, res) => {
 // ------------------ ROTAS PUT ------------------
 
 // 🔁 Atualização de Cobranças
-app.put("/cobrancas/:id", async (req, res) => {
-  const { id } = req.params;
-  const { data_vencimento } = req.body;
+app.put("/updt_data_vencimento/", async (req, res) => {
+  const { data_vencimento, id } = req.body;
 
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE id = ?`;
   const values = [data_vencimento, id];

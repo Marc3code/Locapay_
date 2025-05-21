@@ -100,10 +100,10 @@ async function gerarCobrancasDoDia() {
           `📤 Atualizando vencimento da cobrança ${cobranca.id} para ${novaDataVencimento}`
         );
 
-        await fetch(`${API_base}/cobrancas/${cobranca.id}`, {
+        await fetch(`${API_base}/updt_data_vencimento`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data_vencimento: novaDataVencimento }),
+          body: JSON.stringify({ data_vencimento: novaDataVencimento, id: cobranca.id }),
         })
           .then((res) => res.json())
           .then((data) =>
@@ -119,8 +119,7 @@ async function gerarCobrancasDoDia() {
   }
 }
 
-// Executa imediatamente ao rodar o script
-gerarCobrancasDoDia();
+
 
 // Executa todos os dias às 01:00 da manhã
 cron.schedule("0 1 * * *", gerarCobrancasDoDia);
