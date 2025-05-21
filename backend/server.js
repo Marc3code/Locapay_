@@ -186,7 +186,7 @@ app.post("/imoveis", async (req, res) => {
 
 // 👤 Inquilinos
 app.post("/inquilinos", async (req, res) => {
-  const ClienteData = ({ name, phone, cpfCnpj } = req.body);
+  const ClienteData = ({ nome, phone, cpfCnpj } = req.body);
   try {
     const [results] = await db.query(
       "INSERT INTO inquilinos (nome, telefone, cpfCnpj) VALUES (?, ?, ?)",
@@ -198,7 +198,7 @@ app.post("/inquilinos", async (req, res) => {
 
     res.status(201).json({
       id: results.insertId,
-      name,
+      nome,
       phone,
       cpfCnpj,
       id_asaas,
