@@ -49,7 +49,9 @@ app.get("/inquilinos", async (req, res) => {
 app.get("/inquilino", async (req, res) => {
   const { id } = req.query;
   try {
-    const [results] = await db.query("SELECT * FROM inquilinos where id = ?", [id]);
+    const [results] = await db.query("SELECT * FROM inquilinos where id = ?", [
+      id,
+    ]);
     res.json(results);
   } catch (err) {
     console.error("Erro ao buscar inquilinos:", err);
@@ -57,11 +59,14 @@ app.get("/inquilino", async (req, res) => {
   }
 });
 
-// Rota GET - Buscar inquilino por telefone 
+// Rota GET - Buscar inquilino por telefone
 app.get("/getinquilino/:telefone", async (req, res) => {
   const { telefone } = req.params;
   try {
-    const [results] = await db.query("SELECT * FROM inquilinos WHERE telefone = ?", [telefone]);
+    const [results] = await db.query(
+      "SELECT * FROM inquilinos WHERE telefone = ?",
+      [telefone]
+    );
     if (results.length > 0) {
       res.json(results[0]);
     } else {
@@ -115,19 +120,19 @@ app.get("/pagamentos", async (req, res) => {
   }
 });
 
-app.get("/link_pagamento/:inquilino_id", async (req,res) =>{
+app.get("/link_pagamento/:inquilino_id", async (req, res) => {
   const { inquilino_id } = req.params;
-  const query = "SELECT link_pagamento FROM pagamentos WHERE inquilino_id = ? AND status = 'pendente'"
+  const query =
+    "SELECT link_pagamento FROM pagamentos WHERE inquilino_id = ? AND status = 'pendente'";
 
   try {
     const [result] = await db.query(query, inquilino_id);
     res.json(result);
-
-  }catch (err) {
+  } catch (err) {
     console.error("Erro ao buscar link de pagamento:", err);
     res.status(500).json({ erro: "Erro ao buscar link de pagamento" });
   }
-})
+});
 
 app.get("/cobrancas", async (req, res) => {
   const { data } = req.query;
@@ -165,7 +170,7 @@ app.put("/cobrancas/:id", async (req, res) => {
 
 // 🏠 Imóveis
 app.post("/imoveis", async (req, res) => {
-  const { tipo, endereco, numero} = req.body;
+  const { tipo, endereco, numero } = req.body;
   try {
     const [results] = await db.query(
       "INSERT INTO imoveis (tipo, endereco, numero) VALUES (?, ?, ? )",
@@ -194,7 +199,10 @@ app.post("/inquilinos", async (req, res) => {
     );
 
     const id_asaas = await asaas.criarClienteAsaas(ClienteData);
-    await db.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [id_asaas, results.insertId]);
+    await db.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [
+      id_asaas,
+      results.insertId,
+    ]);
 
     res.status(201).json({
       id: results.insertId,
@@ -211,13 +219,31 @@ app.post("/inquilinos", async (req, res) => {
 
 // 🔗 Vinculação Inquilino-Imóvel
 app.post("/inquilinos-imoveis", async (req, res) => {
-  const { inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio, data_fim, status, complemento } = req.body;
+  const {
+    inquilino_id,
+    imovel_id,
+    valor_aluguel,
+    data_vencimento,
+    data_inicio,
+    data_fim,
+    status,
+    complemento,
+  } = req.body;
   try {
     const [results] = await db.query(
       `INSERT INTO inquilinos_imoveis 
       (inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio, data_fim, status, complemento) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio || null, data_fim || null, status || "ativo", complemento || null]
+      [
+        inquilino_id,
+        imovel_id,
+        valor_aluguel,
+        data_vencimento,
+        data_inicio || null,
+        data_fim || null,
+        status || "ativo",
+        complemento || null,
+      ]
     );
 
     res.status(201).json({
@@ -229,7 +255,7 @@ app.post("/inquilinos-imoveis", async (req, res) => {
       data_inicio,
       data_fim,
       status,
-      complemento
+      complemento,
     });
   } catch (err) {
     console.error("Erro ao vincular inquilino a imóvel:", err);
@@ -250,11 +276,19 @@ app.post("/pagamentos", async (req, res) => {
     res.status(500).json({ erro: "Erro ao criar cobrança" });
   }
 
-  if (!pagamento) return res.status(500).json({ erro: "Erro ao criar cobrança" });
+  if (!pagamento)
+    return res.status(500).json({ erro: "Erro ao criar cobrança" });
 
   try {
     const query = `INSERT INTO pagamentos (inquilino_id, asaas_payment_id, due_date, payment_date, amount, link_pagamento) VALUES (?, ?, ?, ?, ?, ?)`;
-    const values = [inquilino_id, pagamento.id, data_vencimento, null, valor, pagamento.invoiceUrl];
+    const values = [
+      inquilino_id,
+      pagamento.id,
+      data_vencimento,
+      null,
+      valor,
+      pagamento.invoiceUrl,
+    ];
     await db.query(query, values);
   } catch (err) {
     console.error("Erro ao registrar pagamento no BD:", err);
@@ -264,34 +298,39 @@ app.post("/pagamentos", async (req, res) => {
 
 // 📩 Webhook - Eventos do Asaas
 app.post("/asaas_events", async (req, res) => {
+  res.status(200).send("ok");
+
   const event = req.body.event;
   console.log("Evento recebido:", event);
 
   if (event === "PAYMENT_RECEIVED") {
     const payment_id = req.body.payment?.id;
-    if (!payment_id) return res.status(500).json({ pay_id: "ID do pagamento não encontrado" });
+    if (!payment_id)
+      return res.status(500).json({ pay_id: "ID do pagamento não encontrado" });
 
     try {
       const query = `UPDATE pagamentos SET STATUS = 'pago' WHERE asaas_payment_id = ?`;
       await db.query(query, payment_id);
       console.log("Status do pagamento atualizado com sucesso");
-      return res.status(200).json({ OK: "Status do pagamento atualizado com sucesso" });
     } catch (err) {
       console.error("Erro ao atualizar status do pagamento:", err);
-      return res.status(500).json({ erro: "Erro ao atualizar status do pagamento" });
+      return res
+        .status(500)
+        .json({ erro: "Erro ao atualizar status do pagamento" });
     }
   } else if (event === "PAYMENT_CREATED") {
-    // Captura evento de pagamento criado
+    console.log("evento: ", event);
   } else if (event === "PAYMENT_OVERDUE") {
     const payment_id = req.body.payment?.id;
-     try {
+    try {
       const query = `UPDATE pagamentos SET STATUS = "atrasado" WHERE asaas_payment_id = ?`;
       await db.query(query, payment_id);
       console.log("Status do pagamento atualizado com sucesso");
-      return res.status(200).json({ OK: "Status do pagamento atualizado com sucesso" });
     } catch (err) {
       console.error("Erro ao atualizar status do pagamento:", err);
-      return res.status(500).json({ erro: "Erro ao atualizar status do pagamento" });
+      return res
+        .status(500)
+        .json({ erro: "Erro ao atualizar status do pagamento" });
     }
   }
 });
