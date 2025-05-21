@@ -11,7 +11,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://127.0.0.1:5500",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT"],
     credentials: true,
   })
 );
@@ -157,7 +157,7 @@ app.put("/cobrancas/:id", async (req, res) => {
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE id = ?`;
   const values = [data_vencimento, id];
 
-  db.query(query, values, (err, results) => {
+  db.query(query, values, (err) => {
     if (err) {
       console.error("Erro ao atualizar cobrança:", err);
       return res.status(500).json({ erro: "Erro ao atualizar cobrança" });

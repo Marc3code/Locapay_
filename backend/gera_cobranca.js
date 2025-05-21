@@ -31,6 +31,7 @@ async function gerarCobrancasDoDia() {
     }
 
     console.log(`📦 Total de cobranças encontradas: ${cobrancas.length}`);
+    console.log(cobrancas);
 
     for (const cobranca of cobrancas) {
       console.log("==============================================");
@@ -91,7 +92,7 @@ async function gerarCobrancasDoDia() {
       }
 
       if (pagamento) {
-        console.log("✅ Boleto gerado com sucesso:", pagamento);
+        console.log("✅ Boleto gerado com sucesso:");
 
         const novaDataVencimento = gerarProximaData(cobranca.data_vencimento);
 
@@ -118,7 +119,8 @@ async function gerarCobrancasDoDia() {
   }
 }
 
-
+// Executa imediatamente ao rodar o script
+gerarCobrancasDoDia();
 
 // Executa todos os dias às 01:00 da manhã
 cron.schedule("0 1 * * *", gerarCobrancasDoDia);
