@@ -165,11 +165,11 @@ app.put("/cobrancas/:id", async (req, res) => {
 
 // 🏠 Imóveis
 app.post("/imoveis", async (req, res) => {
-  const { tipo, endereco, numero, complemento } = req.body;
+  const { tipo, endereco, numero} = req.body;
   try {
     const [results] = await db.query(
-      "INSERT INTO imoveis (tipo, endereco, numero, complemento) VALUES (?, ?, ?, ?)",
-      [tipo, endereco, numero, complemento]
+      "INSERT INTO imoveis (tipo, endereco, numero) VALUES (?, ?, ? )",
+      [tipo, endereco, numero]
     );
     res.status(201).json({
       id: results.insertId,
@@ -211,13 +211,13 @@ app.post("/inquilinos", async (req, res) => {
 
 // 🔗 Vinculação Inquilino-Imóvel
 app.post("/inquilinos-imoveis", async (req, res) => {
-  const { inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio, data_fim, status } = req.body;
+  const { inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio, data_fim, status, complemento } = req.body;
   try {
     const [results] = await db.query(
       `INSERT INTO inquilinos_imoveis 
-      (inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio, data_fim, status) 
+      (inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio, data_fim, status, complemento) 
       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio || null, data_fim || null, status || "ativo"]
+      [inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio || null, data_fim || null, status || "ativo", complemento || null]
     );
 
     res.status(201).json({
@@ -229,6 +229,7 @@ app.post("/inquilinos-imoveis", async (req, res) => {
       data_inicio,
       data_fim,
       status,
+      complemento
     });
   } catch (err) {
     console.error("Erro ao vincular inquilino a imóvel:", err);
