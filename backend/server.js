@@ -186,11 +186,11 @@ app.post("/imoveis", async (req, res) => {
 
 // 👤 Inquilinos
 app.post("/inquilinos", async (req, res) => {
-  const ClienteData = ({ nome, phone, cpfCnpj } = req.body);
+  const ClienteData = ({ name, phone, cpfCnpj } = req.body);
   try {
     const [results] = await db.query(
       "INSERT INTO inquilinos (nome, telefone, cpfCnpj) VALUES (?, ?, ?)",
-      [nome, phone, cpfCnpj]
+      [name, phone, cpfCnpj]
     );
 
     const id_asaas = await asaas.criarClienteAsaas(ClienteData);
@@ -198,7 +198,7 @@ app.post("/inquilinos", async (req, res) => {
 
     res.status(201).json({
       id: results.insertId,
-      nome,
+      name,
       phone,
       cpfCnpj,
       id_asaas,
