@@ -157,13 +157,15 @@ app.put("/cobrancas/:id", async (req, res) => {
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE id = ?`;
   const values = [data_vencimento, id];
 
-  db.query(query, values, (err) => {
+  try {
+    const [results] = await db.query(query, values, (err) => {
+      res.json(results);
+    });
+  } catch (err) {
     if (err) {
-      console.error("Erro ao atualizar cobrança:", err);
-      return res.status(500).json({ erro: "Erro ao atualizar cobrança" });
+      console.log("erro ao atualizar data de vencimento: ", err);
     }
-    res.status(200).json({ id, data_vencimento });
-  });
+  }
 });
 
 // ------------------ ROTAS POST ------------------

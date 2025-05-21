@@ -119,7 +119,8 @@ async function gerarCobrancasDoDia() {
   }
 }
 
-
+// Executa imediatamente ao rodar o script
+gerarCobrancasDoDia();
 
 // Executa todos os dias às 01:00 da manhã
 cron.schedule("0 1 * * *", gerarCobrancasDoDia);
