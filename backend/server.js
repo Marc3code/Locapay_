@@ -150,21 +150,36 @@ app.get("/cobrancas", async (req, res) => {
 // ------------------ ROTAS PUT ------------------
 
 // 🔁 Atualização de Cobranças
-app.put("/updt_data_vencimento/", async (req, res) => {
+app.put("/updt_data_vencimento", async (req, res) => {
   const { data_vencimento, id } = req.body;
+
+  // Validação básica
+  if (!data_vencimento || !id) {
+    return res.status(400).json({ erro: "Campos obrigatórios faltando!" });
+  }
 
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE id = ?`;
   const values = [data_vencimento, id];
 
   try {
-    const [results] = await db.query(query, values, (err) => {
-      res.json(results);
-    });
-  } catch (err) {
-    if (err) {
-      console.log("erro ao atualizar data de vencimento: ", err);
-      res.status(500).json({ erro: "Erro ao buscar cobranças" });
+    // Executa a query SEM callback
+    const [results] = await db.query(query, values);
+
+    // Verifica se alguma linha foi afetada
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ erro: "Nenhum registro encontrado com este ID." });
     }
+
+    // Resposta de sucesso
+    res.json({ 
+      mensagem: "Data de vencimento atualizada com sucesso!",
+      id,
+      data_vencimento 
+    });
+
+  } catch (err) {
+    console.error("Erro ao atualizar data de vencimento:", err);
+    res.status(500).json({ erro: "Falha ao atualizar data de vencimento" });
   }
 });
 
