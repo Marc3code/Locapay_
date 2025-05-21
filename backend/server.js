@@ -164,6 +164,7 @@ app.put("/cobrancas/:id", async (req, res) => {
   } catch (err) {
     if (err) {
       console.log("erro ao atualizar data de vencimento: ", err);
+      res.status(500).json({ erro: "Erro ao buscar cobranças" });
     }
   }
 });
