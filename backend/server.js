@@ -190,7 +190,7 @@ app.post("/inquilinos", async (req, res) => {
   try {
     const [results] = await db.query(
       "INSERT INTO inquilinos (nome, telefone, cpfCnpj) VALUES (?, ?, ?)",
-      [name, phone, cpfCnpj]
+      [nome, phone, cpfCnpj]
     );
 
     const id_asaas = await asaas.criarClienteAsaas(ClienteData);
