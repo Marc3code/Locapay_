@@ -110,33 +110,7 @@ app.post("/webhook", async (req, res) => {
   } else if (text === "2") {
     resposta = `🔍 Verificando pendências...`;
   } else if (text === "3") {
-    
-    try {
-      const response = await fetch(`${API_base}/getdatavencimento/${inquilino.id}`);
-
-      if (!response.ok) {
-        console.log(response.status);
-      }
-
-      const data = await response.json();
-
-      console.log(data.data_vencimento);
-      console.log(data);
-
-      resposta = `📅 Sua data de vencimento: ${formatarData(
-        data[0].data_vencimento
-      )}`;
-
-    } catch (err) {
-      console.error(
-        "Erro ao fazer requisição pra buscar data de vencimento: ",
-        err
-      );
-      console.log(
-        "Erro ao fazer requisição pra buscar data de vencimento: ",
-        err
-      );
-    }
+    resposta = `📅 Sua data de vencimento: `;
   } else {
     resposta = `❌ Não entendi o que você quis dizer.\nDigite *menu* para ver as opções.`;
   }
