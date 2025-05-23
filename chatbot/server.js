@@ -120,6 +120,9 @@ app.post("/webhook", async (req, res) => {
 
       const data = await response.json();
 
+      console.log(data.data_vencimento);
+      console.log(data);
+
       resposta = `📅 Sua data de vencimento: ${formatarData(
         data.data_vencimento
       )}`;
