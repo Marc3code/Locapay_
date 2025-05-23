@@ -124,7 +124,7 @@ app.post("/webhook", async (req, res) => {
       console.log(data);
 
       resposta = `📅 Sua data de vencimento: ${formatarData(
-        data.data_vencimento
+        data[0].data_vencimento
       )}`;
 
     } catch (err) {

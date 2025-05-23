@@ -84,7 +84,7 @@ app.get("/getdatavencimento/:inquilinoid", async (req, res) => {
 
   try {
     const [result] = await db.query(query, [inquilinoid]);
-    res.json(result[0]);
+    res.json(result);
   } catch (err) {
     console.error("Erro ao buscar data de vencimento: ", err);
     console.log("Erro ao buscar data de vencimento");
