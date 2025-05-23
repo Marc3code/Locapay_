@@ -79,11 +79,12 @@ app.get("/getinquilino/:telefone", async (req, res) => {
 });
 
 app.get("/getdatavencimento/:inquilinoid", async (req, res) => {
-  const inquilino_id = req.params;
-  const query = "SELECT data_vencimento FROM inquilinos-imoveis WHERE id = ?";
+  const { inquilinoid } = req.params;
+  const query = "SELECT data_vencimento FROM inquilinos_imoveis WHERE id = ?";
 
   try {
-    const [result] = await db.query(query, [inquilino_id]);
+    const [result] = await db.query(query, [inquilinoid]);
+    res.json(result);
   } catch (err) {
     console.error("Erro ao buscar data de vencimento: ", err);
     console.log("Erro ao buscar data de vencimento");
