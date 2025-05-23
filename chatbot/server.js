@@ -112,16 +112,18 @@ app.post("/webhook", async (req, res) => {
   } else if (text === "3") {
     
     try {
-      const response = fetch(`${API_base}/getdatavencimento/${inquilino.id}`);
+      const response = await fetch(`${API_base}/getdatavencimento/${inquilino.id}`);
 
       if (!response.ok) {
         console.log(response.status);
       }
 
       const data = await response.json();
+
       resposta = `📅 Sua data de vencimento: ${formatarData(
         data.data_vencimento
       )}`;
+
     } catch (err) {
       console.error(
         "Erro ao fazer requisição pra buscar data de vencimento: ",
