@@ -51,9 +51,7 @@ app.post("/webhook", async (req, res) => {
   let inquilino = null;
 
   try {
-    const response = await fetch(
-      `${API_base}/getinquilino/${numeroFormatado}`
-    )
+    const response = await fetch(`${API_base}/getinquilino/${numeroFormatado}`)
       .then((res) => res.json())
       .then((data) => {
         if (data) {
@@ -92,16 +90,19 @@ app.post("/webhook", async (req, res) => {
     return `${dia}/${mes}/${ano}`;
   }
 
-  if (["menu", "oi", "ola", "olá", "boa tarde", "boa noite", "bom dia"].includes(text)) {
+  if (
+    ["menu", "oi", "ola", "olá", "boa tarde", "boa noite", "bom dia"].includes(
+      text
+    )
+  ) {
     resposta = `Olá, ${inquilino.nome}! 👋 Como posso te ajudar?\n\nEscolha uma opção:\n1️⃣ Pagar aluguel\n2️⃣ Verificar pagamentos pendentes\n3️⃣ Ver data de vencimento`;
   } else if (text === "1") {
     try {
-    const response = await fetch(`${API_base}/pagamentos/${inquilino.id}`)
+      const response = await fetch(`${API_base}/pagamentos/${inquilino.id}`);
 
-    response.json();
-
-    }catch(err) {
-      if(err){
+      response.json();
+    } catch (err) {
+      if (err) {
         console.log("erro ao buscar link de pagamento");
       }
     }
@@ -109,20 +110,30 @@ app.post("/webhook", async (req, res) => {
   } else if (text === "2") {
     resposta = `🔍 Verificando pendências...`;
   } else if (text === "3") {
-
-    try{
-      const response = fetch(`${API_base}/getdatavencimento/${inquilino.id}`);
-
-      response.json();
-
-      resposta = `Sua data de vencimento é ${response.data_vencimento}`
-    }catch(err){
-      console.error("Erro ao fazer requisição pra buscar data de vencimento: ", err);
-      console.log("Erro ao fazer requisição pra buscar data de vencimento: ", err);
+    try {
+      const response = fetch(`${API_base}/getdatavencimento/${inquilino.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data) {
+            return data;
+          } else {
+            console.error("Inquilino não encontrado:", data);
+            return null;
+          }
+        });
+    } catch (err) {
+      console.error(
+        "Erro ao fazer requisição pra buscar data de vencimento: ",
+        err
+      );
+      console.log(
+        "Erro ao fazer requisição pra buscar data de vencimento: ",
+        err
+      );
     }
 
     resposta = `📅 Sua data de vencimento: ${formatarData(
-      inquilino.data_vencimento
+      response.data_vencimento
     )}`;
   } else {
     resposta = `❌ Não entendi o que você quis dizer.\nDigite *menu* para ver as opções.`;
