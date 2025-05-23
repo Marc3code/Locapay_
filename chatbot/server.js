@@ -109,6 +109,18 @@ app.post("/webhook", async (req, res) => {
   } else if (text === "2") {
     resposta = `🔍 Verificando pendências...`;
   } else if (text === "3") {
+
+    try{
+      const response = fetch(`${API_base}/getdatavencimento/${inquilino.id}`);
+
+      response.json();
+
+      resposta = `Sua data de vencimento é ${response.data_vencimento}`
+    }catch(err){
+      console.error("Erro ao fazer requisição pra buscar data de vencimento: ", err);
+      console.log("Erro ao fazer requisição pra buscar data de vencimento: ", err);
+    }
+
     resposta = `📅 Sua data de vencimento: ${formatarData(
       inquilino.data_vencimento
     )}`;

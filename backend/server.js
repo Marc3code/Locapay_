@@ -78,6 +78,18 @@ app.get("/getinquilino/:telefone", async (req, res) => {
   }
 });
 
+app.get("/getdatavencimento/:inquilinoid", async (req, res) => {
+  const inquilino_id = req.params;
+  const query = "SELECT data_vencimento FROM inquilinos-imoveis WHERE id = ?";
+
+  try {
+    const [result] = await db.query(query, [inquilino_id]);
+  } catch (err) {
+    console.error("Erro ao buscar data de vencimento: ", err);
+    console.log("Erro ao buscar data de vencimento");
+  }
+});
+
 app.get("/inquilinos-com-imovel", async (req, res) => {
   try {
     const [results] = await db.query(
@@ -167,16 +179,17 @@ app.put("/updt_data_vencimento", async (req, res) => {
 
     // Verifica se alguma linha foi afetada
     if (results.affectedRows === 0) {
-      return res.status(404).json({ erro: "Nenhum registro encontrado com este ID." });
+      return res
+        .status(404)
+        .json({ erro: "Nenhum registro encontrado com este ID." });
     }
 
     // Resposta de sucesso
-    res.json({ 
+    res.json({
       mensagem: "Data de vencimento atualizada com sucesso!",
       id,
-      data_vencimento 
+      data_vencimento,
     });
-
   } catch (err) {
     console.error("Erro ao atualizar data de vencimento:", err);
     res.status(500).json({ erro: "Falha ao atualizar data de vencimento" });
