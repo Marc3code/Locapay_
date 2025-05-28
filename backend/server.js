@@ -135,14 +135,30 @@ app.get("/pagamentos", async (req, res) => {
 
 app.get("/link_pagamento/:inquilino_id", async (req, res) => {
   const { inquilino_id } = req.params;
-  const query =
-    "SELECT link_pagamento FROM pagamentos WHERE inquilino_id = ? AND status = 'pendente'";
+  const query = "SELECT link_pagamento FROM pagamentos WHERE inquilino_id = ? AND status = 'pendente' LIMIT 1";
+  
   try {
-    const [result] = await db.query(query, [inquilino_id]);
-    res.json(result);
+    const [results] = await db.query(query, [inquilino_id]);
+    
+    if (results.length === 0) {
+      return res.status(404).json({ 
+        success: false,
+        message: "Nenhum pagamento pendente encontrado"
+      });
+    }
+    
+    // Retorna diretamente o link do primeiro resultado
+    res.json({
+      success: true,
+      paymentLink: results[0].link_pagamento
+    });
+    
   } catch (err) {
     console.error("Erro ao buscar link de pagamento:", err);
-    res.status(500).json({ erro: "Erro ao buscar link de pagamento" });
+    res.status(500).json({ 
+      success: false,
+      error: "Erro interno no servidor"
+    });
   }
 });
 
