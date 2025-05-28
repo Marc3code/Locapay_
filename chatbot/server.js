@@ -102,6 +102,7 @@ app.post("/webhook", async (req, res) => {
       const response = await fetch(`link_pagamento/${inquilino.id}`);
 
       response.json();
+      console.log(response);
       link = response.link_pagamento;
     } catch (err) {
       if (err) {
