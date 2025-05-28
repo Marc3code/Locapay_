@@ -99,7 +99,7 @@ app.post("/webhook", async (req, res) => {
   } else if (text === "1") {
     let link
     try {
-      const response = await fetch(`link_pagamento/${inquilino.id}`);
+      const response = await fetch(`https://backend-production-78eb.up.railway.app/link_pagamento/${inquilino.id}`);
 
       response.json();
       console.log(response);
