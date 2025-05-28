@@ -103,7 +103,7 @@ app.post("/webhook", async (req, res) => {
 
       response.json();
       console.log(response);
-      link = response.link_pagamento;
+      link = response;
     } catch (err) {
       if (err) {
         console.log("erro ao buscar link de pagamento");
