@@ -97,19 +97,23 @@ app.post("/webhook", async (req, res) => {
   ) {
     resposta = `Olá, ${inquilino.nome}! 👋 Como posso te ajudar?\n\nEscolha uma opção:\n1️⃣ Pagar aluguel\n2️⃣ Verificar pagamentos pendentes\n3️⃣ Ver data de vencimento`;
   } else if (text === "1") {
-    let link
+    let link = "Link não disponível"; 
     try {
-      const response = await fetch(`https://backend-production-78eb.up.railway.app/link_pagamento/${inquilino.id}`);
+      const response = await fetch(
+        `https://backend-production-78eb.up.railway.app/link_pagamento/${inquilino.id}`
+      );
 
-      response.json();
-      console.log(response);
-      link = response;
+      if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+      const data = await response.json();
+
+      link = data.paymentLink;
+
+      console.log("Link obtido:", link); 
     } catch (err) {
-      if (err) {
-        console.log("erro ao buscar link de pagamento");
-      }
+      console.error("Erro ao buscar link:", err);
     }
-    resposta = `💳 Link para pagamento do aluguel: ${link}\n `;
+    resposta = `💳 Link para pagamento do aluguel: ${link}\n`;
   } else if (text === "2") {
     resposta = `🔍 Verificando pendências...`;
   } else if (text === "3") {
