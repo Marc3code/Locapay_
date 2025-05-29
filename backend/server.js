@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("./database.js");
+const db = require("./services/dbService.js");
 const cors = require("cors");
 const asaas = require("./asaas.js");
 const dotenv = require("dotenv");
