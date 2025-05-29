@@ -1,14 +1,12 @@
 const axios = require("axios");
-const dotenv = require("dotenv");
-
-dotenv.config();
+require("dotenv").config();
 
 const BASE_URL = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
 // Para produção: 'https://www.asaas.com/api/v3'
 
 //Função para gerar fatura Pix
 const gerarPagamentoPix = async (customerId, value, dueDate) => {
-  
+  console.log(process.env.ASAAS_API_KEY);
   try {
     const response = await axios.post(
       `${BASE_URL}/payments`,
