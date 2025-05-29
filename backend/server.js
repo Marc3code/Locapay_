@@ -306,36 +306,30 @@ app.post("/inquilinos-imoveis", async (req, res) => {
 // 💳 Pagamentos / Cobranças
 app.post("/pagamentos", async (req, res) => {
   const { id_asaas, valor, data_vencimento, inquilino_id } = req.body;
-  let pagamento = null;
 
   try {
-    pagamento = await asaas.gerarPagamentoPix(id_asaas, valor, data_vencimento);
-    pagamento.json();
-  } catch (err) {
-    console.error("Erro ao criar cobrança:", err);
-    res.status(500).json({ erro: "Erro ao criar cobrança" });
-  }
+    const pagamento = await asaas.gerarPagamentoPix(id_asaas, valor, data_vencimento);
 
-  if (!pagamento) {
-    return res.status(500).json({ erro: "Erro ao criar cobrança" });
-  } else {
-    try {
-      const query = `INSERT INTO pagamentos (inquilino_id, asaas_payment_id, due_date, payment_date, amount, link_pagamento) VALUES (?, ?, ?, ?, ?, ?)`;
-      const values = [
-        inquilino_id,
-        pagamento.id,
-        data_vencimento,
-        null,
-        valor,
-        pagamento.invoiceUrl,
-      ];
-      await db.query(query, values);
-    } catch (err) {
-      console.error("Erro ao registrar pagamento no BD:", err);
-      res.status(500).json({ erro: "Erro ao registrar pagamento no BD" });
-    }
+    const query = `INSERT INTO pagamentos (inquilino_id, asaas_payment_id, due_date, payment_date, amount, link_pagamento) VALUES (?, ?, ?, ?, ?, ?)`;
+    const values = [
+      inquilino_id,
+      pagamento.id,
+      data_vencimento,
+      null,
+      valor,
+      pagamento.invoiceUrl,
+    ];
+
+    await db.query(query, values);
+
+   
+    res.json(pagamento);
+  } catch (err) {
+    console.error("Erro ao criar cobrança ou registrar no BD:", err);
+    res.status(500).json({ erro: "Erro ao criar cobrança ou registrar no BD" });
   }
 });
+
 
 // 📩 Webhook - Eventos do Asaas
 app.post("/asaas_events", async (req, res) => {
