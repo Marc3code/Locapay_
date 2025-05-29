@@ -135,29 +135,28 @@ app.get("/pagamentos", async (req, res) => {
 
 app.get("/link_pagamento/:inquilino_id", async (req, res) => {
   const { inquilino_id } = req.params;
-  const query = "SELECT link_pagamento FROM pagamentos WHERE inquilino_id = ? AND status = 'pendente' LIMIT 1";
-  
+  const query =
+    "SELECT link_pagamento FROM pagamentos WHERE inquilino_id = ? AND status = 'pendente' LIMIT 1";
+
   try {
     const [results] = await db.query(query, [inquilino_id]);
-    
+
     if (results.length === 0) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         success: false,
-        message: "Nenhum pagamento pendente encontrado"
+        message: "Nenhum pagamento pendente encontrado",
       });
     }
-    
-    // Retorna diretamente o link do primeiro resultado
+
     res.json({
       success: true,
-      paymentLink: results[0].link_pagamento
+      paymentLink: results[0].link_pagamento,
     });
-    
   } catch (err) {
     console.error("Erro ao buscar link de pagamento:", err);
-    res.status(500).json({ 
+    res.status(500).json({
       success: false,
-      error: "Erro interno no servidor"
+      error: "Erro interno no servidor",
     });
   }
 });
@@ -177,11 +176,9 @@ app.get("/cobrancas", async (req, res) => {
 
 // ------------------ ROTAS PUT ------------------
 
-// 🔁 Atualização de Cobranças
 app.put("/updt_data_vencimento", async (req, res) => {
   const { data_vencimento, id } = req.body;
 
-  // Validação básica
   if (!data_vencimento || !id) {
     return res.status(400).json({ erro: "Campos obrigatórios faltando!" });
   }
@@ -190,17 +187,14 @@ app.put("/updt_data_vencimento", async (req, res) => {
   const values = [data_vencimento, id];
 
   try {
-    // Executa a query SEM callback
     const [results] = await db.query(query, values);
 
-    // Verifica se alguma linha foi afetada
     if (results.affectedRows === 0) {
       return res
         .status(404)
         .json({ erro: "Nenhum registro encontrado com este ID." });
     }
 
-    // Resposta de sucesso
     res.json({
       mensagem: "Data de vencimento atualizada com sucesso!",
       id,
@@ -316,29 +310,30 @@ app.post("/pagamentos", async (req, res) => {
 
   try {
     pagamento = await asaas.gerarPagamentoPix(id_asaas, valor, data_vencimento);
-    res.json(pagamento);
+    pagamento.json()
   } catch (err) {
     console.error("Erro ao criar cobrança:", err);
     res.status(500).json({ erro: "Erro ao criar cobrança" });
   }
 
-  if (!pagamento)
+  if (!pagamento) {
     return res.status(500).json({ erro: "Erro ao criar cobrança" });
-
-  try {
-    const query = `INSERT INTO pagamentos (inquilino_id, asaas_payment_id, due_date, payment_date, amount, link_pagamento) VALUES (?, ?, ?, ?, ?, ?)`;
-    const values = [
-      inquilino_id,
-      pagamento.id,
-      data_vencimento,
-      null,
-      valor,
-      pagamento.invoiceUrl,
-    ];
-    await db.query(query, values);
-  } catch (err) {
-    console.error("Erro ao registrar pagamento no BD:", err);
-    res.status(500).json({ erro: "Erro ao registrar pagamento no BD" });
+  } else {
+    try {
+      const query = `INSERT INTO pagamentos (inquilino_id, asaas_payment_id, due_date, payment_date, amount, link_pagamento) VALUES (?, ?, ?, ?, ?, ?)`;
+      const values = [
+        inquilino_id,
+        pagamento.id,
+        data_vencimento,
+        null,
+        valor,
+        pagamento.invoiceUrl,
+      ];
+      await db.query(query, values);
+    } catch (err) {
+      console.error("Erro ao registrar pagamento no BD:", err);
+      res.status(500).json({ erro: "Erro ao registrar pagamento no BD" });
+    }
   }
 });
 
