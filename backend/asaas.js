@@ -19,7 +19,7 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
+          access_token: "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjQ0NzcwZjE4LWJiOWItNDg4My1hMTU4LWM1NDJmN2ExNmMwYjo6JGFhY2hfYTVkOTJjMjAtMDY3ZC00MDBjLTg2ZjgtNDFhYThlZWU5OThl",
         },
       }
     );
