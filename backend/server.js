@@ -310,7 +310,7 @@ app.post("/pagamentos", async (req, res) => {
 
   try {
     pagamento = await asaas.gerarPagamentoPix(id_asaas, valor, data_vencimento);
-    pagamento.json()
+    pagamento.json();
   } catch (err) {
     console.error("Erro ao criar cobrança:", err);
     res.status(500).json({ erro: "Erro ao criar cobrança" });
