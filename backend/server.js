@@ -309,7 +309,7 @@ app.post("/pagamentos", async (req, res) => {
   const id_asaas = req.body.id_asaas;
   const valor = req.body.valor;
   const data_vencimento = req.body.data_vencimento;
-  const inquilino_id = req.body.data_vencimento;
+  const inquilino_id = req.body.inquilino_id;
 
   try {
     const pagamento = await asaas.gerarPagamentoPix(id_asaas, valor, data_vencimento);
