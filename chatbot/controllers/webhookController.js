@@ -1,7 +1,7 @@
 const { buscarInquilinoPorNumero } = require("../services/inquilinoService");
 const { buscarLinkPagamento } = require("../services/pagamentoService");
-const { formatarData } = require("../utils/format");
-const { formatarNumeroWhatsapp } = require("../utils/numeroUtils");
+const { formatarData } = require("../utils/formatDate");
+const { formatarNumeroWhatsapp } = require("../utils/formatNumber");
 
 exports.handleWebhook = async (req, res) => {
   const from = req.body.From;
