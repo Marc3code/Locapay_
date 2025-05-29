@@ -305,9 +305,9 @@ app.post("/inquilinos-imoveis", async (req, res) => {
 
 // 💳 Pagamentos / Cobranças
 app.post("/pagamentos", async (req, res) => {
-  
+
   const id_asaas = req.body.id_asaas;
-  const valor = req.body.value;
+  const valor = req.body.valor;
   const data_vencimento = req.body.data_vencimento;
   const inquilino_id = req.body.data_vencimento;
 
