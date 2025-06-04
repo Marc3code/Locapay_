@@ -29,13 +29,16 @@ app.get("/", (req, res) => {
 
 app.use("/imoveis", imovelRoutes);
 app.use("/inquilinos", inquilinoRoutes);
-app.use("cobrancas", cobrancaRoutes);
+app.use("/cobrancas", cobrancaRoutes);
 
 // 📦 Imóveis
 // função de busca refatorada (controller, service e routes feitos) - funcionando;
 
 // 👥 Inquilinos
 //função de busca refatorada (controller, service e routes feitos) - em teste;
+
+//Cobranças
+//nova classe criada para lidar com questões de cobrança e já organizada na estrutura CSR - em teste
 
 // 💰 Pagamentos
 app.get("/pagamentos", async (req, res) => {
@@ -47,6 +50,8 @@ app.get("/pagamentos", async (req, res) => {
     res.status(500).json({ erro: "Erro ao buscar pagamentos" });
   }
 });
+
+
 
 app.get("/link_pagamento/:inquilino_id", async (req, res) => {
   const { inquilino_id } = req.params;
@@ -76,18 +81,7 @@ app.get("/link_pagamento/:inquilino_id", async (req, res) => {
   }
 });
 
-app.get("/cobrancas", async (req, res) => {
-  const { data } = req.query;
-  try {
-    const [results] = await db.query(
-      `SELECT ii.*, i.id_asaas FROM inquilinos_imoveis ii INNER JOIN inquilinos i ON ii.inquilino_id = i.id WHERE ii.status = 'ativo'`
-    );
-    res.json(results);
-  } catch (err) {
-    console.error("Erro ao buscar cobranças:", err);
-    res.status(500).json({ erro: "Erro ao buscar cobranças" });
-  }
-});
+
 
 // ------------------ ROTAS PUT ------------------
 
