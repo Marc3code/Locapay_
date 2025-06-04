@@ -9,7 +9,7 @@ router.get("/getinquilino/:telefone", controller.buscarPorTelefone);
 router.get("/inquilinos-com-imovel", controller.listarComImovel);
 
 
-// ------------------ ROTAS POST ------------------
-router.post("/", controller.)
+// ------------------ ROTAS PUT ------------------
+router.put("/updt_data_vencimento", controller.atualizarDataVencimento);
 
 module.exports = router;
