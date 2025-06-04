@@ -1,4 +1,4 @@
-const db = require("../databse/dbconnect");
+const db = require("../database/dbconnect");
 
 async function getTodosImoveis() {
   const [results] = await db.query("SELECT * FROM imoveis");
