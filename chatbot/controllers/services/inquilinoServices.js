@@ -3,7 +3,7 @@ const dotenv = require("dotenv").config();
 const getInquilinoPorTelefone = async (numero) => {
   try {
     const response = await fetch(
-      `${process.env.API_BASE}/getinquilino/${numero}`
+      `${process.env.API_BASE}/inquilinos/getinquilino/${numero}`
     );
 
     if (!response) {
