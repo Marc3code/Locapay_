@@ -43,7 +43,7 @@ app.use("/pagamentos", pagamentoRoutes);
 //nova classe criada para lidar com questões de cobrança e já organizada na estrutura CSR - em teste (buscar data de vencimento - ok ; falta gerar a cobrança)
 
 // 💰 Pagamentos
-//função de busca refatorada (controller, service e routes feitos) - em teste;
+//função de busca refatorada (controller, service e routes feitos) - funcionando;
 
 
 
@@ -56,27 +56,7 @@ app.put("/updt_data_vencimento", async (req, res) => {
     return res.status(400).json({ erro: "Campos obrigatórios faltando!" });
   }
 
-  const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE id = ?`;
-  const values = [data_vencimento, id];
-
-  try {
-    const [results] = await db.query(query, values);
-
-    if (results.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ erro: "Nenhum registro encontrado com este ID." });
-    }
-
-    res.json({
-      mensagem: "Data de vencimento atualizada com sucesso!",
-      id,
-      data_vencimento,
-    });
-  } catch (err) {
-    console.error("Erro ao atualizar data de vencimento:", err);
-    res.status(500).json({ erro: "Falha ao atualizar data de vencimento" });
-  }
+  
 });
 
 // ------------------ ROTAS POST ------------------

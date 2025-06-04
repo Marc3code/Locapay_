@@ -1,5 +1,6 @@
 const inquilinoService = require("../services/inquilinoService");
 
+// ------------------ controllers GET ------------------
 async function listarTodos(req, res) {
   try {
     const inquilinos = await inquilinoService.getTodosInquilinos();
@@ -46,9 +47,30 @@ async function listarComImovel(req, res) {
   }
 }
 
+// ------------------ controllers PUT ------------------
+
+const atualizarDataVencimento = async (req, res) => {
+  const { id } = req.params;
+  const data_vencimento = req.body.data_vencimento;
+
+  try {
+    const novaData = await inquilinoService.atualizarDataVencimento(
+      data_vencimento,
+      id
+    );
+
+    res.json(novaData);
+  } catch (err) {
+    console.error("Erro ao atualizar data de vencimento:", err);
+    res.status(500).json({ erro: "Erro ao atualizar data de vencimento" });
+  }
+};
+
 module.exports = {
   listarTodos,
   buscarPorId,
   buscarPorTelefone,
   listarComImovel,
+
+  atualizarDataVencimento,
 };
