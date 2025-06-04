@@ -1,10 +1,9 @@
-const dotenv = require("dotenv");
-dotenv.config();
+const API_BASE = "https://backend-production-78eb.up.railway.app";
 
 const getInquilinoPorTelefone = async (numero) => {
   try {
     const response = await fetch(
-      `${process.env.API_BASE}/inquilinos/getinquilino/${numero}`
+      `${API_BASE}/inquilinos/getinquilino/${numero}`
     );
 
     if (!response) {
