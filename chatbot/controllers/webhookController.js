@@ -1,5 +1,4 @@
 const inquilinosService = require("./services/inquilinoServices");
-const { buscarLinkPagamento } = require("../services/pagamentoService");
 const { formatarData } = require("../utils/formatDate");
 const { formatarNumeroWhatsapp } = require("../utils/formatNumber");
 
