@@ -1,4 +1,4 @@
-const { buscarInquilinoPorNumero } = require("../services/inquilinoService");
+const inquilinosService = require("./services/inquilinoServices")};
 const { buscarLinkPagamento } = require("../services/pagamentoService");
 const { formatarData } = require("../utils/formatDate");
 const { formatarNumeroWhatsapp } = require("../utils/formatNumber");
@@ -11,7 +11,7 @@ exports.handleWebhook = async (req, res) => {
   console.log("Conteúdo:", text);
 
   const numeroFormatado = formatarNumeroWhatsapp(from);
-  const inquilino = await buscarInquilinoPorNumero(numeroFormatado);
+  const inquilino = await inquilinosService.getInquilinoPorTelefone(numeroFormatado);
 
   if (!inquilino || !inquilino.id) {
     return sendResponse(res, "❌ Não consegui identificar você. Por favor, entre em contato com o suporte.");
