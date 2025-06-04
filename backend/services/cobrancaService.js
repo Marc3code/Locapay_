@@ -1,6 +1,6 @@
 const db = require("../database/dbconnect");
 
-async function getCobrancasAtivas() {
+const getCobrancasAtivas = async () => {
   const [results] = await db.query(`
     SELECT ii.*, i.id_asaas 
     FROM inquilinos_imoveis ii 
@@ -10,7 +10,7 @@ async function getCobrancasAtivas() {
   return results;
 }
 
-async function getDataVencimentoPorId(inquilinoid) {
+const getDataVencimentoPorId = async (inquilinoid) => {
   const [result] = await db.query(
     "SELECT data_vencimento FROM inquilinos_imoveis WHERE id = ?",
     [inquilinoid]

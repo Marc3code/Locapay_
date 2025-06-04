@@ -5,6 +5,7 @@ const asaas = require("./asaas.js");
 const dotenv = require("dotenv");
 const imovelRoutes = require('./routes/imovelRoutes.js');
 const inquilinoRoutes = require('./routes/inquilinoRoutes.js');
+const cobrancaRoutes = require('./routes/cobrancaRoutes.js')
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 
 app.use("/imoveis", imovelRoutes);
 app.use("/inquilinos", inquilinoRoutes);
+app.use("cobrancas", cobrancaRoutes);
 
 // 📦 Imóveis
 // função de busca refatorada (controller, service e routes feitos) - funcionando;
