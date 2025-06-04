@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../database/dbconnect");
 
 async function getTodosInquilinos() {
   const [results] = await db.query("SELECT * FROM inquilinos");

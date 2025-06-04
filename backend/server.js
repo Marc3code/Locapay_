@@ -4,6 +4,7 @@ const cors = require("cors");
 const asaas = require("./asaas.js");
 const dotenv = require("dotenv");
 const imovelRoutes = require('./routes/imovelRoutes.js');
+const inquilinoRoutes = require('./routes/inquilinoRoutes.js');
 
 dotenv.config();
 
@@ -25,97 +26,14 @@ app.get("/", (req, res) => {
 
 // ------------------ ROTAS GET ------------------
 
-app.use("/imoveis", imovelRoutes)
+app.use("/imoveis", imovelRoutes);
+app.use("/inquilinos", inquilinoRoutes);
 
 // 📦 Imóveis
-// função de busca refatorada (controller, service e routes feitos);
+// função de busca refatorada (controller, service e routes feitos) - funcionando;
 
 // 👥 Inquilinos
-app.get("/inquilinos", async (req, res) => {
-  try {
-    const [results] = await db.query("SELECT * FROM inquilinos");
-    res.json(results);
-  } catch (err) {
-    console.error("Erro ao buscar inquilinos:", err);
-    res.status(500).json({ erro: "Erro ao buscar inquilinos" });
-  }
-});
-
-app.get("/inquilino", async (req, res) => {
-  const { id } = req.query;
-  try {
-    const [results] = await db.query("SELECT * FROM inquilinos where id = ?", [
-      id,
-    ]);
-    res.json(results);
-  } catch (err) {
-    console.error("Erro ao buscar inquilinos:", err);
-    res.status(500).json({ erro: "Erro ao buscar inquilinos" });
-  }
-});
-
-// Rota GET - Buscar inquilino por telefone
-app.get("/getinquilino/:telefone", async (req, res) => {
-  const { telefone } = req.params;
-  try {
-    const [results] = await db.query(
-      "SELECT * FROM inquilinos WHERE telefone = ?",
-      [telefone]
-    );
-    if (results.length > 0) {
-      res.json(results[0]);
-    } else {
-      res.status(404).json({ erro: "Inquilino não encontrado" });
-    }
-  } catch (err) {
-    console.error("Erro ao buscar inquilino:", err);
-    res.status(500).json({ erro: "Erro ao buscar inquilino" });
-  }
-});
-
-app.get("/getdatavencimento/:inquilinoid", async (req, res) => {
-  const { inquilinoid } = req.params;
-  const query = "SELECT data_vencimento FROM inquilinos_imoveis WHERE id = ?";
-
-  try {
-    const [result] = await db.query(query, [inquilinoid]);
-    res.json(result);
-  } catch (err) {
-    console.error("Erro ao buscar data de vencimento: ", err);
-    console.log("Erro ao buscar data de vencimento");
-  }
-});
-
-app.get("/inquilinos-com-imovel", async (req, res) => {
-  try {
-    const [results] = await db.query(
-      `SELECT 
-        i.id AS inquilino_id, 
-        i.nome, 
-        i.telefone, 
-        i.cpfCnpj,
-        i.id_asaas,
-        ii.id AS relacao_id,
-        ii.valor_aluguel, 
-        ii.data_vencimento,
-        ii.data_inicio,
-        ii.data_fim,
-        ii.status,
-        im.id AS imovel_id,
-        im.tipo AS tipo_imovel, 
-        im.endereco, 
-        im.numero,
-        im.complemento
-      FROM inquilinos i
-      JOIN inquilinos_imoveis ii ON i.id = ii.inquilino_id
-      JOIN imoveis im ON ii.imovel_id = im.id`
-    );
-    res.json(results);
-  } catch (err) {
-    console.error("Erro ao buscar inquilinos com imóvel:", err);
-    res.status(500).json({ erro: "Erro ao buscar inquilinos com imóvel" });
-  }
-});
+//função de busca refatorada (controller, service e routes feitos) - em teste;
 
 // 💰 Pagamentos
 app.get("/pagamentos", async (req, res) => {

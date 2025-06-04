@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../database/dbconnect");
 
 async function getCobrancasAtivas() {
   const [results] = await db.query(`
