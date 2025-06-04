@@ -3,6 +3,7 @@ const db = require("./services/dbService.js");
 const cors = require("cors");
 const asaas = require("./asaas.js");
 const dotenv = require("dotenv");
+const imovelRoutes = require('./routes/imovelRoutes.js');
 
 dotenv.config();
 
@@ -24,16 +25,10 @@ app.get("/", (req, res) => {
 
 // ------------------ ROTAS GET ------------------
 
+app.use("/imoveis", imovelRoutes)
+
 // 📦 Imóveis
-app.get("/imoveis", async (req, res) => {
-  try {
-    const [results] = await db.query("SELECT * FROM imoveis");
-    res.json(results);
-  } catch (err) {
-    console.error("Erro ao buscar imóveis:", err);
-    res.status(500).json({ erro: "Erro ao buscar imóveis" });
-  }
-});
+// função de busca refatorada (controller, service e routes feitos);
 
 // 👥 Inquilinos
 app.get("/inquilinos", async (req, res) => {
