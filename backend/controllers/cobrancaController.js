@@ -42,4 +42,5 @@ const getCobrancasAtivas = async (req, res) => {
 
 module.exports = {
   getDataVencimentoPorId,
+  getCobrancasAtivas
 };
