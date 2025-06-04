@@ -1,7 +1,7 @@
 const cobrancaService = require("../services/cobrancaService");
 
 const getDataVencimentoPorId = async (req, res) => {
-  const { inquilinoid } = req.params.inquilinoid;
+  const inquilinoid = req.params.inquilinoid;
 
   if (!inquilinoid) {
     return res
@@ -42,5 +42,5 @@ const getCobrancasAtivas = async (req, res) => {
 
 module.exports = {
   getDataVencimentoPorId,
-  getCobrancasAtivas
+  getCobrancasAtivas,
 };
