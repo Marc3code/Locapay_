@@ -12,7 +12,7 @@ const getCobrancasAtivas = async () => {
 
 const getDataVencimentoPorId = async (inquilinoid) => {
   const [result] = await db.query(
-    "SELECT data_vencimento FROM inquilinos_imoveis WHERE id = ?",
+    "SELECT data_vencimento FROM inquilinos_imoveis WHERE inquilino_id = ?",
     [inquilinoid]
   );
   return result;
