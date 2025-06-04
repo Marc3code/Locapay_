@@ -6,14 +6,15 @@ const getInquilinoPorTelefone = async (numero) => {
       `${API_BASE}/inquilinos/getinquilino/${numero}`
     );
 
-    if (!response) {
-      console.error("nenhum inquilino encontrado");
-      response.status(400).json({ erro: "nenhum inquilino encontrado" });
+    if (!response.ok) {
+      console.error("Nenhum inquilino encontrado");
+      return { erro: "Nenhum inquilino encontrado" };
     }
-    return response;
+
+    return await response.json();
   } catch (err) {
     console.error("Erro ao buscar inquilino por telefone:", err);
-    res.status(500).json({ err0: "Erro ao buscar inquilino por telefone" });
+    return { erro: "Erro ao buscar inquilino por telefone" };
   }
 };
 
