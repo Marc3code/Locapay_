@@ -8,7 +8,7 @@ const getCobrancasAtivas = async () => {
     WHERE ii.status = 'ativo'
   `);
   return results;
-}
+} 
 
 const getDataVencimentoPorId = async (inquilinoid) => {
   const [result] = await db.query(

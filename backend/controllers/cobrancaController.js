@@ -1,7 +1,7 @@
 const cobrancaService = require("../services/cobrancaService");
 
 const getDataVencimentoPorId = async (req, res) => {
-  const { inquilinoid } = req.params;
+  const { inquilinoid } = req.params.inquilinoid;
 
   if (!inquilinoid) {
     return res
