@@ -10,11 +10,12 @@ const getInquilinoPorTelefone = async (numero) => {
       console.error("nenhum inquilino encontrado");
       response.status(400).json({ erro: "nenhum inquilino encontrado" });
     }
-  } catch (err) {}
-  console.error("Erro ao buscar inquilino por telefone:", err);
-  res.status(500).json({ erro: "Erro ao buscar inquilino por telefone" });
+  } catch (err) {
+    console.error("Erro ao buscar inquilino por telefone:", err);
+    res.status(500).json({ err0: "Erro ao buscar inquilino por telefone" });
+  }
 };
 
 module.exports = {
-    getInquilinoPorTelefone
-}
+  getInquilinoPorTelefone,
+};
