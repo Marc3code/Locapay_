@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const imovelRoutes = require('./routes/imovelRoutes.js');
 const inquilinoRoutes = require('./routes/inquilinoRoutes.js');
 const cobrancaRoutes = require('./routes/cobrancaRoutes.js')
+const pagamentoRoutes = require('./routes/pagamentoRoutes.js')
 
 dotenv.config();
 
@@ -30,56 +31,19 @@ app.get("/", (req, res) => {
 app.use("/imoveis", imovelRoutes);
 app.use("/inquilinos", inquilinoRoutes);
 app.use("/cobrancas", cobrancaRoutes);
+app.use("/pagamentos", pagamentoRoutes);
 
 // 📦 Imóveis
 // função de busca refatorada (controller, service e routes feitos) - funcionando;
 
 // 👥 Inquilinos
-//função de busca refatorada (controller, service e routes feitos) - em teste;
+//função de busca refatorada (controller, service e routes feitos) - funcionando;
 
 //Cobranças
-//nova classe criada para lidar com questões de cobrança e já organizada na estrutura CSR - em teste
+//nova classe criada para lidar com questões de cobrança e já organizada na estrutura CSR - em teste (buscar data de vencimento - ok ; falta gerar a cobrança)
 
 // 💰 Pagamentos
-app.get("/pagamentos", async (req, res) => {
-  try {
-    const [results] = await db.query("SELECT * FROM pagamentos");
-    res.json(results[0]);
-  } catch (err) {
-    console.error("Erro ao buscar pagamentos:", err);
-    res.status(500).json({ erro: "Erro ao buscar pagamentos" });
-  }
-});
-
-
-
-app.get("/link_pagamento/:inquilino_id", async (req, res) => {
-  const { inquilino_id } = req.params;
-  const query =
-    "SELECT link_pagamento FROM pagamentos WHERE inquilino_id = ? AND status = 'pendente' LIMIT 1";
-
-  try {
-    const [results] = await db.query(query, [inquilino_id]);
-
-    if (results.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Nenhum pagamento pendente encontrado",
-      });
-    }
-
-    res.json({
-      success: true,
-      paymentLink: results[0].link_pagamento,
-    });
-  } catch (err) {
-    console.error("Erro ao buscar link de pagamento:", err);
-    res.status(500).json({
-      success: false,
-      error: "Erro interno no servidor",
-    });
-  }
-});
+//função de busca refatorada (controller, service e routes feitos) - em teste;
 
 
 
