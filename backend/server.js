@@ -56,7 +56,6 @@ app.put("/updt_data_vencimento", async (req, res) => {
     return res.status(400).json({ erro: "Campos obrigatórios faltando!" });
   }
 
-  
 });
 
 // ------------------ ROTAS POST ------------------
@@ -155,6 +154,8 @@ app.post("/inquilinos-imoveis", async (req, res) => {
     res.status(500).json({ erro: "Erro ao vincular inquilino a imóvel" });
   }
 });
+
+//iniciado ate aqui a refatoração
 
 // 💳 Pagamentos / Cobranças
 app.post("/pagamentos", async (req, res) => {

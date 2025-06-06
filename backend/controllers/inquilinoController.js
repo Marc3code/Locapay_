@@ -66,11 +66,39 @@ const atualizarDataVencimento = async (req, res) => {
   }
 };
 
+// ------------------ ROTAS POST ------------------
+async function criarInquilino(req, res) {
+  const { name, phone, cpfCnpj } = req.body;
+  try {
+    const novoInquilino = await inquilinoService.criarInquilino({
+      name,
+      phone,
+      cpfCnpj,
+    });
+    res.status(201).json(novoInquilino);
+  } catch (err) {
+    console.error("Erro ao adicionar inquilino:", err);
+    res.status(500).json({ erro: "Erro ao adicionar inquilino" });
+  }
+}
+
+async function vincularInquilinoImovel(req, res) {
+  try {
+    const dados = req.body;
+    const vinculo = await inquilinoService.vincularInquilinoImovel(dados);
+    res.status(201).json(vinculo);
+  } catch (err) {
+    console.error("Erro ao vincular inquilino a imóvel:", err);
+    res.status(500).json({ erro: "Erro ao vincular inquilino a imóvel" });
+  }
+}
+
 module.exports = {
   listarTodos,
   buscarPorId,
   buscarPorTelefone,
   listarComImovel,
-
+  criarInquilino,
   atualizarDataVencimento,
+  vincularInquilinoImovel,
 };

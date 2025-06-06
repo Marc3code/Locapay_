@@ -1,5 +1,7 @@
 const cobrancaService = require("../services/cobrancaService");
 
+
+// ------------------ controllers GET ------------------
 const getDataVencimentoPorId = async (req, res) => {
   const inquilinoid = req.params.inquilinoid;
 

@@ -6,7 +6,6 @@ const BASE_URL = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
 
 //Função para gerar fatura Pix
 const gerarPagamentoPix = async (customerId, value, dueDate) => {
-  console.log(process.env.ASAAS_API_KEY);
   try {
     const response = await axios.post(
       `${BASE_URL}/payments`,
@@ -19,7 +18,8 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjQ0NzcwZjE4LWJiOWItNDg4My1hMTU4LWM1NDJmN2ExNmMwYjo6JGFhY2hfYTVkOTJjMjAtMDY3ZC00MDBjLTg2ZjgtNDFhYThlZWU5OThl",
+          access_token:
+            "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjQ0NzcwZjE4LWJiOWItNDg4My1hMTU4LWM1NDJmN2ExNmMwYjo6JGFhY2hfYTVkOTJjMjAtMDY3ZC00MDBjLTg2ZjgtNDFhYThlZWU5OThl",
         },
       }
     );
@@ -34,7 +34,6 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
     throw new Error(err.response?.data?.message || "Erro ao criar pagamento");
   }
 };
-
 
 const criarClienteAsaas = async (clienteData) => {
   try {

@@ -73,6 +73,68 @@ const atualizarDataVencimento = async (data_vencimento, id) => {
   }
 };
 
+// ------------------ ROTAS POST ------------------
+const criarInquilino = async ({ name, phone, cpfCnpj }) => {
+  const [results] = await db.query(
+    "INSERT INTO inquilinos (nome, telefone, cpfCnpj) VALUES (?, ?, ?)",
+    [name, phone, cpfCnpj]
+  );
+
+  const id_asaas = await asaas.criarClienteAsaas({ name, phone, cpfCnpj });
+
+  await db.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [
+    id_asaas,
+    results.insertId,
+  ]);
+
+  return {
+    id: results.insertId,
+    name,
+    phone,
+    cpfCnpj,
+    id_asaas,
+  };
+};
+
+const vincularInquilinoImovel = async ({
+  inquilino_id,
+  imovel_id,
+  valor_aluguel,
+  data_vencimento,
+  data_inicio,
+  data_fim,
+  status,
+  complemento,
+}) => {
+  const [results] = await db.query(
+    `INSERT INTO inquilinos_imoveis 
+     (inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio, data_fim, status, complemento) 
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      inquilino_id,
+      imovel_id,
+      valor_aluguel,
+      data_vencimento,
+      data_inicio || null,
+      data_fim || null,
+      status || "ativo",
+      complemento || null,
+    ]
+  );
+
+  return {
+    id: results.insertId,
+    inquilino_id,
+    imovel_id,
+    valor_aluguel,
+    data_vencimento,
+    data_inicio,
+    data_fim,
+    status,
+    complemento,
+  };
+};
+
 module.exports = {
   getTodosInquilinos,
   getInquilinoPorId,
@@ -80,4 +142,8 @@ module.exports = {
   getInquilinosComImovel,
 
   atualizarDataVencimento,
+
+  criarInquilino,
+
+  vincularInquilinoImovel
 };

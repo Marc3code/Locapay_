@@ -1,5 +1,7 @@
 const pagamentoService = require("../services/pagamentoService");
 
+
+// ------------------ controllers GET ------------------
 async function listarTodos(req, res) {
   try {
     const pagamentos = await pagamentoService.getTodosPagamentos();
