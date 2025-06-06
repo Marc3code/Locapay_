@@ -56,8 +56,8 @@ const atualizarDataVencimento = async (data_vencimento, id) => {
   try {
     const result = await db.query(query, values);
 
-    if (results.affectedRows === 0) {
-      return res
+    if (result.affectedRows === 0) {
+      return result
         .status(404)
         .json({ erro: "Nenhum registro encontrado com este ID." });
     }
@@ -69,7 +69,6 @@ const atualizarDataVencimento = async (data_vencimento, id) => {
     });
   } catch (err) {
     console.error("Erro ao atualizar data de vencimento:", err);
-    res.status(500).json({ erro: "Falha ao atualizar data de vencimento" });
   }
 };
 
@@ -145,5 +144,5 @@ module.exports = {
 
   criarInquilino,
 
-  vincularInquilinoImovel
+  vincularInquilinoImovel,
 };
