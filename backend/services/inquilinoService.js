@@ -54,7 +54,7 @@ const atualizarDataVencimento = async (data_vencimento, id) => {
   const values = [data_vencimento, id];
 
   try {
-    const [results] = await db.query(query, values);
+    const result = await db.query(query, values);
 
     if (results.affectedRows === 0) {
       return res
@@ -62,7 +62,7 @@ const atualizarDataVencimento = async (data_vencimento, id) => {
         .json({ erro: "Nenhum registro encontrado com este ID." });
     }
 
-    res.json({
+    result.json({
       mensagem: "Data de vencimento atualizada com sucesso!",
       id,
       data_vencimento,
