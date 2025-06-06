@@ -62,7 +62,7 @@ const atualizarDataVencimento = async (data_vencimento, id) => {
         .json({ erro: "Nenhum registro encontrado com este ID." });
     }
 
-    result.json({
+    return result.json({
       mensagem: "Data de vencimento atualizada com sucesso!",
       id,
       data_vencimento,
