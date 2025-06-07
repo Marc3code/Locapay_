@@ -48,7 +48,7 @@ async function getInquilinosComImovel() {
   return results;
 }
 
-// ------------------ SERVICES POST ------------------
+// ------------------ SERVICES PUT ------------------
 const atualizarDataVencimento = async ( data_vencimento, id ) => {
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE id = ?`;
   const values = [data_vencimento, id];
@@ -67,7 +67,7 @@ const atualizarDataVencimento = async ( data_vencimento, id ) => {
   }
 };
 
-// ------------------ ROTAS POST ------------------
+// ------------------ SERVICES POST ------------------
 const criarInquilino = async ({ name, phone, cpfCnpj }) => {
   const [results] = await db.query(
     "INSERT INTO inquilinos (nome, telefone, cpfCnpj) VALUES (?, ?, ?)",
