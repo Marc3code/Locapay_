@@ -49,7 +49,7 @@ async function getInquilinosComImovel() {
 }
 
 // ------------------ SERVICES POST ------------------
-const atualizarDataVencimento = async (data_vencimento, id) => {
+const atualizarDataVencimento = async ( data_vencimento, id ) => {
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE id = ?`;
   const values = [data_vencimento, id];
 
@@ -57,9 +57,7 @@ const atualizarDataVencimento = async (data_vencimento, id) => {
     const [result] = await db.query(query, values);
 
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ erro: "Nenhum registro encontrado com este ID." });
+      return "nenhum inquilino com essa data de vencimento"
     }
 
     return result.json();
