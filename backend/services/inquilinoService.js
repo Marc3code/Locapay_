@@ -49,26 +49,29 @@ async function getInquilinosComImovel() {
 }
 
 // ------------------ SERVICES POST ------------------
-const atualizarDataVencimento = async (data_vencimento, id) => {
+const atualizarDataVencimento = async (req, res) => {
+  const { data_vencimento, id } = req.body;
+
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE id = ?`;
   const values = [data_vencimento, id];
 
   try {
-    const result = await db.query(query, values);
+    const [result] = await db.query(query, values);
 
     if (result.affectedRows === 0) {
-      return result
+      return res
         .status(404)
         .json({ erro: "Nenhum registro encontrado com este ID." });
     }
 
-    return result.json({
+    return res.status(200).json({
       mensagem: "Data de vencimento atualizada com sucesso!",
       id,
       data_vencimento,
     });
   } catch (err) {
     console.error("Erro ao atualizar data de vencimento:", err);
+    return res.status(500).json({ erro: "Erro interno no servidor." });
   }
 };
 
