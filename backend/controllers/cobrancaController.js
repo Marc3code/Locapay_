@@ -42,7 +42,26 @@ const getCobrancasAtivas = async (req, res) => {
   }
 };
 
+async function criarCobrancaPix(req, res) {
+  const { id_asaas, valor, data_vencimento, inquilino_id } = req.body;
+
+  try {
+    const pagamento = await pagamentoService.criarPagamentoPix({
+      id_asaas,
+      valor,
+      data_vencimento,
+      inquilino_id,
+    });
+
+    res.json(pagamento);
+  } catch (err) {
+    console.error("Erro ao criar cobrança:", err);
+    res.status(500).json({ erro: "Erro ao criar cobrança ou registrar no BD" });
+  }
+}
+
 module.exports = {
   getDataVencimentoPorId,
   getCobrancasAtivas,
+  criarCobrancaPix
 };

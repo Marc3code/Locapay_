@@ -13,7 +13,10 @@ async function getLinkPagamentoPendente(inquilino_id) {
   return results.length > 0 ? results[0].link_pagamento : null;
 }
 
+
+
 module.exports = {
   getTodosPagamentos,
-  getLinkPagamentoPendente
+  criarPagamentoPix,
+  getLinkPagamentoPendente,
 };
