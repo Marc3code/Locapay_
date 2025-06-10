@@ -36,11 +36,11 @@ async function getInquilinosComImovel() {
       ii.data_inicio,
       ii.data_fim,
       ii.status,
+      ii.complemento,
       im.id AS imovel_id,
       im.tipo AS tipo_imovel, 
       im.endereco, 
       im.numero,
-      im.complemento
     FROM inquilinos i
     JOIN inquilinos_imoveis ii ON i.id = ii.inquilino_id
     JOIN imoveis im ON ii.imovel_id = im.id
