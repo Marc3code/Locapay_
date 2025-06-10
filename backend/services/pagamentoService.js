@@ -17,6 +17,5 @@ async function getLinkPagamentoPendente(inquilino_id) {
 
 module.exports = {
   getTodosPagamentos,
-  criarPagamentoPix,
   getLinkPagamentoPendente,
 };
