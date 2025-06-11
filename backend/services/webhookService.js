@@ -1,7 +1,7 @@
 const { json } = require("express");
 const db = require("../database/dbconnect");
 
-const API_BACKEND = "//https://backend-production-78eb.up.railway.app";
+const API_BACKEND = "https://backend-production-78eb.up.railway.app";
 
 async function processarEvento(event, paymentId) {
   if (!event || !paymentId) {
