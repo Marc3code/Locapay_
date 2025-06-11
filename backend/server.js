@@ -55,7 +55,7 @@ app.use("/asaas_events", webhookRoutes)
 // 💰 Pagamentos
 //buscar todos os pagamentos - funcionando
 //buscar links de pagamento - funcionando
-//atualizar status de pagamento - está sendo tratado no webhook asaas_events - testar
+//atualizar status de pagamento - testar
 
 
 

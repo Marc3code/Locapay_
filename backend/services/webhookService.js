@@ -10,6 +10,7 @@ async function processarEvento(event, paymentId) {
   }
 
   if (event === "PAYMENT_RECEIVED") {
+    console.log("evento PAYMENT_RECEIVED recebido");
     const status = "pago";
 
     try {
@@ -18,22 +19,35 @@ async function processarEvento(event, paymentId) {
         {
           method: "PUT",
           headers: {
-            "content-type": "application/json",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ status, paymentId }),
         }
       );
-      
-        if (atualizaStatus){
-          return json({message: `status do pagamento: ${paymentId} atualizado para ${status}` });
+
+      if (atualizaStatus.ok) {
+        console.log(
+          `Status do pagamento ${paymentId} atualizado para ${status}.`
+        );
+        return {
+          message: `Status do pagamento ${paymentId} atualizado para ${status}.`,
         };
+      } else {
+        console.warn(`Falha ao atualizar status: ${atualizaStatus.statusText}`);
+        return {
+          message: "Falha ao atualizar status do pagamento.",
+          statusCode: atualizaStatus.status,
+        };
+      }
     } catch (err) {
-      return json({
-        message: "erro ao atualizar status do pagamento para pago",
-      });
+      console.error("Erro ao atualizar status do pagamento:", err);
+      return {
+        message: "Erro ao atualizar status do pagamento para pago.",
+        error: err.message,
+      };
     }
-    
   } else if (event === "PAYMENT_OVERDUE") {
+    console.log("evento PAYMENT_OVERDUE recebido");
     await atualizarStatusPagamento(paymentId, "atrasado");
     //fazer endpoint lá na rota de pagamentos ao inves de tratar aqui
   } else if (event === "PAYMENT_CREATED") {
