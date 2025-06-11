@@ -1,4 +1,3 @@
-const { json } = require("express");
 const db = require("../database/dbconnect");
 
 const API_BACKEND = "https://backend-production-78eb.up.railway.app";
@@ -31,6 +30,7 @@ async function processarEvento(event, paymentId) {
           `Status do pagamento ${paymentId} atualizado para ${status}.`
         );
         return {
+          success: true,
           message: `Status do pagamento ${paymentId} atualizado para ${status}.`,
         };
       } else {
