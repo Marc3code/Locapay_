@@ -33,7 +33,7 @@ app.use("/imoveis", imovelRoutes);
 app.use("/inquilinos", inquilinoRoutes);
 app.use("/cobrancas", cobrancaRoutes);
 app.use("/pagamentos", pagamentoRoutes);
-app.use("asaas_events", webhookRoutes)
+app.use("/asaas_events", webhookRoutes)
 
 // Webhook - Eventos do Asaas refatorado - testar;
 
