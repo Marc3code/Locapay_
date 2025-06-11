@@ -1,5 +1,5 @@
 const db = require("../database/dbconnect");
-const asaasService = require('./asaasService')
+const asaasService = require("./asaasService");
 
 const getCobrancasPendentes = async () => {
   const [results] = await db.query(`
@@ -16,7 +16,7 @@ const getDataVencimentoPorId = async (inquilinoid) => {
   return result;
 }
 
-const asaasService = require("./asaasService");
+
 const criarCobrancaPix = async ({
   id_asaas,
   valor,
