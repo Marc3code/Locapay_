@@ -5,7 +5,9 @@ async function receberEvento(req, res) {
 
   try {
     const event = req.body.event;
-    const paymentId = req.body.payment?.id;
+    const paymentId = req.body.payment.id;
+
+    console.log(paymentId);
 
     await webhookService.processarEvento(event, paymentId);
   } catch (err) {

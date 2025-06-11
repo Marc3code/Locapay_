@@ -35,7 +35,7 @@ app.use("/cobrancas", cobrancaRoutes);
 app.use("/pagamentos", pagamentoRoutes);
 app.use("/asaas_events", webhookRoutes)
 
-// Webhook - Eventos do Asaas refatorado - testar;
+// Webhook - Eventos do Asaas refatorado - funcionando;
 
 
 // 📦 Imóveis
