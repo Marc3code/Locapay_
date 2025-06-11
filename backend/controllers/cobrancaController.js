@@ -46,7 +46,7 @@ async function criarCobrancaPix(req, res) {
   const { id_asaas, valor, data_vencimento, inquilino_id } = req.body;
 
   try {
-    const pagamento = await pagamentoService.criarPagamentoPix({
+    const pagamento = await cobrancaService.criarCobrancaPix({
       id_asaas,
       valor,
       data_vencimento,

@@ -1,4 +1,5 @@
 const db = require("../database/dbconnect");
+const asaasService = require('./asaasService')
 
 const getCobrancasPendentes = async () => {
   const [results] = await db.query(`
