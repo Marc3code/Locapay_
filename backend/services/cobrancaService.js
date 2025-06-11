@@ -1,11 +1,8 @@
 const db = require("../database/dbconnect");
 
-const getCobrancasAtivas = async () => {
+const getCobrancasPendentes = async () => {
   const [results] = await db.query(`
-    SELECT ii.*, i.id_asaas 
-    FROM inquilinos_imoveis ii 
-    INNER JOIN inquilinos i ON ii.inquilino_id = i.id 
-    WHERE ii.status = 'ativo'
+    select * from pagamentos where status = "pendente"
   `);
   return results;
 } 
@@ -51,7 +48,7 @@ const criarCobrancaPix = async ({
 };
 
 module.exports = {
-  getCobrancasAtivas,
+  getCobrancasPendentes,
   getDataVencimentoPorId,
   criarCobrancaPix
 };

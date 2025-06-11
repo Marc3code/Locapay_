@@ -39,19 +39,19 @@ app.use("asaas_events", webhookRoutes)
 
 
 // 📦 Imóveis
-//função de adição de imoveis refatorada - testar;
+//função de adição de imoveis refatorada - funcionando;
 
 // 👥 Inquilinos
-//Vinculação Inquilino-Imóvel refatorada - testar
-
+//Vinculação Inquilino-Imóvel refatorada - funcionando
+//busca de todas as informações de inquilinos e imoveis vinculadas - funcionando
 
 //Cobranças
 //nova classe criada para lidar com questões de cobrança e já organizada na estrutura CSR - em teste (buscar data de vencimento - ok ; falta gerar a cobrança)
 
 // 💰 Pagamentos
-//função de busca refatorada (controller, service e routes feitos) - testar;
-//função de geração de cobranças pix refatorada
-
+//função de geração de cobranças pix refatorada - testar
+//buscar todos os pagamentos - funcionando
+//buscar links de pagamento - funcionando
 
 
 // ------------------ ROTAS PUT ------------------
@@ -63,7 +63,7 @@ app.use("asaas_events", webhookRoutes)
 
 
 
-// 💳 Pagamentos / Cobranças
+
 
 
 

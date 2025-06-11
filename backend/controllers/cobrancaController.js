@@ -27,9 +27,9 @@ const getDataVencimentoPorId = async (req, res) => {
   }
 };
 
-const getCobrancasAtivas = async (req, res) => {
+const getCobrancasPendentes = async (req, res) => {
   try {
-    const response = await cobrancaService.getCobrancasAtivas();
+    const response = await cobrancaService.getCobrancasPendentes();
 
     if (!response) {
       return res
@@ -62,6 +62,6 @@ async function criarCobrancaPix(req, res) {
 
 module.exports = {
   getDataVencimentoPorId,
-  getCobrancasAtivas,
+  getCobrancasPendentes,
   criarCobrancaPix
 };
