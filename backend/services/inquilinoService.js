@@ -1,4 +1,5 @@
 const db = require("../database/dbconnect");
+asaasService = require('./asaasService');
 
 // ------------------ SERVICES GET ------------------
 
@@ -74,7 +75,7 @@ const criarInquilino = async ({ name, phone, cpfCnpj }) => {
     [name, phone, cpfCnpj]
   );
 
-  const id_asaas = await asaas.criarClienteAsaas({ name, phone, cpfCnpj });
+  const id_asaas = await asaasService.criarClienteAsaas({ name, phone, cpfCnpj });
 
   await db.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [
     id_asaas,

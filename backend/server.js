@@ -39,11 +39,9 @@ app.use("asaas_events", webhookRoutes)
 
 
 // 📦 Imóveis
-// função de busca refatorada (controller, service e routes feitos) - funcionando;
 //função de adição de imoveis refatorada - testar;
 
 // 👥 Inquilinos
-//função de busca refatorada (controller, service e routes feitos) - funcionando;
 //função de adição refatorada - testar
 //Vinculação Inquilino-Imóvel refatorada - testar
 
