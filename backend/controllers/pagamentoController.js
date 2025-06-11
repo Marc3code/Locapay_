@@ -30,7 +30,7 @@ async function buscarLinkPagamento(req, res) {
 }
 
 async function atualizarStatusPagamento(req, res) {
-  const payment_id = req.body.payment_id;
+  const payment_id = req.body.paymentId;
   const status = req.body.status;
 
   try {
