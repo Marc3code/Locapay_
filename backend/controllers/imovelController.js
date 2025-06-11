@@ -14,7 +14,9 @@ async function listarTodos(req, res) {
 // ------------------ controllers POST ------------------
 
 async function criarImovel(req, res) {
-  const { tipo, endereco, numero } = req.body;
+  const tipo = req.body.tipo;
+  const endereco = req.body.endereco;
+  const numero = req.body.numero;
   try {
     const novoImovel = await imovelService.criarImovel({
       tipo,

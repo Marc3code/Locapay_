@@ -42,7 +42,6 @@ app.use("asaas_events", webhookRoutes)
 //função de adição de imoveis refatorada - testar;
 
 // 👥 Inquilinos
-//função de adição refatorada - testar
 //Vinculação Inquilino-Imóvel refatorada - testar
 
 
