@@ -46,23 +46,16 @@ app.use("asaas_events", webhookRoutes)
 //busca de todas as informações de inquilinos e imoveis vinculadas - funcionando
 
 //Cobranças
-//nova classe criada para lidar com questões de cobrança e já organizada na estrutura CSR - em teste (buscar data de vencimento - ok ; falta gerar a cobrança)
-
-// 💰 Pagamentos
-//função de geração de cobranças pix refatorada - testar
-//buscar todos os pagamentos - funcionando
-//buscar links de pagamento - funcionando
-
-
-// ------------------ ROTAS PUT ------------------
-
+//geração de cobrança pix - funcionando
+//buscar todos os pagamentos pendentes - testar
 
 //função de atualizar data de vencimento refatorada, porém falta ajustar a lógica, no momento está atualizando para a data informada e deve atualizar para 1 mês adiante
 
-// ------------------ ROTAS POST ------------------
 
-
-
+// 💰 Pagamentos
+//buscar todos os pagamentos - funcionando
+//buscar links de pagamento - funcionando
+//atualizar status de pagamento - está sendo tratado no webhook asaas_events - testar
 
 
 

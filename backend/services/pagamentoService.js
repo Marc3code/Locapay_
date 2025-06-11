@@ -13,9 +13,22 @@ async function getLinkPagamentoPendente(inquilino_id) {
   return results.length > 0 ? results[0].link_pagamento : null;
 }
 
+async function atualizarStatusPagamento(paymentId, status) {
+  const query = `UPDATE pagamentos SET status = ? WHERE asaas_payment_id = ?`;
 
+  try {
+    await db.query(query, [status, paymentId]);
+    console.log(
+      `Status do pagamento (${paymentId}) atualizado para '${status}'`
+    );
+  } catch (err) {
+    console.error("Erro ao atualizar status do pagamento:", err);
+    throw err;
+  }
+}
 
 module.exports = {
   getTodosPagamentos,
   getLinkPagamentoPendente,
+  atualizarStatusPagamento
 };
