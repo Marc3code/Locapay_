@@ -3,7 +3,7 @@ const asaasService = require("./asaasService");
 
 const getCobrancasPendentes = async () => {
   const [results] = await db.query(`
-   SELECT ii.*, i.nome AS nome_inquilino, i.telefone AS telefone_inquilino FROM inquilinos_imoveis ii JOIN inquilinos i ON ii.inquilino_id = i.id;
+   SELECT ii.*, i.nome AS nome_inquilino, i.telefone AS telefone_inquilino, i.id_asaas FROM inquilinos_imoveis ii JOIN inquilinos i ON ii.inquilino_id = i.id;
   `);
   return results;
 };

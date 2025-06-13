@@ -33,7 +33,7 @@ async function atualizarDataVencimento(id, novaData) {
 
 async function gerarCobranca(dadosPagamento) {
   try {
-    const response = await fetch(`${API_BASE}/pagamentos`, {
+    const response = await fetch(`${API_BASE}/cobrancas`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(dadosPagamento)
