@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const webhookRoutes = require("./routes/webhook");
+const notificationRoutes = require('./routes/notificationRoutes')
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+app.use('/notifications', notificationRoutes);
 app.use("/", webhookRoutes);
 
 const PORT = process.env.PORT || 3000;

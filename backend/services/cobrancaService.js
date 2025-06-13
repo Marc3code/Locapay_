@@ -3,10 +3,10 @@ const asaasService = require("./asaasService");
 
 const getCobrancasPendentes = async () => {
   const [results] = await db.query(`
-    select * from pagamentos where status = "pendente"
+   SELECT ii.*, i.nome AS nome_inquilino, i.telefone AS telefone_inquilino FROM inquilinos_imoveis ii JOIN inquilinos i ON ii.inquilino_id = i.id;
   `);
   return results;
-} 
+};
 
 const getDataVencimentoPorId = async (inquilinoid) => {
   const [result] = await db.query(
@@ -14,8 +14,7 @@ const getDataVencimentoPorId = async (inquilinoid) => {
     [inquilinoid]
   );
   return result;
-}
-
+};
 
 const criarCobrancaPix = async ({
   id_asaas,
@@ -51,5 +50,5 @@ const criarCobrancaPix = async ({
 module.exports = {
   getCobrancasPendentes,
   getDataVencimentoPorId,
-  criarCobrancaPix
+  criarCobrancaPix,
 };
