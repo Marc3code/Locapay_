@@ -1,7 +1,5 @@
 const express = require("express");
-const db = require("./database/dbconnect.js");
 const cors = require("cors");
-const asaas = require("./services/asaasService.js");
 const dotenv = require("dotenv");
 const imovelRoutes = require('./routes/imovelRoutes.js');
 const inquilinoRoutes = require('./routes/inquilinoRoutes.js');
@@ -55,7 +53,7 @@ app.use("/asaas_events", webhookRoutes)
 // 💰 Pagamentos
 //buscar todos os pagamentos - funcionando
 //buscar links de pagamento - funcionando
-//atualizar status de pagamento - testar
+//atualizar status de pagamento - funcionando
 
 
 
