@@ -1,7 +1,6 @@
 const formatDate = require("../utils/formatDate");
 const formatarTelefone = require("../utils/formatarTelefone");
 const gerarProximaData = require("../utils/gerarProximaDataVencimento");
-
 const cobrancaService = require("./services/cobrancaService");
 const notificationService = require("./services/notificationService");
 
@@ -10,48 +9,71 @@ async function gerarCobrancasDoMes() {
   console.log("🗓️ Gerando cobranças do mês - Data atual:", hoje);
 
   try {
+    // 1. Busca TODOS os inquilinos com dados completos (incluindo info de cobrança)
+    console.log("⏳ Buscando inquilinos...");
     const inquilinos = await cobrancaService.buscarCobrancas();
-    
-    if (!cobrancas?.length) {
-      console.log("⚠️ Nenhuma cobrança encontrada.");
+    console.log("🔍 Busca de inquilinos concluída"); 
+
+    if (inquilinos.length === 0) {
+      console.log("⚠️ Nenhum inquilino com cobrança pendente encontrado.");
       return;
     }
 
-    console.log(`📦 Total de cobranças encontradas: ${cobrancas.length}`);
+    console.log(`📦 Total de inquilinos a processar: ${inquilinos.length}`);
 
-    for (const cobranca of inquilinos) {
+    // 2. Para CADA inquilino, gera a cobrança
+    for (const inquilino of inquilinos) {
       console.log("==============================================");
-      console.log(`🔄 Processando cobrança do inquilino ID: ${cobranca.nome_inquilino}`);
+      console.log(
+        `🔄 Processando inquilino: ${inquilino.nome} (ID: ${inquilino.id})`
+      );
 
       try {
-        const dataVencimento = formatDate(cobranca.data_vencimento);
-    
+        // 3. Prepara dados da cobrança
+        const dataVencimento = formatDate(inquilino.data_vencimento);
+        const telefoneFormatado = formatarTelefone(inquilino.telefone);
 
-        const telefone = formatarTelefone(cobranca.telefone_inquilino);
-
-        const cobranca = await cobrancaService.gerarCobranca({
-          id_asaas: cobranca.id_asaas,
-          inquilino_id: cobranca.inquilino_id,
-          valor: cobranca.valor_aluguel,
+        // 4. Gera a cobrança no sistema de pagamentos
+        const cobrancaGerada = await cobrancaService.gerarCobranca({
+          id_asaas: inquilino.id_asaas,
+          inquilino_id: inquilino.id,
+          valor: inquilino.valor_aluguel,
           data_vencimento: dataVencimento,
         });
 
+        // 5. Envia notificação
         await notificationService.enviarNotificacaoCobrancaDoMes(
-          { ...cobranca, dataVencimento },
-          telefone
+          {
+            nome: inquilino.nome,
+            valor: inquilino.valor_aluguel,
+            data_vencimento: dataVencimento,
+          },
+          telefoneFormatado
         );
 
-        const novaData = gerarProximaData(cobranca.data_vencimento);
-        await cobrancaService.atualizarDataVencimento(cobranca.inquilino_id, novaData);
-        console.log("✅ Vencimento atualizado para:", novaData);
+        // 6. Atualiza próxima data de vencimento
+        const novaDataVencimento = gerarProximaData(inquilino.data_vencimento);
+        await cobrancaService.atualizarDataVencimento(
+          inquilino.id,
+          novaDataVencimento
+        );
+
+        console.log(
+          `✅ Cobrança gerada e vencimento atualizado para: ${novaDataVencimento}`
+        );
       } catch (error) {
-        console.error(`❌ Erro ao processar cobrança do inquilino ${cobranca.inquilino_nome}:`, error.message);
-        continue;
+        console.error(
+          `❌ Falha no inquilino ${inquilino.nome}:`,
+          error.message
+        );
+        continue; // Pula para o próximo inquilino
       }
     }
   } catch (error) {
-    console.error("🔥 Erro geral na tarefa:", error.message);
+    console.error("🔥 Erro geral no processamento:", error.message);
     throw error;
+  } finally {
+    console.log("🏁 Processamento concluído");
   }
 }
 

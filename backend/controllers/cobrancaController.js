@@ -1,6 +1,5 @@
 const cobrancaService = require("../services/cobrancaService");
 
-
 // ------------------ controllers GET ------------------
 const getDataVencimentoPorId = async (req, res) => {
   const inquilinoid = req.params.inquilinoid;
@@ -36,6 +35,8 @@ const getCobrancasPendentes = async (req, res) => {
         .status(404)
         .json({ erro: "Data de vencimento não encontrada." });
     }
+
+    return res.status(200).json(response);
   } catch (err) {
     console.error("Erro ao buscar cobranças ativas:", err);
     res.status(500).json({ erro: "Erro ao buscar cobranças ativas." });
@@ -63,5 +64,5 @@ async function criarCobrancaPix(req, res) {
 module.exports = {
   getDataVencimentoPorId,
   getCobrancasPendentes,
-  criarCobrancaPix
+  criarCobrancaPix,
 };
