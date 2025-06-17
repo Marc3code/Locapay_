@@ -9,9 +9,11 @@ const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
     })
     .then((message) => {
       console.log("✅ Notificação de cobrança enviada:", message.sid);
+      return { ok: true, sid: message.sid }; // <-- retorna ok e o id da mensagem se der certo
     })
     .catch((err) => {
       console.error("❌ Erro ao enviar notificação:", err.message);
+      return { ok: false, error: err.message }; // <-- retorna erro
     });
 };
 
