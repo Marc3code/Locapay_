@@ -56,6 +56,7 @@ const atualizarDataVencimento = async (novaData, id) => {
 
   try {
     const result = await db.query(query, values);
+    console.log("testando deploy")
 
     return result.json();
   } catch (err) {
