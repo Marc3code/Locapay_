@@ -7,11 +7,14 @@ const enviarNotificacaoCobrancadoMesService = async (data, telefone) => {
       telefone
     );
     if (!envio.ok) {
-      return `Erro ao enviar notificação de cobrança do mês: ${envio.error}`;
-    };
-    return { ok: true, sid: envio.sid }; // retorna ok e o sid da mensagem 
+      return {
+        ok: false,
+        error: `Erro ao enviar notificação de cobrança do mês: ${envio.error}`,
+      };
+    }
+    return { ok: true, sid: envio.sid }; // retorna ok e o sid da mensagem
   } catch (err) {
-    return { ok: false, error: err };
+    return { ok: false, error: err.message || err.toString() };
   }
 };
 
