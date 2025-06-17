@@ -13,7 +13,7 @@ const enviarNotificacaoCobrancadoMesController = async (req, res) => {
 
     if (!envio.ok) {
       return res.status(400).json({
-        message: envio.error
+        message: envio
       });
     }
 
