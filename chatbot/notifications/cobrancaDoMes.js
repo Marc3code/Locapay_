@@ -21,5 +21,4 @@ const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
     });
 };
 
-enviarNotificacaoCobrancaDoMes("2025-06-06", "5584996132907")
 module.exports = { enviarNotificacaoCobrancaDoMes };
