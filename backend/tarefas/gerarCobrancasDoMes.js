@@ -66,7 +66,7 @@ async function gerarCobrancasDoMes() {
           `❌ Falha no inquilino ${inquilino.nome}:`,
           error.message
         );
-        continue; // Pula para o próximo inquilino
+        continue; 
       }
     }
   } catch (error) {
@@ -75,7 +75,7 @@ async function gerarCobrancasDoMes() {
   } finally {
     console.log("🏁 Processamento concluído");
   }
-}
+};
 
 gerarCobrancasDoMes();
 
