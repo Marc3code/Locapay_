@@ -12,7 +12,7 @@ async function gerarCobrancasDoMes() {
     // 1. Busca TODOS os inquilinos com dados completos (incluindo info de cobrança)
     console.log("⏳ Buscando inquilinos...");
     const inquilinos = await cobrancaService.buscarCobrancas();
-    console.log("🔍 Busca de inquilinos concluída"); 
+    console.log("🔍 Busca de inquilinos concluída");
 
     if (inquilinos.length === 0) {
       console.log("⚠️ Nenhum inquilino com cobrança pendente encontrado.");
@@ -31,7 +31,9 @@ async function gerarCobrancasDoMes() {
       try {
         // 3. Prepara dados da cobrança
         const dataVencimento = formatDate(inquilino.data_vencimento);
-        const telefoneFormatado = formatarTelefone(inquilino.telefone_inquilino);
+        const telefoneFormatado = formatarTelefone(
+          inquilino.telefone_inquilino
+        );
 
         // 4. Gera a cobrança no sistema de pagamentos
         const cobrancaGerada = await cobrancaService.gerarCobranca({
@@ -43,11 +45,7 @@ async function gerarCobrancasDoMes() {
 
         // 5. Envia notificação
         await notificationService.enviarNotificacaoCobrancaDoMes(
-          {
-            nome: inquilino.nome,
-            valor: inquilino.valor_aluguel,
-            data_vencimento: dataVencimento,
-          },
+          dataVencimento,
           telefoneFormatado
         );
 
@@ -66,7 +64,7 @@ async function gerarCobrancasDoMes() {
           `❌ Falha no inquilino ${inquilino.nome}:`,
           error.message
         );
-        continue; 
+        continue;
       }
     }
   } catch (error) {
@@ -75,7 +73,7 @@ async function gerarCobrancasDoMes() {
   } finally {
     console.log("🏁 Processamento concluído");
   }
-};
+}
 
 gerarCobrancasDoMes();
 

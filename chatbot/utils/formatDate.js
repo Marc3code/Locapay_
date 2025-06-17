@@ -1,4 +1,4 @@
-function formatarData(date) {
+exports.formatarData = (date) => {
   const data = new Date(date);
   const dia = String(data.getDate()).padStart(2, "0");
   const mes = String(data.getMonth() + 1).padStart(2, "0");
@@ -6,4 +6,4 @@ function formatarData(date) {
   return `${dia}/${mes}/${ano}`;
 }
 
-module.exports = { formatarData };
+
