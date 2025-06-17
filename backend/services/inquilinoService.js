@@ -55,7 +55,7 @@ const atualizarDataVencimento = async (novaData, id) => {
   const values = [novaData, id];
 
   try {
-    const result = await db.query(query, values);
+    const [result] = await db.query(query, values);
 
     if (result.affectedRows === 0) {
       return "nenhum inquilino com essa data de vencimento";
