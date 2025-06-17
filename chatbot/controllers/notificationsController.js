@@ -10,16 +10,13 @@ const enviarNotificacaoCobrancadoMesController = async (req, res) => {
         data,
         telefone
       );
+
     if (!envio.ok) {
-      if (!envio.ok) {
-        return res
-          .status(400)
-          .json({
-            message:
-              envio.error || "Erro ao enviar notificação de cobrança do mês",
-          });
-      }
+      return res.status(400).json({
+        message: envio.error
+      });
     }
+
     return res.status(200).json({ message: "Notificação enviada com sucesso" });
   } catch (err) {
     res
