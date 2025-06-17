@@ -8,6 +8,6 @@ router.get("/", (req, res) => {
 });
 
 // Rota de webhook
-router.post("/cobrancaDoMes", notificationController.enviarNotificacaoCobrancadoMesController);
+router.post("notifications/cobrancaDoMes", notificationController.enviarNotificacaoCobrancadoMesController);
 
 module.exports = router;
