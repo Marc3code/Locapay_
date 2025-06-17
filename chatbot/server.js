@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use('/notifications', notificationRoutes);
+app.use("/notifications", notificationRoutes);
 app.use("/", webhookRoutes);
 
 const PORT = process.env.PORT || 3000;
