@@ -15,12 +15,12 @@ async function buscarCobrancas() {
   }
 }
 
-async function atualizarDataVencimento(id, novaData) {
+async function atualizarDataVencimento( novaData) {
   try {
     const response = await fetch(`${API_BASE}/inquilinos/updt_data_vencimento/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data_vencimento: novaData, id })
+      body: JSON.stringify({ data_vencimento: novaData})
     });
     
     if (!response.ok) throw new Error(`Erro ao atualizar vencimento: ${response.status}`);

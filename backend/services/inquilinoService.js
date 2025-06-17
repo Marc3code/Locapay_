@@ -1,5 +1,5 @@
 const db = require("../database/dbconnect");
-asaasService = require('./asaasService');
+asaasService = require("./asaasService");
 
 // ------------------ SERVICES GET ------------------
 
@@ -50,21 +50,21 @@ async function getInquilinosComImovel() {
 }
 
 // ------------------ SERVICES PUT ------------------
-const atualizarDataVencimento = async ( novaData, id ) => {
+const atualizarDataVencimento = async (novaData, id) => {
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE inquilino_id = ?`;
   const values = [novaData, id];
 
   try {
-    const [result] = await db.query(query, values);
+    const result = await db.query(query, values);
 
     if (result.affectedRows === 0) {
-      return "nenhum inquilino com essa data de vencimento"
+      return "nenhum inquilino com essa data de vencimento";
     }
 
     return result.json();
   } catch (err) {
     console.error("Erro ao atualizar data de vencimento:", err);
-    return res.status(500).json({ erro: "Erro interno no servidor." });
+    return { erro: "Erro interno no servidor." };
   }
 };
 
@@ -75,7 +75,11 @@ const criarInquilino = async ({ name, phone, cpfCnpj }) => {
     [name, phone, cpfCnpj]
   );
 
-  const id_asaas = await asaasService.criarClienteAsaas({ name, phone, cpfCnpj });
+  const id_asaas = await asaasService.criarClienteAsaas({
+    name,
+    phone,
+    cpfCnpj,
+  });
 
   await db.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [
     id_asaas,
