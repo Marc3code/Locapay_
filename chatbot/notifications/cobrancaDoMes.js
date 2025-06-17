@@ -17,4 +17,4 @@ const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
     });
 };
 
-module.exports = enviarNotificacaoCobrancaDoMes;
+module.exports = { enviarNotificacaoCobrancaDoMes };
