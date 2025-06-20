@@ -25,7 +25,7 @@ async function gerarCobrancasDoMes() {
     for (const inquilino of inquilinos) {
       console.log("==============================================");
       console.log(
-        `🔄 Processando inquilino: ${inquilino.nome} (ID: ${inquilino.id})`
+        `🔄 Processando inquilino: ${inquilino.nome_inquilino} (ID: ${inquilino.id})`
       );
 
       try {
@@ -52,7 +52,7 @@ async function gerarCobrancasDoMes() {
         // 6. Atualiza próxima data de vencimento
         const novaDataVencimento = gerarProximaData(inquilino.data_vencimento);
         await cobrancaService.atualizarDataVencimento(
-          inquilino.id,
+          inquilino.inquilino_id,
           novaDataVencimento
         );
 
