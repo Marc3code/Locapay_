@@ -50,7 +50,7 @@ async function listarComImovel(req, res) {
 // ------------------ controllers PUT ------------------
 
 const atualizarDataVencimento = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const data_vencimento = req.body.data_vencimento;
 
   try {

@@ -50,7 +50,7 @@ async function getInquilinosComImovel() {
 }
 
 // ------------------ SERVICES PUT ------------------
-const atualizarDataVencimento = async (id, novaData) => {
+const atualizarDataVencimento = async (id,   novaData) => {
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE inquilino_id = ?`;
   const values = [novaData, id];
 
