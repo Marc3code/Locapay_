@@ -4,6 +4,7 @@ const gerarProximaData = require("../utils/gerarProximaDataVencimento");
 const cobrancaService = require("./services/cobrancaService");
 const notificationService = require("./services/notificationService");
 
+
 async function gerarCobrancasDoMes() {
   const hoje = formatDate(new Date());
   console.log("🗓️ Gerando cobranças do mês - Data atual:", hoje);
@@ -25,7 +26,7 @@ async function gerarCobrancasDoMes() {
     for (const inquilino of inquilinos) {
       console.log("==============================================");
       console.log(
-        `🔄 Processando inquilino: ${inquilino.nome_inquilino} (ID: ${inquilino.id})`
+        `🔄 Processando inquilino: ${inquilino.nome_inquilino} (ID: ${inquilino.inquilino_id})`
       );
 
       try {

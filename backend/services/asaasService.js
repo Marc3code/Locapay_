@@ -1,5 +1,5 @@
 const axios = require("axios");
-require("dotenv").config();
+require('dotenv').config();
 
 const BASE_URL = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
 // Para produção: 'https://www.asaas.com/api/v3'
@@ -29,13 +29,18 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
   } catch (err) {
     console.error(
       "Erro ao criar pagamento:",
-      err.response?.data || err.message
+      err?.response?.data || err.message,
+      "\nDetalhes completos:",
+      err
     );
-    throw new Error(err.response?.data?.message || "Erro ao criar pagamento");
+    throw new Error(err?.response?.data?.message || "Erro ao criar pagamento");
   }
 };
 
+gerarPagamentoPix()
+
 const criarClienteAsaas = async (clienteData) => {
+    console.log(process.env.ASAAS_API_KEY);
   try {
     const response = await axios.post(`${BASE_URL}/customers`, clienteData, {
       headers: {
@@ -49,6 +54,8 @@ const criarClienteAsaas = async (clienteData) => {
     throw new Error(err.response?.data?.message || "Erro ao criar cliente");
   }
 };
+
+criarClienteAsaas()
 
 module.exports = {
   gerarPagamentoPix,
