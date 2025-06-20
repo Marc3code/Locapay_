@@ -56,7 +56,7 @@ app.use("/asaas_events", webhookRoutes)
 //atualizar status de pagamento - funcionando
 
 
-
+require("./utils/agendadores/index.js");
 
 
 // Inicializa o servidor
