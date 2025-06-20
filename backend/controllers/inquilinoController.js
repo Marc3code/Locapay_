@@ -50,13 +50,13 @@ async function listarComImovel(req, res) {
 // ------------------ controllers PUT ------------------
 
 const atualizarDataVencimento = async (req, res) => {
-  const  id  = req.params.id;
+  const id = req.params.id;
   const data_vencimento = req.body.data_vencimento;
 
   try {
     const novaData = await inquilinoService.atualizarDataVencimento(
-      data_vencimento,
-      id
+      id,
+      data_vencimento
     );
 
     res.json(novaData);
