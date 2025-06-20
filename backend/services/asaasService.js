@@ -6,7 +6,7 @@ const BASE_URL = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
 
 //Função para gerar fatura Pix
 const gerarPagamentoPix = async (customerId, value, dueDate) => {
-  console.log(process.env.ASAAS_API_KEY);
+ 
   try {
     const response = await axios.post(
       `${BASE_URL}/payments`,
@@ -37,10 +37,9 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
   }
 };
 
-gerarPagamentoPix()
 
 const criarClienteAsaas = async (clienteData) => {
-    console.log(process.env.ASAAS_API_KEY);
+    
   try {
     const response = await axios.post(`${BASE_URL}/customers`, clienteData, {
       headers: {
@@ -55,7 +54,7 @@ const criarClienteAsaas = async (clienteData) => {
   }
 };
 
-criarClienteAsaas()
+
 
 module.exports = {
   gerarPagamentoPix,
