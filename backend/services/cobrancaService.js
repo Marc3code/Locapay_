@@ -47,6 +47,14 @@ const criarCobrancaPix = async ({
   return pagamento;
 };
 
+const getPendenciasInquilino = async (id) => {
+  const [result] = await db.query(
+    "SELECT link_pagamento, due_date FROM pagamentos WHERE inquilino_id = ? AND (status = 'pendente' OR status = 'atrasado')",
+    [id]
+  );
+  return result;
+};
+
 module.exports = {
   getCobrancasPendentes,
   getDataVencimentoPorId,

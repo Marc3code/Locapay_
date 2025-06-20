@@ -43,6 +43,22 @@ const getCobrancasPendentes = async (req, res) => {
   }
 };
 
+const getPendenciasInquilino = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await cobrancaService.getPendenciasInquilino(id);
+
+    if (!response) {
+      return res.status(404).json({ erro: "Pendências não encontradas." });
+    }
+
+    return res.status(200).json(response);
+  } catch (err) {
+    console.error("Erro ao buscar pendencias:", err);
+    res.status(500).json({ erro: "Erro ao buscar pendencias." });
+  }
+};
+
 async function criarCobrancaPix(req, res) {
   const { id_asaas, valor, data_vencimento, inquilino_id } = req.body;
 
@@ -65,4 +81,5 @@ module.exports = {
   getDataVencimentoPorId,
   getCobrancasPendentes,
   criarCobrancaPix,
+  getPendenciasInquilino,
 };
