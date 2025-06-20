@@ -1,4 +1,4 @@
-const API_BASE = "https://backend-production-78eb.up.railway.app";
+const API_BASE = "https://backend-isolado-production.up.railway.app";
 
 const getInquilinoPorTelefone = async (numero) => {
   try {
