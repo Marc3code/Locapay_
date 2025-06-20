@@ -1,4 +1,4 @@
-const API_BASE = "https://chatbot-production-d71e.up.railway.app";
+const API_BASE = "https://chatbot-isolado-production.up.railway.app";
 
 async function enviarNotificacaoCobrancaDoMes(data, telefone) {
   try {

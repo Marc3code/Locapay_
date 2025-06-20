@@ -1,5 +1,5 @@
 
-const API_BASE = "https://backend-production-78eb.up.railway.app";
+const API_BASE = "https://backend-isolado-production.up.railway.app";
 
 async function buscarCobrancas() {
   try {
