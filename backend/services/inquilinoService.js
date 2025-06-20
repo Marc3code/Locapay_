@@ -57,7 +57,8 @@ const atualizarDataVencimento = async (id,   novaData) => {
   try {
     const [result] = await db.query(query, values);
 
-    return [result].json();
+    return result; 
+
   } catch (err) {
     console.error("Erro ao atualizar data de vencimento:", err);
     return { erro: "Erro interno no servidor." };

@@ -54,12 +54,22 @@ const atualizarDataVencimento = async (req, res) => {
   const data_vencimento = req.body.data_vencimento;
 
   try {
-    const novaData = await inquilinoService.atualizarDataVencimento(
+    const resultado = await inquilinoService.atualizarDataVencimento(
       id,
       data_vencimento
     );
 
-    res.json(novaData);
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({
+        mensagem: "Inquilino não encontrado ou data já estava atualizada.",
+        data_vencimento: data_vencimento,
+      });
+    }
+
+    res.json({
+      mensagem: "Data de vencimento atualizada com sucesso.",
+      data_vencimento: data_vencimento,
+    });
   } catch (err) {
     console.error("Erro ao atualizar data de vencimento:", err);
     res.status(500).json({ erro: "Erro ao atualizar data de vencimento" });
