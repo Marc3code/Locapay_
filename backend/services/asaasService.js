@@ -6,7 +6,7 @@ const BASE_URL = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
 
 //Função para gerar fatura Pix
 const gerarPagamentoPix = async (customerId, value, dueDate) => {
-  console.log(process.env.ASAAS_API_KEY)
+  console.log(process.env.ASAAS_API_KEY);
   try {
     const response = await axios.post(
       `${BASE_URL}/payments`,
@@ -19,12 +19,11 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token:
-            "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6Ojg2ZWY4NTg2LTE3Y2YtNDJjOC1iNGExLTU4ZTFjZjIwY2JlMTo6JGFhY2hfZGZkYTYyOGQtNjQ2OS00NDA4LTg5YjAtZDlkMWUyY2IxZmNm",
+          access_token: process.env.ASAAS_API_KEY,
         },
       }
     );
-// tentando testar a fuuncao de gerar as cobrancas funcionar, mas qando testo rodando ela localmente da problema com a variavel de ambiiente. pelo postman a reqisicao funciona
+    // tentando testar a fuuncao de gerar as cobrancas funcionar, mas qando testo rodando ela localmente da problema com a variavel de ambiiente. pelo postman a reqisicao funciona
     console.log("Cobrança criada com sucesso!");
     return response.data;
   } catch (err) {
