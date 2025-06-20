@@ -3,5 +3,5 @@ const lembrete3DiasAntes = () => {
 }
 
 exports.module = {
-    lembrete3DiasAntes;
+    lembrete3DiasAntes
 }
