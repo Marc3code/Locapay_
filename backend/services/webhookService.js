@@ -7,13 +7,12 @@ async function processarEvento(event, paymentId) {
     console.warn("Evento ou ID do pagamento ausente.");
     return;
   }
-  console.log("paymentId fora do if", paymentId);
+
   if (event === "PAYMENT_RECEIVED") {
     console.log("evento PAYMENT_RECEIVED recebido");
     const status = "pago";
-    console.log("paymentId dentro do if, fora do try", paymentId);
+
     try {
-      console.log("paymentId dentro do if, dentro do try", paymentId);
       const atualizaStatus = await fetch(
         `${API_BACKEND}/pagamentos/updt_statusPagamento`,
         {

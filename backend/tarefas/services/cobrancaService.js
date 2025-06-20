@@ -15,7 +15,7 @@ async function buscarCobrancas() {
   }
 }
 
-async function atualizarDataVencimento( novaData) {
+async function atualizarDataVencimento( novaData, id) {
   try {
     const response = await fetch(`${API_BASE}/inquilinos/updt_data_vencimento/${id}`, {
       method: 'PUT',
