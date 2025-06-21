@@ -23,7 +23,6 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
         },
       }
     );
-    // tentando testar a fuuncao de gerar as cobrancas funcionar, mas qando testo rodando ela localmente da problema com a variavel de ambiiente. pelo postman a reqisicao funciona
     console.log("Cobrança criada com sucesso!");
     return response.data;
   } catch (err) {
