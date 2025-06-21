@@ -6,7 +6,7 @@ function agendarTarefa(expressaoCron, tarefa) {
     return;
   }
 
-  cron.schedule(expressaoCron, tarefa)
+  cron.schedule(expressaoCron, tarefa);
 }
 
 module.exports = agendarTarefa;
