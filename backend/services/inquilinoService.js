@@ -51,8 +51,9 @@ async function getInquilinosComImovel() {
 
 // ------------------ SERVICES PUT ------------------
 const atualizarDataVencimento = async (id, novaData) => {
+  console.log("data que chega no service: ", novaData)
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE inquilino_id = ?`;
-  const values = [id, novaData];
+  const values = [novaData, id];
 
   try {
     const [result] = await db.query(query, values);
