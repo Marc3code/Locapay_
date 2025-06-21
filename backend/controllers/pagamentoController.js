@@ -30,29 +30,46 @@ async function buscarLinkPagamento(req, res) {
 }
 
 async function atualizarStatusPagamento(req, res) {
-  const payment_id = req.body.paymentId;
+  const paymentId = req.body.paymentId; // Corrigido para camelCase
   const status = req.body.status;
 
+  if (!paymentId || !status) {
+    return res.status(400).json({
+      message: "Dados incompletos. Forneça paymentId e status.",
+    });
+  }
+
   try {
-    const atualizar = await pagamentoService.atualizarStatusPagamento(
-      payment_id,
+    const result = await pagamentoService.atualizarStatusPagamento(
+      paymentId,
       status
     );
-    if (atualizar) {
-      res.json({ success: true });
-    }
-  } catch (err) {
-    res
-      .status(404)
-      .json({
-        message: "não foi possível atualizar status do pagamento:",
-        payment_id,
+
+    if (result && result.success) {
+      return res.json({
+        success: true,
+        message: `Status atualizado para '${status}'`,
+        paymentId,
       });
+    }
+
+    return res.status(404).json({
+      success: false,
+      message: "Pagamento não encontrado",
+      paymentId,
+    });
+  } catch (err) {
+    console.error("Erro no controlador:", err);
+    return res.status(500).json({
+      message: "Erro interno ao atualizar status",
+      error: err.message,
+      paymentId,
+    });
   }
 }
 
 module.exports = {
   listarTodos,
   buscarLinkPagamento,
-  atualizarStatusPagamento
+  atualizarStatusPagamento,
 };

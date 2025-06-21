@@ -17,10 +17,17 @@ async function atualizarStatusPagamento(paymentId, status) {
   const query = `UPDATE pagamentos SET status = ? WHERE asaas_payment_id = ?`;
 
   try {
-    await db.query(query, [status, paymentId]);
+    const [result] = await db.query(query, [status, paymentId]);
+
+    if (result.affectedRows === 0) {
+      console.warn(`Pagamento não encontrado: ${paymentId}`);
+      return { success: false, message: "Pagamento não encontrado" };
+    }
+
     console.log(
       `Status do pagamento (${paymentId}) atualizado para '${status}'`
     );
+    return { success: true, affectedRows: result.affectedRows };
   } catch (err) {
     console.error("Erro ao atualizar status do pagamento:", err);
     throw err;
@@ -30,5 +37,5 @@ async function atualizarStatusPagamento(paymentId, status) {
 module.exports = {
   getTodosPagamentos,
   getLinkPagamentoPendente,
-  atualizarStatusPagamento
+  atualizarStatusPagamento,
 };
