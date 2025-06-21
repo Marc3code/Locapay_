@@ -1,7 +1,7 @@
 const dayjs = require("dayjs");
 
 function formatDate(date) {
-  return dayjs(date).format("YYYY-MM-DD");
+  return dayjs(date).utc().format("YYYY-MM-DD");
 }
 
 module.exports = formatDate;
