@@ -59,4 +59,5 @@ module.exports = {
   getCobrancasPendentes,
   getDataVencimentoPorId,
   criarCobrancaPix,
+  getPendenciasInquilino
 };
