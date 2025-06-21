@@ -43,7 +43,7 @@ async function gerarCobrancasDoMes() {
           data_vencimento: dataVencimento,
         });
 
-        // 5. Envia notificação
+        // 5. Envia notificação / remover daqui e colocar no webhook do asaas
         await notificationService.enviarNotificacaoCobrancaDoMes(
           dataVencimento,
           telefoneFormatado
@@ -76,7 +76,6 @@ async function gerarCobrancasDoMes() {
     console.log("🏁 Processamento concluído");
   }
 }
-
 
 
 module.exports = gerarCobrancasDoMes;
