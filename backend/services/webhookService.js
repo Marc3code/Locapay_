@@ -44,7 +44,7 @@ async function atualizarStatusPagamento(status, paymentId) {
     );
 
     if (response.ok) {
-      console.log(`Status do pagamento ${paymentId} atualizado para ${status}.`);
+      console.log(`Status do pagamento ${paymentId} atualizado para ${status}.`); // remover esse log depois, ta feito deploy sem esse comentario
       return {
         success: true,
         message: `Status atualizado para ${status}`
