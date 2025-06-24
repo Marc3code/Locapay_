@@ -8,9 +8,15 @@ router.get("/", (req, res) => {
 });
 
 // Rota para notificação de geração de cobrança do mes
-router.post("/cobranca_do_mes", notificationController.enviarNotificacaoCobrancadoMesController);
+router.post(
+  "/cobranca_do_mes",
+  notificationController.enviarNotificacaoCobrancadoMesController
+);
 
 //rota para notificação de pagamento atrasado
-
+router.post(
+  "/pagamento_atrasado",
+  notificationController.enviarNotificacaoPagamentoAtrasadoController
+);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const notificacoes = require("../notifications/index");
 
-const enviarNotificacaoCobrancadoMesService = async (data, telefone) => {
+async function enviarNotificacaoCobrancadoMesService (data, telefone)  {
   try {
     const envio = await notificacoes.enviarNotificacaoCobrancaDoMes(
       data,
@@ -18,7 +18,7 @@ const enviarNotificacaoCobrancadoMesService = async (data, telefone) => {
   }
 };
 
-const enviarNotificacaoPagamentoAtrasado = async (data, telefone) => {
+async function enviarNotificacaoPagamentoAtrasado (data, telefone) {
   try {
     const envio = await notificacoes.enviarNotificacaoPagamentoAtrasado(
       data,

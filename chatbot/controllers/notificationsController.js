@@ -1,6 +1,6 @@
 const { notificationService } = require("../services/notificationsService");
 
-const enviarNotificacaoCobrancadoMesController = async (req, res) => {
+async function enviarNotificacaoCobrancadoMesController (req, res) {
   try {
     const telefone = req.body.telefone;
     const data = req.body.data;
@@ -23,12 +23,12 @@ const enviarNotificacaoCobrancadoMesController = async (req, res) => {
   }
 };
 
-const enviarNotificacaoPagamentoAtrasadoController = async (req, res) => {
+async function enviarNotificacaoPagamentoAtrasadoController (req, res) {
   try {
     const telefone = req.body.telefone;
     const data = req.body.data;
 
-    const envio = await notificationService.enviarNotificacaoPagamentoAtrasado(
+    const envio = await notificationService(
       data,
       telefone
     );
