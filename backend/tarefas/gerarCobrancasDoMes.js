@@ -1,5 +1,4 @@
 const formatDate = require("../utils/formatDate");
-const formatarTelefone = require("../utils/formatarTelefone");
 const gerarProximaData = require("../utils/gerarProximaDataVencimento");
 const cobrancaService = require("./services/cobrancaService");
 
@@ -68,6 +67,8 @@ async function gerarCobrancasDoMes() {
     console.log("🏁 Processamento concluído");
   }
 }
+
+gerarCobrancasDoMes()
 
 
 module.exports = gerarCobrancasDoMes;
