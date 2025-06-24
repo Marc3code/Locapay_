@@ -20,8 +20,10 @@ async function processarEvento(event, payment) {
   // Tratamento completo para pagamentos atrasados
   else if (event === "PAYMENT_OVERDUE") {
     console.log("evento PAYMENT_OVERDUE recebido");
-    return await atualizarStatusPagamento("atrasado", payment.id);
-    //enviar notificacao para o inquilino
+    const atualiza =  await atualizarStatusPagamento("atrasado", payment.id);
+    console.log(atualiza);
+    notificationService.enviarNotificacaoPagamentoAtrasado(payment.dueDate, telefoneInquilino);
+    
   } else if (event === "PAYMENT_CREATED") {
     console.log("Evento PAYMENT_CREATED recebido.");
 
