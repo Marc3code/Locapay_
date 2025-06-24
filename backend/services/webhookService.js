@@ -4,7 +4,7 @@ const API_BACKEND = "https://backend-isolado-production.up.railway.app";
 
 async function processarEvento(event, payment) {
   const inquilinoData = await buscarInquilinoData(payment.customer);
-  console.log(inquilinoData)
+  console.log(inquilinoData);
   const telefoneInquilino = formatarTelefone(inquilinoData.telefone);
   if (!event || !payment.paymentId) {
     console.warn("Evento ou ID do pagamento ausente.");
@@ -75,9 +75,9 @@ async function buscarInquilinoData(customerId) {
     const response = await fetch(
       `https://backend-isolado-production.up.railway.app/inquilinos/getphone/${customerId}`
     );
-    if (response.ok) {
-      return response.json
-    }
+    if (!response.ok)
+      throw new Error(`Erro ao buscar cobranças: ${response.status}`);
+    return await response.json();
   } catch (err) {
     console.error(`Erro ao buscar inquilino: ${customerId}:`, err);
     return {
