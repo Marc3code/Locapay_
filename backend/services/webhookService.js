@@ -1,4 +1,4 @@
-const notificationService = require("./services/notificationService");
+const notificationService = require("../tarefas/services/notificationService");
 const API_BACKEND = "https://backend-isolado-production.up.railway.app";
 
 async function processarEvento(event, payment) {
