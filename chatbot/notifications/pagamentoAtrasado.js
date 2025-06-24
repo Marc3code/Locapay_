@@ -11,7 +11,7 @@ const enviarNotificacaoPagamentoAtrasado = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      body: `⚠️ Aviso: sua fatura do aluguel com vencimento em ${dataFormatada} está em atraso.\n\nEvite juros e outras cobranças. Para pagar agora, basta responder com 1.`,
+      body: `⚠️ Aviso: sua fatura do aluguel com vencimento em ${dataFormatada} está em atraso.\n\nEvite juros e outras cobranças. Para pagar agora, basta responder com 2.`,
     })
     .then((message) => {
       console.log("✅ Notificação de cobrança enviada:", message.sid);
