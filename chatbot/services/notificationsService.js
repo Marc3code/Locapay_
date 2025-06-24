@@ -18,7 +18,7 @@ const enviarNotificacaoCobrancadoMesService = async (data, telefone) => {
   }
 };
 
-const enviarNotificacaoPagamentoAtrasado = async () => {
+const enviarNotificacaoPagamentoAtrasado = async (data, telefone) => {
   try {
     const envio = await notificacoes.enviarNotificacaoPagamentoAtrasado(
       data,
