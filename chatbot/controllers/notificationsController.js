@@ -1,4 +1,4 @@
-const notificationService = require("../services/notificationsService");
+const { notificationService } = require("../services/notificationsService");
 
 const enviarNotificacaoCobrancadoMesController = async (req, res) => {
   try {
@@ -24,15 +24,14 @@ const enviarNotificacaoCobrancadoMesController = async (req, res) => {
 };
 
 const enviarNotificacaoPagamentoAtrasadoController = async (req, res) => {
-try {
+  try {
     const telefone = req.body.telefone;
     const data = req.body.data;
 
-    const envio =
-      await notificationService.enviarNotificacaoPagamentoAtrasado(
-        data,
-        telefone
-      );
+    const envio = await notificationService.enviarNotificacaoPagamentoAtrasado(
+      data,
+      telefone
+    );
 
     if (!envio.ok) {
       return res.status(400).json(envio);
@@ -44,8 +43,9 @@ try {
       .status(404)
       .json({ message: "erro ao enviar notificaçao de pagamento atrasado" });
   }
-}
+};
 
 module.exports = {
-  enviarNotificacaoCobrancadoMesController, enviarNotificacaoPagamentoAtrasadoController
+  enviarNotificacaoCobrancadoMesController,
+  enviarNotificacaoPagamentoAtrasadoController,
 };
