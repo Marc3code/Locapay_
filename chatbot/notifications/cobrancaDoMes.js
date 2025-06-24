@@ -11,7 +11,7 @@ const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      body: `Sua fatura do aluguel com vencimento no dia ${dataFormatada} foi gerada e já está disponível para pagamento. Para pagar agora é só digitar 1.`,
+      body: `Sua fatura do aluguel com vencimento no dia ${dataFormatada} foi gerada e já está disponível para pagamento. Para pagar agora é só digitar 2.`,
     })
     .then((message) => {
       console.log("✅ Notificação de cobrança enviada:", message.sid);
