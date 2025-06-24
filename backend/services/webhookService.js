@@ -6,21 +6,21 @@ async function processarEvento(event, payment) {
   const inquilinoData = await buscarInquilinoData(payment.customer);
   console.log(inquilinoData);
   const telefoneInquilino = formatarTelefone(inquilinoData.telefone);
-  if (!event || !payment.paymentId) {
+  if (!event || !payment.id) {
     console.warn("Evento ou ID do pagamento ausente.");
     return { error: "Evento ou ID do pagamento ausente." };
   }
 
   if (event === "PAYMENT_RECEIVED") {
     console.log("evento PAYMENT_RECEIVED recebido");
-    return await atualizarStatusPagamento("pago", payment.paymentId);
+    return await atualizarStatusPagamento("pago", payment.id);
     //enviar notifiicacao para o inquilino
   }
 
   // Tratamento completo para pagamentos atrasados
   else if (event === "PAYMENT_OVERDUE") {
     console.log("evento PAYMENT_OVERDUE recebido");
-    return await atualizarStatusPagamento("atrasado", payment.paymentId);
+    return await atualizarStatusPagamento("atrasado", payment.id);
     //enviar notificacao para o inquilino
   } else if (event === "PAYMENT_CREATED") {
     console.log("Evento PAYMENT_CREATED recebido.");
