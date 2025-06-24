@@ -1,5 +1,5 @@
 const notificationService = require("../tarefas/services/notificationService");
-const { formatarTelefone } = require("../utils/formatarTelefone")
+const formatarTelefone = require("../utils/formatarTelefone")
 const API_BACKEND = "https://backend-isolado-production.up.railway.app";
 
 async function processarEvento(event, payment) {

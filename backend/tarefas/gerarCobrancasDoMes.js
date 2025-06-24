@@ -31,9 +31,6 @@ async function gerarCobrancasDoMes() {
       try {
         // 3. Prepara dados da cobrança
         const dataVencimento = formatDate(inquilino.data_vencimento);
-        const telefoneFormatado = formatarTelefone(
-          inquilino.telefone_inquilino
-        );
 
         // 4. Gera a cobrança no sistema de pagamentos
         const cobrancaGerada = await cobrancaService.gerarCobranca({
