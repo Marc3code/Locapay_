@@ -2,7 +2,7 @@ const formatDate = require("../utils/formatDate");
 const formatarTelefone = require("../utils/formatarTelefone");
 const gerarProximaData = require("../utils/gerarProximaDataVencimento");
 const cobrancaService = require("./services/cobrancaService");
-const notificationService = require("./services/notificationService");
+
 
 async function gerarCobrancasDoMes() {
   const hoje = formatDate(new Date());
@@ -43,13 +43,8 @@ async function gerarCobrancasDoMes() {
           data_vencimento: dataVencimento,
         });
 
-        // 5. Envia notificação / remover daqui e colocar no webhook do asaas
-        await notificationService.enviarNotificacaoCobrancaDoMes(
-          dataVencimento,
-          telefoneFormatado
-        );
-
-        // 6. Atualiza próxima data de vencimento
+      
+        // 5. Atualiza próxima data de vencimento
         const novaDataVencimento = gerarProximaData(inquilino.data_vencimento);
 
         console.log("Data que será atualizada no BD:", novaDataVencimento);
