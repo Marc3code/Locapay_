@@ -76,7 +76,7 @@ async function buscarInquilinoData(customerId) {
       `https://backend-isolado-production.up.railway.app/inquilinos/getphone/${customerId}`
     );
     if (!response.ok)
-      throw new Error(`Erro ao buscar cobranças: ${response.status}`);
+      throw new Error(`Erro ao buscar dados do inquilino: ${response.status}`);
     return await response.json();
   } catch (err) {
     console.error(`Erro ao buscar inquilino: ${customerId}:`, err);
