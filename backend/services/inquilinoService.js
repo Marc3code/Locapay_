@@ -23,6 +23,14 @@ async function getInquilinoPorTelefone(telefone) {
   return results.length > 0 ? results[0] : null;
 }
 
+async function buscarTelefonePorCustomerId(customerId) {
+  const [results] = await db.query(
+    "SELECT nome, telefone FROM inquilinos WHERE id_asaas = ?",
+    [customerId]
+  );
+  return results.length > 0 ? results[0] : null;
+}
+
 async function getInquilinosComImovel() {
   const [results] = await db.query(`
     SELECT 
@@ -48,6 +56,8 @@ async function getInquilinosComImovel() {
   `);
   return results;
 }
+
+
 
 // ------------------ SERVICES PUT ------------------
 const atualizarDataVencimento = async (novaData, id) => {
@@ -143,4 +153,6 @@ module.exports = {
   criarInquilino,
 
   vincularInquilinoImovel,
+
+  buscarTelefonePorCustomerId
 };

@@ -103,6 +103,21 @@ async function vincularInquilinoImovel(req, res) {
   }
 }
 
+async function bsucarTelefonePorCustomerId(req, res) {
+  const { customerId } = req.params;
+  try {
+    const telefone = await inquilinoService.buscarTelefonePorCustomerId(customerId);
+    if (telefone) {
+      res.json(telefone);
+    } else {
+      res.status(404).json({ erro: "Inquilino não encontrado" });
+    }
+  } catch (err) {
+    console.error("Erro ao buscar telefone:", err);
+    res.status(500).json({ erro: "Erro ao buscar telefone" });
+  }
+}
+
 module.exports = {
   listarTodos,
   buscarPorId,
@@ -111,4 +126,5 @@ module.exports = {
   criarInquilino,
   atualizarDataVencimento,
   vincularInquilinoImovel,
+  bsucarTelefonePorCustomerId
 };

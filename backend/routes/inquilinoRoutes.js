@@ -7,6 +7,7 @@ router.get("/", inquilinoController.listarTodos);
 router.get("/inquilino", inquilinoController.buscarPorId);
 router.get("/getinquilino/:telefone", inquilinoController.buscarPorTelefone);
 router.get("/inquilinos-com-imovel", inquilinoController.listarComImovel);
+router.get("/getphone/:customerId", inquilinoController.bsucarTelefonePorCustomerId);
 
 // ------------------ ROTAS PUT ------------------
 router.put(
