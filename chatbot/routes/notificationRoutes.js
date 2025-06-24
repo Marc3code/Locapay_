@@ -11,6 +11,6 @@ router.get("/", (req, res) => {
 router.post("/cobranca_do_mes", notificationController.enviarNotificacaoCobrancadoMesController);
 
 //rota para notificação de pagamento atrasado
-router.post("/pagamento_atrasado", notificationController.enviarNotificacaoPagamentoAtrasadoController);
+
 
 module.exports = router;
