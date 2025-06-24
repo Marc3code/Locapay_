@@ -1,9 +1,10 @@
 const notificationService = require("../tarefas/services/notificationService");
-const formatarTelefone = require("../utils/formatarTelefone")
+const formatarTelefone = require("../utils/formatarTelefone");
 const API_BACKEND = "https://backend-isolado-production.up.railway.app";
 
 async function processarEvento(event, payment) {
-  const inquilinoData = await buscarInquilinoData(payment.customer)
+  const inquilinoData = await buscarInquilinoData(payment.customer);
+  console.log(inquilinoData)
   const telefoneInquilino = formatarTelefone(inquilinoData.telefone);
   if (!event || !payment.paymentId) {
     console.warn("Evento ou ID do pagamento ausente.");
