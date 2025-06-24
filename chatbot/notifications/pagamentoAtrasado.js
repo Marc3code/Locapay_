@@ -23,6 +23,6 @@ const enviarNotificacaoPagamentoAtrasado = (data, telefone) => {
     });
 };
 
-exports.module = {
+module.exports = {
   enviarNotificacaoPagamentoAtrasado
 };
