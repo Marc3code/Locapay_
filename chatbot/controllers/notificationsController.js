@@ -23,7 +23,7 @@ const enviarNotificacaoCobrancadoMesController = async (req, res) => {
   }
 };
 
-const enviarNotificacaoPagamentoAtrasadoController = async () => {
+const enviarNotificacaoPagamentoAtrasadoController = async (req, res) => {
 try {
     const telefone = req.body.telefone;
     const data = req.body.data;
