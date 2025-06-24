@@ -1,10 +1,12 @@
-const { formatarNumeroWhatsappSemNonoDigito } = require("../utils/formatNumber");
+const {
+  formatarNumeroWhatsappSemNonoDigito
+} = require("../utils/formatNumber");
 const { formatarData } = require("../utils/formatDate");
 const { client, FROM_NUMBER } = require("./twilioClient");
 
 const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
   const numeroFormatado = formatarNumeroWhatsappSemNonoDigito(telefone);
-  const dataFormatada = formatarData(data)
+  const dataFormatada = formatarData(data);
   return client.messages
     .create({
       from: "whatsapp:" + FROM_NUMBER,
@@ -17,8 +19,10 @@ const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
     })
     .catch((err) => {
       console.error("❌ Erro ao enviar notificação:", err.message);
-      return { ok: false, error: err.message }; // <-- retorna erro
+      return { ok: false, error: err.message };
     });
 };
+
+
 
 module.exports = { enviarNotificacaoCobrancaDoMes };

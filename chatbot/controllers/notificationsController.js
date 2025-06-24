@@ -23,6 +23,29 @@ const enviarNotificacaoCobrancadoMesController = async (req, res) => {
   }
 };
 
+const enviarNotificacaoPagamentoAtrasadoController = async () => {
+try {
+    const telefone = req.body.telefone;
+    const data = req.body.data;
+
+    const envio =
+      await notificationService.enviarNotificacaoPagamentoAtrasado(
+        data,
+        telefone
+      );
+
+    if (!envio.ok) {
+      return res.status(400).json(envio);
+    }
+
+    return res.status(200).json({ message: "Notificação enviada com sucesso" });
+  } catch (err) {
+    res
+      .status(404)
+      .json({ message: "erro ao enviar notificaçao de pagamento atrasado" });
+  }
+}
+
 module.exports = {
-  enviarNotificacaoCobrancadoMesController,
+  enviarNotificacaoCobrancadoMesController, enviarNotificacaoPagamentoAtrasadoController
 };

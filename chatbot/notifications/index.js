@@ -1,9 +1,9 @@
 const { enviarNotificacaoCobrancaDoMes } = require("./cobrancaDoMes");
 const { enviarNotificacaoCobranca3DiasAntes } = require("./aviso3DiasAntes");
-const { enviarNotificacaoAtraso } = require("./pagamentoAtrasado");
+const { enviarNotificacaoPagamentoAtrasado } = require("./pagamentoAtrasado");
 
 module.exports = {
   enviarNotificacaoCobrancaDoMes,
   enviarNotificacaoCobranca3DiasAntes,
-  enviarNotificacaoAtraso,
+  enviarNotificacaoPagamentoAtrasado
 };
