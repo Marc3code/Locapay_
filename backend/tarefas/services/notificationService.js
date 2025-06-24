@@ -25,7 +25,7 @@ async function enviarNotificacaoCobrancaDoMes(data, telefone) {
   }
 }
 
-async function enviarNotificacaoPagamentoAtrasado() {
+async function enviarNotificacaoPagamentoAtrasado(data, telefone) {
    try {
     const response = await fetch(`${API_BASE}/notifications/pagamento_atrasado`, {
       method: "POST",
