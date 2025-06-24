@@ -76,10 +76,7 @@ async function buscarInquilinoData(customerId) {
       `https://backend-isolado-production.up.railway.app/inquilinos/getphone/${customerId}`
     );
     if (response.ok) {
-      return {
-        success: true,
-        message: `dados do inquilino foram buscados com sucesso`,
-      };
+      return response
     }
   } catch (err) {
     console.error(`Erro ao buscar inquilino: ${customerId}:`, err);
