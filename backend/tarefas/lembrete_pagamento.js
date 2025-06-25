@@ -88,6 +88,4 @@ async function lembretePagamento() {
   }
 }
 
-module.exports = {
-    lembretePagamento
-}
+module.exports = lembretePagamento;
