@@ -1,17 +1,17 @@
 const {
-  formatarNumeroWhatsappSemNonoDigito
+  formatarNumeroWhatsappSemNonoDigito,
 } = require("../utils/formatNumber");
 const { formatarData } = require("../utils/formatDate");
 const { client, FROM_NUMBER } = require("./twilioClient");
 
-const enviarNotificacaoPagamentoAtrasado = (data, telefone) => {
+const enviarNotificacaoPagamentoRealizado = (data, telefone) => {
   const numeroFormatado = formatarNumeroWhatsappSemNonoDigito(telefone);
   const dataFormatada = formatarData(data);
   return client.messages
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      body: `⚠️ Aviso: sua fatura do aluguel com vencimento em ${dataFormatada} está em atraso.\n\nEvite juros e outras cobranças. Para pagar agora, basta responder com 2.`,
+      body: `✅ Pagamento recebido! Confirmamos o recebimento da sua fatura com vencimento em ${dataFormatada}.\n\nO comprovante está disponível no mesmo link utilizado para o pagamento. Obrigado!`,
     })
     .then((message) => {
       console.log("✅ Notificação de cobrança enviada:", message.sid);
@@ -24,5 +24,5 @@ const enviarNotificacaoPagamentoAtrasado = (data, telefone) => {
 };
 
 module.exports = {
-  enviarNotificacaoPagamentoAtrasado
+  enviarNotificacaoPagamentoRealizado,
 };

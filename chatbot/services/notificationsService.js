@@ -36,7 +36,26 @@ async function enviarNotificacaoPagamentoAtrasado (data, telefone) {
   }
 };
 
+async function enviarNotificacaoPagamentoRealizado (data, telefone) {
+  try {
+    const envio = await notificacoes.enviarNotificacaoPagamentoRealizado(
+      data,
+      telefone
+    );
+    if (!envio.ok) {
+      return {
+        ok: false,
+        error: `Erro ao enviar notificação de pagamento realizado: ${envio.error}`,
+      };
+    }
+    return { ok: true, sid: envio.sid };
+  } catch (err) {
+    return { ok: false, error: err.message || err.toString() };
+  }
+};
+
 module.exports = {
   enviarNotificacaoCobrancadoMesService,
   enviarNotificacaoPagamentoAtrasado,
+  enviarNotificacaoPagamentoRealizado
 };

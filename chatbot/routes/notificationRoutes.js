@@ -19,4 +19,10 @@ router.post(
   notificationController.enviarNotificacaoPagamentoAtrasadoController
 );
 
+//rota para notificação de pagamento realizado
+router.post(
+  "/pagamento_realizado",
+  notificationController.enviarNotificacaoPagamentoRealizadoController
+);
+
 module.exports = router;
