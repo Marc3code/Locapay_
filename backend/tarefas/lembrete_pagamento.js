@@ -19,7 +19,7 @@ async function lembretePagamento() {
     const pagamentos_pendentes = todos_pagamentos.filter(
       (pagamento) => pagamento.status === "pendente"
     );
-    console.log(pagamentos_pendentes);
+
     console.log("🔍 Busca de pagamentos concluída");
 
     if (pagamentos_pendentes.length === 0) {
