@@ -13,6 +13,12 @@ router.post(
   notificationController.enviarNotificacaoCobrancadoMesController
 );
 
+//rota para notificação de pagamento realizado
+router.post(
+  "/cobranca_3d",
+  notificationController.enviarNotificacao3DiasAntesController
+);
+
 //rota para notificação de pagamento atrasado
 router.post(
   "/pagamento_atrasado",
