@@ -1,4 +1,4 @@
-import { buscarInquilinos } from "./service.js";
+import { buscarInquilinos, buscarPagamentos } from "./service.js";
 
 // Função para gerar iniciais do nome
 function getInitials(name) {
@@ -19,12 +19,14 @@ function formatDate(dateString) {
 // Função para renderizar lista de inquilinos
 async function renderTenantsList() {
   const mesAtual = new Date().getMonth() + 1;
-  
+
   try {
     const tbody = document.querySelector("tbody");
     tbody.innerHTML = '<tr><td colspan="5">Carregando inquilinos...</td></tr>';
 
     const inquilinosData = await buscarInquilinos();
+    const pagamentos = await buscarPagamentos();
+    console.log(pagamentos);
 
     console.log(inquilinosData);
     if (inquilinosData.length === 0) {
@@ -46,12 +48,17 @@ async function renderTenantsList() {
         tenant.complemento ? " - " + tenant.complemento : ""
       }`;
 
+      
+      const pagamentoPendente = pagamentos.find(
+        (p) => p.inquilino_id === tenant.id
+      ) || [];
+
+      // Status de pagamento baseado na existência do pagamento pendente
+      const paymentStatus = pagamentoPendente ? "pendente" : "pago";
+
       // Calcular status de pagamento
       const vencimento = new Date(tenant.data_vencimento);
       vencimento.setHours(0, 0, 0, 0);
-
-      let paymentStatus = "pending";
-      let statusText = "pendente";
 
       row.innerHTML = `
         <td>
@@ -67,7 +74,7 @@ async function renderTenantsList() {
         <td>R$ ${parseFloat(tenant.valor_aluguel)
           .toFixed(2)
           .replace(".", ",")}</td>
-        <td><span class="status ${paymentStatus}">${statusText}</span></td>
+        <td><span class="status ${paymentStatus}">${pagamentoPendente.status}</span></td>
         <td class="${
           paymentStatus === "overdue" ? "overdue-date" : "due-date"
         }">
