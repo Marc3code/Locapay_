@@ -60,11 +60,12 @@ async function lembretePagamento() {
               inquilino.telefone
             );
 
-          if (!envio.ok) {
+          if (!envio || envio.message !== "Notificação enviada com sucesso") {
             console.log(
-              `⚠️ Falha ao enviar lembrete para ${inquilino.nome}: ${envio.error}`
+              `⚠️ Falha ao enviar lembrete para ${inquilino.nome}:`,
+              envio.error || envio.message || "Erro desconhecido"
             );
-            continue; // segue para o próximo pagamento
+            continue;
           }
 
           console.log(
@@ -87,4 +88,6 @@ async function lembretePagamento() {
   }
 }
 
-lembretePagamento();
+module.exports = {
+    lembretePagamento
+}

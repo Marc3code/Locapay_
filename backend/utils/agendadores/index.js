@@ -1,4 +1,4 @@
 require("./cobrancasDoMes");
-require("./lembrete3DiasAntes"); 
+require("./lembrete_pagamento"); 
 
 console.log("📅 Agendadores carregados.");
