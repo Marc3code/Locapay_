@@ -18,7 +18,7 @@ async function processarEvento(event, payment) {
     notificationService.enviarNotificacaoPagamentoRealizado(payment.dueDate, telefoneInquilino);
   }
 
-  // Tratamento completo para pagamentos atrasados
+  
   else if (event === "PAYMENT_OVERDUE") {
     console.log("evento PAYMENT_OVERDUE recebido");
     const atualiza = await atualizarStatusPagamento("atrasado", payment.id);
@@ -30,19 +30,20 @@ async function processarEvento(event, payment) {
   } else if (event === "PAYMENT_CREATED") {
     console.log("Evento PAYMENT_CREATED recebido.");
 
+    
     await notificationService.enviarNotificacaoCobrancaDoMes(
       payment.dueDate,
       telefoneInquilino
     );
     return { message: "Pagamento criado, sem ação necessária." };
-    //enviar notificacao para o inquilino
+   
   } else {
     console.log(`Evento ${event} não tratado.`);
     return { message: `Evento ${event} não é suportado.` };
   }
 }
 
-// Função unificada para atualizar status
+// Função para atualizar status de pagamentos
 async function atualizarStatusPagamento(status, paymentId) {
   try {
     const response = await fetch(
