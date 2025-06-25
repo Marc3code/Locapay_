@@ -40,7 +40,7 @@
           </nav>
 
           <div class="user-menu">
-            <div class="tenant-avatar">JS</div>
+            <div class="inquilino-avatar">JS</div>
             <span>João Silva</span>
           </div>
         </div>
@@ -67,61 +67,53 @@
         <div class="status-card paid">
           <div class="card-header">
             <div>
-              <div class="card-title">Pagamentos Recebidos</div>
+              <div class="card-title">Inquilinos com pagamentos em dia</div>
               <div class="card-description">
-                Inquilinos em dia com os pagamentos
+                Inquilinos com todos os pagamentos quitados
               </div>
             </div>
             <div class="card-icon">
               <i class="fas fa-check-circle"></i>
             </div>
           </div>
-          <div class="card-value">R$ 8.500,00</div>
-          <div class="card-description">12 inquilinos</div>
-          <div class="progress-container">
-            <div class="progress-bar" style="width: 65%"></div>
-          </div>
-          <div class="card-description">65% dos pagamentos realizados</div>
+          <div class="card-value" id="qtd-pagos">0</div>
+          <div class="card-description" id="desc-pagos">Carregando...</div>
         </div>
 
         <div class="status-card pending">
           <div class="card-header">
             <div>
-              <div class="card-title">Pagamentos Pendentes</div>
-              <div class="card-description">Pagamentos do mês em aberto</div>
+              <div class="card-title">Inquilinos com pagamento pendente</div>
+              <div class="card-description">
+                Pagamentos do mês atual em aberto
+              </div>
             </div>
             <div class="card-icon">
               <i class="fas fa-clock"></i>
             </div>
           </div>
-          <div class="card-value">R$ 3.200,00</div>
-          <div class="card-description">8 inquilinos</div>
-          <div class="progress-container">
-            <div class="progress-bar" style="width: 25%"></div>
-          </div>
-          <div class="card-description">Vencimento até dia 10</div>
+          <div class="card-value" id="qtd-pendentes">0</div>
+          <div class="card-description" id="desc-pendentes">Carregando...</div>
         </div>
 
         <div class="status-card overdue">
           <div class="card-header">
             <div>
-              <div class="card-title">Pagamentos Atrasados</div>
-              <div class="card-description">Pagamentos em atraso</div>
+              <div class="card-title">
+                Inquilinos com pagamento(s) atrasado(s)
+              </div>
+              <div class="card-description">Pagamentos com atraso no mês</div>
             </div>
             <div class="card-icon">
               <i class="fas fa-exclamation-triangle"></i>
             </div>
           </div>
-          <div class="card-value">R$ 1.800,00</div>
-          <div class="card-description">4 inquilinos</div>
-          <div class="progress-container">
-            <div class="progress-bar" style="width: 10%"></div>
-          </div>
-          <div class="card-description">Atraso médio: 15 dias</div>
+          <div class="card-value" id="qtd-atrasados">0</div>
+          <div class="card-description" id="desc-atrasados">Carregando...</div>
         </div>
       </div>
 
-      <div class="tenants-section">
+      <div class="inquilinos-section">
         <div class="section-header">
           <h3>Lista de Inquilinos</h3>
           <div class="search-box">

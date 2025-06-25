@@ -22,18 +22,26 @@ export const buscarPagamentos = async () => {
     }
 
     const pagamentos = await response.json();
+    const lista = Array.isArray(pagamentos) ? pagamentos : [pagamentos];
 
-    const pagamentosA = Array.isArray(pagamentos) ? pagamentos : [pagamentos];
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth(); // de 0 a 11
+    const anoAtual = hoje.getFullYear();
 
-    // Exemplo de filtro (pegando apenas os pendentes)
-    const pagamentos_pendentes = pagamentos.filter(
-      (pagamento) => pagamento.status === "pendente"
-    );
+    // Filtrar pagamentos cujo due_date seja do mês e ano atual
+    const pagamentosDoMesAtual = lista.filter((pagamento) => {
+      const dataVencimento = new Date(pagamento.due_date);
+      return (
+        dataVencimento.getMonth() === mesAtual &&
+        dataVencimento.getFullYear() === anoAtual
+      );
+    });
 
-    return pagamentos_pendentes;
+    return pagamentosDoMesAtual;
 
   } catch (err) {
-    console.error('Erro ao buscar inquilinos:', err);
+    console.error('Erro ao buscar pagamentos:', err);
     return [];
   }
 };
+
