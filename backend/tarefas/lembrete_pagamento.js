@@ -12,10 +12,14 @@ async function lembretePagamento() {
   try {
     // 1. Busca TODOS os pagamentos
     console.log("⏳ Buscando pagamentos...");
-    const todos_pagamentos = await inquilinoService.buscarPagamentos();
+    const resultado = await inquilinoService.buscarPagamentos();
+
+    const todos_pagamentos = Array.isArray(resultado) ? resultado : [resultado];
+
     const pagamentos_pendentes = todos_pagamentos.filter(
       (pagamento) => pagamento.status === "pendente"
     );
+    console.log(pagamentos_pendentes);
     console.log("🔍 Busca de pagamentos concluída");
 
     if (pagamentos_pendentes.length === 0) {
@@ -24,7 +28,7 @@ async function lembretePagamento() {
     }
 
     console.log(
-      `📦 Total de lembretes a serem enviados: ${pagamentos_pendentes.length}`
+      `📦 Total de pagamentos pendentes: ${pagamentos_pendentes.length}`
     );
 
     // 2. Para CADA inquilino, envia o lembrete
@@ -34,7 +38,7 @@ async function lembretePagamento() {
         `🔄 Verificando se lembrete precisa ser enviado para o pagamento: ${pagamento.asaas_payment_id}`
       );
 
-      const dataVencimento = new Date(pagamento.dueDate); // Objeto Date
+      const dataVencimento = new Date(pagamento.due_date); // Objeto Date
 
       // Calcula a diferença em milissegundos
       const diffEmMs = dataVencimento - hoje;
@@ -52,7 +56,7 @@ async function lembretePagamento() {
           );
           const envio =
             await notificationService.enviarNotificacaoLembretePagamento(
-              pagamento.dueDate,
+              pagamento.due_date,
               inquilino.telefone
             );
 
@@ -82,3 +86,5 @@ async function lembretePagamento() {
     console.error("❌ Erro ao executar lembretePagamento:", err.message);
   }
 }
+
+lembretePagamento();

@@ -12,7 +12,7 @@ async function listarTodos(req, res) {
 }
 
 async function buscarPorId(req, res) {
-  const { id } = req.query;
+  const { id } = req.params;
   try {
     const inquilino = await inquilinoService.getInquilinoPorId(id);
     res.json(inquilino);
