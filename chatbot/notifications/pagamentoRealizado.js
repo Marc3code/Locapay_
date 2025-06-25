@@ -14,7 +14,7 @@ const enviarNotificacaoPagamentoRealizado = (data, telefone) => {
       body: `✅ Pagamento recebido! Confirmamos o recebimento da sua fatura com vencimento em ${dataFormatada}.\n\nO comprovante está disponível no mesmo link utilizado para o pagamento. Obrigado!`,
     })
     .then((message) => {
-      console.log("✅ Notificação de cobrança enviada:", message.sid);
+      console.log("✅ Notificação de pagamento realizado enviada:", message.sid);
       return { ok: true, sid: message.sid }; // <-- retorna ok e o id da mensagem se der certo
     })
     .catch((err) => {

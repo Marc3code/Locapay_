@@ -14,7 +14,7 @@ const enviarNotificacaoPagamentoAtrasado = (data, telefone) => {
       body: `⚠️ Aviso: sua fatura do aluguel com vencimento em ${dataFormatada} está em atraso.\n\nEvite juros e outras cobranças. Para pagar agora, basta responder com 2.`,
     })
     .then((message) => {
-      console.log("✅ Notificação de cobrança enviada:", message.sid);
+      console.log("✅ Notificação de pagamento atrasado enviada:", message.sid);
       return { ok: true, sid: message.sid }; // <-- retorna ok e o id da mensagem se der certo
     })
     .catch((err) => {
