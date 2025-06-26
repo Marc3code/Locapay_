@@ -76,6 +76,7 @@ async function atualizarStatusPagamento(status, paymentId) {
   }
 }
 
+//fuuncao para buscar dados do inquilino
 async function buscarInquilinoData(customerId) {
   try {
     const response = await fetch(
