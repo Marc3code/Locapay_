@@ -16,6 +16,7 @@ function formatDate(dateString) {
   return date.toLocaleDateString("pt-BR");
 }
 
+
 function atualizarCards(pagamentos) {
   // Apenas filtrar por status, sem verificar datas
   const pagos = pagamentos.filter((p) => p.status === "pago");
