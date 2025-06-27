@@ -1,0 +1,147 @@
+/* Reset e fontes padronizadas */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f7fa;
+  color: var(--dark, #212529);
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+a.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: var(--primary, #1a73e8);
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+a.back-link:hover {
+  color: var(--secondary, #0d47a1);
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--dark, #212529);
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--dark, #212529);
+}
+
+#info-inquilino {
+  background: white;
+  padding: 20px;
+  border-radius: var(--border-radius, 10px);
+  box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.08));
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: var(--border-radius, 10px);
+  box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.08));
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--light-gray, #e9ecef);
+  font-size: 14px;
+  color: var(--dark, #212529);
+}
+
+th {
+  background-color: var(--light-gray, #e9ecef);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+tbody tr:hover {
+  background-color: rgba(26, 115, 232, 0.07);
+}
+
+.status {
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.status.pago {
+  background: rgba(40, 167, 69, 0.1);
+  color: var(--success, #28a745);
+}
+
+.status.pendente {
+  background: rgba(255, 193, 7, 0.1);
+  color: var(--warning, #ffc107);
+}
+
+.status.atrasado {
+  background: rgba(220, 53, 69, 0.1);
+  color: var(--danger, #dc3545);
+}
+
+.loading {
+  font-style: italic;
+  color: var(--gray, #6c757d);
+}
+
+.error {
+  color: var(--danger, #dc3545);
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+a {
+  color: var(--primary, #1a73e8);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a:hover {
+  color: var(--secondary, #0d47a1);
+  text-decoration: underline;
+}
+
+a.back-link {
+  display: inline-block;
+  margin-bottom: 1em;
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: 600;
+  transition: var(--transition);
+}
+a.back-link:hover {
+  text-decoration: underline;
+}
+#info-inquilino p {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+#error-msg {
+  color: var(--danger);
+  font-weight: 700;
+  margin-top: 20px;
+}

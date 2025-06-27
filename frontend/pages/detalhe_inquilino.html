@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detalhes do Inquilino</title>
+  <!-- Importa seu CSS padrão -->
+  <link rel="stylesheet" href="../styles/detalhe_inquilino.css" />
+
+</head>
+<body>
+  <main class="container">
+    <a href="home.html" class="back-link">&larr; Voltar para Dashboard</a>
+
+    <h1>Detalhes do Inquilino</h1>
+    <div id="info-inquilino" class="loading">Carregando informações...</div>
+
+    <h2>Pagamentos</h2>
+    <table id="pagamentos-table" style="display: none;">
+      <thead>
+        <tr>
+          <th>ID Pagamento</th>
+          <th>Data de Vencimento</th>
+          <th>Data de Pagamento</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Link Pagamento</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div id="error-msg" style="display:none;"></div>
+  </main>
+
+  <!-- Importa o script -->
+  <script type="module" src="../scripts/detalhe_inquilino.js"></script>
+</body>
+</html>

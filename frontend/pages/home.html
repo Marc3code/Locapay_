@@ -23,25 +23,17 @@
                 >
               </li>
               <li>
-                <a href="#"><i class="fas fa-building"></i> Imóveis</a>
+                <a href="./imoveis.html"><i class="fas fa-building"></i> Imóveis</a>
               </li>
               <li>
                 <a href="#"><i class="fas fa-users"></i> Inquilinos</a>
               </li>
-              <li>
-                <a href="#"
-                  ><i class="fas fa-file-invoice-dollar"></i> Cobranças</a
-                >
-              </li>
-              <li>
-                <a href="#"><i class="fas fa-cog"></i> Configurações</a>
-              </li>
-            </ul>
+   
           </nav>
 
           <div class="user-menu">
-            <div class="inquilino-avatar">JS</div>
-            <span>João Silva</span>
+            <div class="inquilino-avatar">LS</div>
+            <span>Locador da Silva</span>
           </div>
         </div>
       </div>
@@ -50,16 +42,6 @@
     <main class="container">
       <div class="dashboard-header">
         <h2>Gestão de Cobranças</h2>
-        <div class="filters">
-          <button class="filter-btn active">
-            <i class="fas fa-calendar-alt"></i> Este Mês
-          </button>
-          <button class="filter-btn">
-            <i class="fas fa-calendar-week"></i> Últimos 3 Meses
-          </button>
-          <button class="filter-btn">
-            <i class="fas fa-filter"></i> Filtrar
-          </button>
         </div>
       </div>
 
@@ -69,7 +51,7 @@
             <div>
               <div class="card-title">Inquilinos com pagamentos em dia</div>
               <div class="card-description">
-                Inquilinos com todos os pagamentos quitados
+                Todos os pagamentos quitados, inclusive o do mês atual
               </div>
             </div>
             <div class="card-icon">
@@ -85,7 +67,7 @@
             <div>
               <div class="card-title">Inquilinos com pagamento pendente</div>
               <div class="card-description">
-                Pagamentos do mês atual em aberto
+                Mês atual ainda em aberto (não está vencido)
               </div>
             </div>
             <div class="card-icon">
@@ -102,7 +84,9 @@
               <div class="card-title">
                 Inquilinos com pagamento(s) atrasado(s)
               </div>
-              <div class="card-description">Pagamentos com atraso no mês</div>
+              <div class="card-description">
+                Ao menos um pagamento está vencido e não foi quitado
+              </div>
             </div>
             <div class="card-icon">
               <i class="fas fa-exclamation-triangle"></i>
@@ -116,12 +100,17 @@
       <div class="inquilinos-section">
         <div class="section-header">
           <h3>Lista de Inquilinos</h3>
+
           <div class="search-box">
             <i class="fas fa-search"></i>
             <input type="text" placeholder="Pesquisar inquilino ou imóvel..." />
           </div>
         </div>
-
+        <p class="table-description">
+          Abaixo estão listados os inquilinos com os dados de cobrança e
+          vencimento <strong>referentes ao mês atual</strong>. Selecione um
+          inquilino para visualizar mais detalhes.
+        </p>
         <table>
           <thead>
             <tr>
@@ -155,6 +144,6 @@
       </div>
     </footer>
 
-    <script type="module" src="../scripts/home/home.js"></script>
+    <script type="module" src="../scripts/home.js"></script>
   </body>
 </html>

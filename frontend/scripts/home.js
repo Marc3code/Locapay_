@@ -16,41 +16,70 @@ function formatDate(dateString) {
   return date.toLocaleDateString("pt-BR");
 }
 
-
 function atualizarCards(pagamentos) {
-  // Apenas filtrar por status, sem verificar datas
-  const pagos = pagamentos.filter((p) => p.status === "pago");
-  const pendentes = pagamentos.filter((p) => p.status === "pendente");
-  const atrasados = pagamentos.filter((p) => p.status === "atrasado");
+  const statusPorInquilino = {};
 
-  // Atualiza o DOM dos cards
-  document.getElementById("qtd-em-dia").textContent = pagos.length;
+  pagamentos.forEach((pagamento) => {
+    const id = pagamento.inquilino_id;
+    const status = pagamento.status;
+
+    if (!statusPorInquilino[id]) {
+      statusPorInquilino[id] = new Set();
+    }
+
+    statusPorInquilino[id].add(status);
+  });
+
+  let qtdEmDia = 0;
+  let qtdPendentes = 0;
+  let qtdAtrasados = 0;
+
+  for (const statusSet of Object.values(statusPorInquilino)) {
+    if (statusSet.has("atrasado")) {
+      qtdAtrasados++;
+    } else if (statusSet.has("pendente")) {
+      qtdPendentes++;
+    } else {
+      qtdEmDia++;
+    }
+  }
+
+  document.getElementById("qtd-em-dia").textContent = qtdEmDia;
   document.getElementById(
     "desc-pagos"
-  ).textContent = `${pagos.length} inquilino(s) em dia`;
+  ).textContent = `${qtdEmDia} inquilino(s) em dia`;
 
-  document.getElementById("qtd-pendentes").textContent = pendentes.length;
+  document.getElementById("qtd-pendentes").textContent = qtdPendentes;
   document.getElementById(
     "desc-pendentes"
-  ).textContent = `${pendentes.length} inquilino(s) com pagamento pendente`;
+  ).textContent = `${qtdPendentes} inquilino(s) com pagamento pendente`;
 
-  document.getElementById("qtd-atrasados").textContent = atrasados.length;
+  document.getElementById("qtd-atrasados").textContent = qtdAtrasados;
   document.getElementById(
     "desc-atrasados"
-  ).textContent = `${atrasados.length} inquilino(s) com pagamento(s) atrasado(s)`;
+  ).textContent = `${qtdAtrasados} inquilino(s) com pagamento(s) atrasado(s)`;
 }
 
-// Função para renderizar a lista de inquilinos na tabela (seu código, com pequenas melhorias)
 async function renderInquilinosList() {
   try {
     const tbody = document.querySelector("tbody");
     tbody.innerHTML = '<tr><td colspan="5">Carregando inquilinos...</td></tr>';
 
     const inquilinosData = await buscarInquilinos();
-    const pagamentos = await buscarPagamentos();
+    const todosPagamentos = await buscarPagamentos();
 
-    // Atualiza os cards com os dados de pagamento
-    atualizarCards(pagamentos);
+    // Atualiza os cards com TODOS os pagamentos
+    atualizarCards(todosPagamentos);
+
+    // Filtra só os pagamentos do mês atual para exibir na tabela
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth();
+    const anoAtual = hoje.getFullYear();
+
+    const pagamentosDoMes = todosPagamentos.filter((p) => {
+      const venc = new Date(p.due_date);
+      return venc.getMonth() === mesAtual && venc.getFullYear() === anoAtual;
+    });
 
     if (inquilinosData.length === 0) {
       tbody.innerHTML =
@@ -62,18 +91,20 @@ async function renderInquilinosList() {
 
     inquilinosData.forEach((inquilino) => {
       const row = document.createElement("tr");
+      row.style.cursor = "pointer"; // Indica que a linha é clicável
 
-      // Formatar endereço completo
+      row.addEventListener("click", () => {
+        window.location.href = `detalhe_inquilino.html?inquilino_id=${inquilino.inquilino_id}`;
+      });
+      
       const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${
         inquilino.complemento ? " - " + inquilino.complemento : ""
       }`;
 
-      // Encontrar pagamento pendente/atrasado do inquilino (mês atual)
-      const pagamento = pagamentos.find(
+      const pagamento = pagamentosDoMes.find(
         (p) => p.inquilino_id === inquilino.inquilino_id
       );
 
-      // Definir status padrão
       let statusText = "Pago";
       let statusClass = "pago";
       let vencimentoClass = "due-date";
@@ -89,7 +120,9 @@ async function renderInquilinosList() {
         }
       }
 
-      const vencimentoFormatado = formatDate(inquilino.due_date);
+      const vencimentoFormatado = pagamento
+        ? formatDate(pagamento.due_date)
+        : "-";
 
       row.innerHTML = `
         <td>

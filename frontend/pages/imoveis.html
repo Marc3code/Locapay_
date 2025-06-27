@@ -1,14 +1,158 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocaPay</title>
-    <link rel="stylesheet" href="../styles/style.css" />
-</head>
-<body>
-    <header id="header"></header>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>LocaPay - Imóveis</title>
+        <link rel="stylesheet" href="../styles/imoveis.css" />
+    </head>
+    <body>
+        <header>
+        <div class="container header-content">
+            <div class="logo">
+            <i class="fas fa-home"></i>
+            <h1>LocaPay</h1>
+            </div>
+            <nav>
+            <ul>
+                <li><a href="home.html">Dashboard</a></li>
+                <li><a href="#" class="active">Imóveis</a></li>
+                <li><a href="inquilinos.html">Inquilinos</a></li>
+            </ul>
+            </nav>
+            <div class="user-info">Locador da Silva</div>
+        </div>
+        </header>
 
-    <script type="module" src="../scripts/imoveis.js"></script>
-</body>
-</html>
+        <main class="container">
+        <section class="top-actions">
+            <h2>Imóveis</h2>
+            <button id="btn-toggle-form" class="btn-primary">+ Novo Imóvel</button>
+        </section>
+
+        <section id="form-section" class="form-section hidden">
+            <form id="form-imovel" class="form-card">
+            <h3>Cadastrar Novo Imóvel</h3>
+            <div class="form-group">
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" required>
+                <option value="">Selecione</option>
+                <option value="casa">Casa</option>
+                <option value="residencial">Residencial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="endereco">Endereço:</label>
+                <input type="text" id="endereco" required />
+            </div>
+            <div class="form-group">
+                <label for="numero">Número:</label>
+                <input type="text" id="numero" required />
+            </div>
+            <button type="submit" class="btn-primary">Cadastrar</button>
+            </form>
+        </section>
+
+        <section class="tabela-section">
+            <h3>Lista de Imóveis</h3>
+            <table id="tabela-imoveis">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Endereço</th>
+                <th>Número</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- renderizado via JS -->
+            </tbody>
+            </table>
+        </section>
+
+        <section
+            id="formulario-vinculo-container"
+            class="formulario-vinculo hidden"
+        >
+            <div class="vinculo-card">
+            <div class="vinculo-header">
+                <h3>Vincular Inquilino</h3>
+                <button id="close-vinculo-form" class="btn-close">&times;</button>
+            </div>
+            <form id="form-vinculo">
+                <div class="form-grid">
+                <div class="form-group">
+                    <label for="inquilino_id">Inquilino:</label>
+                    <select id="inquilino_id" required>
+                    <option value="">Selecione um inquilino</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="valor_aluguel">Valor do Aluguel (R$):</label>
+                    <div class="input-with-icon">
+                    <input
+                        type="number"
+                        id="valor_aluguel"
+                        min="0"
+                        step="0.01"
+                        required
+                    />
+                    <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="complemento">Complemento:</label>
+                    <input
+                    type="text"
+                    id="complemento"
+                    placeholder="Ex: Apt 101, Bloco B"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="data_inicio">Data de Início:</label>
+                    <div class="input-with-icon">
+                    <input type="date" id="data_inicio" required />
+                    <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="data_vencimento">Data de Vencimento:</label>
+                    <div class="input-with-icon">
+                    <input type="date" id="data_vencimento" required />
+                    <i class="fas fa-calendar-day"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="data_fim">Data de Fim (opcional):</label>
+                    <div class="input-with-icon">
+                    <input type="date" id="data_fim" />
+                    <i class="fas fa-calendar-times"></i>
+                    </div>
+                </div>
+                </div>
+
+                <div class="form-actions">
+                <button type="button" id="btn-cancelar" class="btn-secondary">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-primary">
+                    Vincular Inquilino
+                </button>
+                </div>
+            </form>
+            </div>
+        </section>
+        </main>
+
+        <script type="module" src="../scripts/imoveis.js"></script>
+        <script
+        src="https://kit.fontawesome.com/a076d05399.js"
+        crossorigin="anonymous"
+        ></script>
+    </body>
+    </html>
