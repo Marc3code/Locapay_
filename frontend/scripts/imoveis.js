@@ -78,13 +78,13 @@ function renderImoveis(lista) {
       <td>${imovel.endereco}</td>
       <td>${imovel.numero}</td>
     `;
-    tr.addEventListener("click", () => abrirFormularioVinculo(imovel.id));
+    tr.addEventListener("click", () => abrirFormularioVinculo(imovel.endereco));
     tbody.appendChild(tr);
   });
 }
 
 // --- Exibe formulário de vinculação ---
-async function abrirFormularioVinculo(imovelId) {
+async function abrirFormularioVinculo(imovelEndereco) {
   const inquilinos = await buscarInquilinos();
   const container = document.getElementById("formulario-vinculo-container");
   const selectInquilino = container.querySelector("#inquilino_id");
@@ -102,7 +102,7 @@ async function abrirFormularioVinculo(imovelId) {
   // Atualiza o título com o ID do imóvel
   container.querySelector(
     "h3"
-  ).textContent = `Vincular Inquilino ao Imóvel #${imovelId}`;
+  ).textContent = `Vincular Inquilino ao Imóvel do Endereço: ${imovelEndereco}`;
 
   // Mostra o formulário
   container.classList.remove("hidden");
