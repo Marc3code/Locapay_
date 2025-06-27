@@ -24,7 +24,7 @@ function atualizarCards(pagamentos) {
   const atrasados = pagamentos.filter((p) => p.status === "atrasado");
 
   // Atualiza o DOM dos cards
-  document.getElementById("qtd-pagos").textContent = pagos.length;
+  document.getElementById("qtd-em-dia").textContent = pagos.length;
   document.getElementById(
     "desc-pagos"
   ).textContent = `${pagos.length} inquilino(s) em dia`;
