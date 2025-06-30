@@ -22,7 +22,7 @@ async function cadastrarInquilino(inquilino) {
     const res = await fetch(API_INQUILINOS, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(inquilino),
+      body: JSON.stringify({name: inquilino.name, phone: inquilino.phone, cpfCnpj: inquilino.cpfCnpj}),
     });
     if (!res.ok) throw new Error("Erro ao cadastrar inquilino");
     alert("Inquilino cadastrado com sucesso!");
