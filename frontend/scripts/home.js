@@ -97,7 +97,7 @@ async function renderInquilinosList() {
       row.style.cursor = "pointer";
 
       row.addEventListener("click", () => {
-        window.location.href = `detalhe_inquilino.html?inquilino_id=${inquilino.inquilino_id}`;
+        window.location.href = `./detalhe_inquilino.html?inquilino_id=${inquilino.inquilino_id}`;
       });
       
       const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${
@@ -108,8 +108,8 @@ async function renderInquilinosList() {
         (p) => p.inquilino_id === inquilino.inquilino_id
       );
 
-      let statusText = "Pago";
-      let statusClass = "pago";
+      let statusText = "Pendente";
+      let statusClass = "pendente";
       let vencimentoClass = "due-date";
 
       if (pagamento) {
