@@ -93,8 +93,9 @@ async function renderInquilinosList() {
     tbody.innerHTML = "";
 
     inquilinosData.forEach((inquilino) => {
+      console.log(inquilino)
       const row = document.createElement("tr");
-      row.style.cursor = "pointer"; // Indica que a linha é clicável
+      row.style.cursor = "pointer";
 
       row.addEventListener("click", () => {
         window.location.href = `detalhe_inquilino.html?inquilino_id=${inquilino.inquilino_id}`;
