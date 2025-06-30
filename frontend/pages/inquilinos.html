@@ -1,38 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LocaPay</title>
-    <link rel="stylesheet" href="../styles/inquilinos.css" />
-    <link rel="stylesheet" href="../styles/style.css" />
-  </head>
-  <body>
-    <header id="header">
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocaPay - Inquilinos</title>
+  <link rel="stylesheet" href="../styles/inquilinos.css" />
+  <link rel="stylesheet" href="../components/header_style.css" />
+</head>
+<body>
 
-    <main class="container">
+  <main class="container">
+    <section class="top-actions">
+      <h2>Inquilinos</h2>
+      <button id="btn-toggle-form" class="btn-primary">+ Novo Inquilino</button>
+    </section>
 
-      <section class="listaInquilinos">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Telefone</th>
-              <th>CPF/CNPJ</th>
-              <th>Imóvel</th>
-            </tr>
-          </thead>
-          <tbody id="tabelaInquilinos">
-            <td>Fulano</td>
-            <td>84996132907</td>
-            <td>11986519465</td>
-            <td>portão preto</td>
-          </tbody>
-        </table>
-      </section>
-    </main>
+    <section id="form-section" class="form-section hidden">
+      <form id="form-inquilino" class="form-card">
+        <h3>Cadastrar Novo Inquilino</h3>
 
-    <script type="module" src="../scripts/inquilinos.js"></script>
-  </body>
+        <div class="form-group">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" required />
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">Telefone:</label>
+          <input type="tel" id="telefone" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail:</label>
+          <input type="email" id="email" required />
+        </div>
+
+        <button type="submit" class="btn-primary">Cadastrar</button>
+      </form>
+    </section>
+
+    <section class="tabela-section">
+      <h3>Lista de Inquilinos</h3>
+      <table id="tabela-inquilinos">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>customer_id</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- renderizado via JS -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script type="module" src="../scripts/inquilinos.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
 </html>

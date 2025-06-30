@@ -2,38 +2,45 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Detalhes do Inquilino</title>
-  <!-- Importa seu CSS padrão -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inquilino • Detalhes</title>
   <link rel="stylesheet" href="../styles/detalhe_inquilino.css" />
-
 </head>
 <body>
-  <main class="container">
-    <a href="home.html" class="back-link">&larr; Voltar para Dashboard</a>
+  <div class="page-wrapper">
+    <header class="top-header">
+      <a href="home.html" class="back">&larr; Dashboard</a>
+      <h1>Inquilino</h1>
+    </header>
 
-    <h1>Detalhes do Inquilino</h1>
-    <div id="info-inquilino" class="loading">Carregando informações...</div>
+    <section class="card" id="info-inquilino">
+      Carregando informações...
+    </section>
 
-    <h2>Pagamentos</h2>
-    <table id="pagamentos-table" style="display: none;">
-      <thead>
-        <tr>
-          <th>ID Pagamento</th>
-          <th>Data de Vencimento</th>
-          <th>Data de Pagamento</th>
-          <th>Valor</th>
-          <th>Status</th>
-          <th>Link Pagamento</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <section class="card">
+      <h2>Pagamentos</h2>
+      <p class="subtitle">Histórico completo de cobranças deste inquilino.</p>
 
-    <div id="error-msg" style="display:none;"></div>
-  </main>
+      <div id="error-msg" class="error-msg" style="display: none;"></div>
 
-  <!-- Importa o script -->
+      <table id="pagamentos-table" class="pagamentos" style="display: none;">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Vencimento</th>
+            <th>Pagamento</th>
+            <th>Valor</th>
+            <th>Status</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Conteúdo inserido via JS -->
+        </tbody>
+      </table>
+    </section>
+  </div>
+
   <script type="module" src="../scripts/detalhe_inquilino.js"></script>
 </body>
 </html>

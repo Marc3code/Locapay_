@@ -70,7 +70,8 @@ async function carregarDados() {
                 <td>${formatDate(p.due_date)}</td>
                 <td>${formatDate(p.payment_date)}</td>
                 <td>${formatCurrency(p.amount)}</td>
-                <td class="status ${statusClass}">${p.status}</td>
+                <td><span class="status ${statusClass}">${p.status}</span></td>
+
                 <td><a href="${
                   p.link_pagamento
                 }" target="_blank" rel="noopener noreferrer">Link</a></td>

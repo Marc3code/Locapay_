@@ -1,5 +1,8 @@
 import { buscarInquilinos, buscarPagamentos } from "./service.js";
 
+import { carregarHeader } from "./renderHeader.js";
+carregarHeader("home");
+
 // Função para gerar iniciais do nome
 function getInitials(name) {
   return name

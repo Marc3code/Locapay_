@@ -4,6 +4,10 @@ const API_INQUILINOS =
 const API_VINCULAR =
   "https://backend-isolado-production.up.railway.app/inquilinos/inquilino-imovel";
 
+import { carregarHeader } from "./renderHeader.js";
+carregarHeader("imoveis"); 
+
+
 // --- Buscar imóveis ---
 async function buscarImoveis() {
   try {
