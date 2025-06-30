@@ -93,14 +93,14 @@ async function renderInquilinosList() {
     tbody.innerHTML = "";
 
     inquilinosData.forEach((inquilino) => {
-      console.log(inquilino)
+      console.log(inquilino);
       const row = document.createElement("tr");
       row.style.cursor = "pointer";
 
       row.addEventListener("click", () => {
-        window.location.href = `detalhe_inquilino.html?inquilino_id=${inquilino.inquilino_id}`;
+        window.location.href = `/pages/detalhe_inquilino.html?inquilino_id=${inquilino.inquilino_id}`;
       });
-      
+
       const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${
         inquilino.complemento ? " - " + inquilino.complemento : ""
       }`;
