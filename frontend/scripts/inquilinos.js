@@ -1,8 +1,8 @@
-const API_INQUILINOS = "https://backend-isolado-production.up.railway.app/inquilinos";
-
+const API_INQUILINOS =
+  "https://backend-isolado-production.up.railway.app/inquilinos";
 
 import { carregarHeader } from "./renderHeader.js";
-carregarHeader("inquilinos"); 
+carregarHeader("inquilinos");
 
 // Buscar inquilinos
 async function buscarInquilinos() {
@@ -55,24 +55,26 @@ function renderInquilinos(lista) {
 }
 
 // Cadastro via formulário
-document.getElementById("form-inquilino").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document
+  .getElementById("form-inquilino")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const nome = document.getElementById("nome").value;
-  const telefone = document.getElementById("telefone").value;
-  const email = document.getElementById("email").value;
+    const nome = document.getElementById("nome").value;
+    const CPF = document.getElementById("CPF").value;
+    const telefone = document.getElementById("telefone").value;
 
-  if (!nome || !telefone || !email) {
-    alert("Preencha todos os campos.");
-    return;
-  }
+    if (!nome || !telefone || !CPF) {
+      alert("Preencha todos os campos.");
+      return;
+    }
 
-  const novo = { nome, telefone, email };
-  await cadastrarInquilino(novo);
-  document.getElementById("form-inquilino").reset();
-  const lista = await buscarInquilinos();
-  renderInquilinos(lista);
-});
+    const novo = { nome, telefone, CPF };
+    await cadastrarInquilino(novo);
+    document.getElementById("form-inquilino").reset();
+    const lista = await buscarInquilinos();
+    renderInquilinos(lista);
+  });
 
 // Mostrar/ocultar formulário
 document.getElementById("btn-toggle-form").addEventListener("click", () => {
