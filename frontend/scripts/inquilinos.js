@@ -1,5 +1,4 @@
-const API_INQUILINOS =
-  "https://backend-isolado-production.up.railway.app/inquilinos";
+const API_INQUILINOS = "https://backend-isolado-production.up.railway.app/inquilinos";
 
 import { carregarHeader } from "./renderHeader.js";
 carregarHeader("inquilinos");
@@ -18,6 +17,7 @@ async function buscarInquilinos() {
 
 // Cadastrar novo inquilino
 async function cadastrarInquilino(inquilino) {
+    console.log(inquilino)
   try {
     const res = await fetch(API_INQUILINOS, {
       method: "POST",
@@ -60,16 +60,16 @@ document
   .addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nome = document.getElementById("nome").value;
-    const CPF = document.getElementById("CPF").value;
-    const telefone = document.getElementById("telefone").value;
+    const name = document.getElementById("nome").value;
+    const cpfCnpj = document.getElementById("CPF").value;
+    const phone = document.getElementById("telefone").value;
 
     if (!nome || !telefone || !CPF) {
       alert("Preencha todos os campos.");
       return;
     }
 
-    const novo = { nome, telefone, CPF };
+    const novo = { name, phone, cpfCnpj };
     await cadastrarInquilino(novo);
     document.getElementById("form-inquilino").reset();
     const lista = await buscarInquilinos();
