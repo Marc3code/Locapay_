@@ -91,7 +91,7 @@ const criarInquilino = async ( name, phone, cpfCnpj ) => {
     });
 
     await connection.query(
-      "UPDATE inquilinos SET id_asaas = ? WHERE inquilino_id = ?",
+      "UPDATE inquilinos SET id_asaas = ? WHERE id = ?",
       [id_asaas, results.insertId]
     );
 
