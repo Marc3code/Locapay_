@@ -1,12 +1,9 @@
 const API_IMOVEIS = "https://backend-isolado-production.up.railway.app/imoveis";
-const API_INQUILINOS =
-  "https://backend-isolado-production.up.railway.app/inquilinos";
-const API_VINCULAR =
-  "https://backend-isolado-production.up.railway.app/inquilinos/inquilino-imovel";
+const API_INQUILINOS = "https://backend-isolado-production.up.railway.app/inquilinos";
+const API_VINCULAR = "https://backend-isolado-production.up.railway.app/inquilinos/inquilino-imovel";
 
 import { carregarHeader } from "./renderHeader.js";
-carregarHeader("imoveis"); 
-
+carregarHeader("imoveis");
 
 // --- Buscar imóveis ---
 async function buscarImoveis() {
@@ -54,7 +51,7 @@ async function vincularInquilino(dados) {
     const res = await fetch(API_VINCULAR, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dados),
+      body: JSON.stringify( dados ),
     });
     if (!res.ok) throw new Error("Erro ao vincular inquilino");
     alert("Inquilino vinculado com sucesso!");
@@ -82,16 +79,21 @@ function renderImoveis(lista) {
       <td>${imovel.endereco}</td>
       <td>${imovel.numero}</td>
     `;
-    tr.addEventListener("click", () => abrirFormularioVinculo(imovel.endereco));
+    tr.addEventListener("click", () =>
+      abrirFormularioVinculo(imovel.endereco, imovel.id)
+    );
     tbody.appendChild(tr);
   });
 }
 
 // --- Exibe formulário de vinculação ---
-async function abrirFormularioVinculo(imovelEndereco) {
+async function abrirFormularioVinculo(imovelEndereco, imovelId) {
   const inquilinos = await buscarInquilinos();
   const container = document.getElementById("formulario-vinculo-container");
   const selectInquilino = container.querySelector("#inquilino_id");
+
+  // Salva o ID do imóvel como atributo de dados
+  container.dataset.imovelId = imovelId;
 
   // Preenche o select de inquilinos
   selectInquilino.innerHTML =
@@ -103,19 +105,16 @@ async function abrirFormularioVinculo(imovelEndereco) {
     selectInquilino.appendChild(option);
   });
 
-  // Atualiza o título com o ID do imóvel
+  // Atualiza o título do formulário
   container.querySelector(
     "h3"
   ).textContent = `Vincular Inquilino ao Imóvel do Endereço: ${imovelEndereco}`;
 
-  // Mostra o formulário
   container.classList.remove("hidden");
-
-  // Foca no primeiro campo
   selectInquilino.focus();
 }
 
-// Fechar formulário de vinculação
+// Fechar formulário
 document.getElementById("close-vinculo-form")?.addEventListener("click", () => {
   document
     .getElementById("formulario-vinculo-container")
@@ -128,37 +127,33 @@ document.getElementById("btn-cancelar")?.addEventListener("click", () => {
     .classList.add("hidden");
 });
 
-// --- Vincular inquilino ---
-document
-  .getElementById("form-vinculo")
-  ?.addEventListener("submit", async (e) => {
-    e.preventDefault();
+// --- Envio do formulário de vínculo ---
+document.getElementById("form-vinculo")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const container = document.getElementById("formulario-vinculo-container");
-    const imovelId = parseInt(
-      container.querySelector("h3").textContent.match(/#(\d+)/)[1]
-    );
+  const container = document.getElementById("formulario-vinculo-container");
+  const imovelId = parseInt(container.dataset.imovelId); // agora seguro
 
-    const payload = {
-      inquilino_id: parseInt(document.getElementById("inquilino_id").value),
-      imovel_id: imovelId,
-      valor_aluguel: parseFloat(document.getElementById("valor_aluguel").value),
-      complemento: document.getElementById("complemento").value,
-      data_inicio: document.getElementById("data_inicio").value,
-      data_vencimento: document.getElementById("data_vencimento").value,
-      data_fim: document.getElementById("data_fim").value || null,
-    };
+  const payload = {
+    inquilino_id: parseInt(document.getElementById("inquilino_id").value),
+    imovel_id: imovelId,
+    valor_aluguel: parseFloat(document.getElementById("valor_aluguel").value),
+    complemento: document.getElementById("complemento").value,
+    data_inicio: document.getElementById("data_inicio").value,
+    data_vencimento: document.getElementById("data_vencimento").value,
+    data_fim: document.getElementById("data_fim").value || null,
+  };
 
-    try {
-      await vincularInquilino(payload);
-      container.classList.add("hidden");
-      document.getElementById("form-vinculo").reset();
-    } catch (err) {
-      console.error("Erro ao vincular:", err);
-    }
-  });
+  try {
+    await vincularInquilino(payload);
+    container.classList.add("hidden");
+    document.getElementById("form-vinculo").reset();
+  } catch (err) {
+    console.error("Erro ao vincular:", err);
+  }
+});
 
-// --- Cadastro do imóvel ---
+// --- Cadastro de imóvel ---
 document
   .getElementById("form-imovel")
   .addEventListener("submit", async function (e) {
@@ -181,12 +176,13 @@ document
     renderImoveis(imoveis);
   });
 
-// --- Carregar ao iniciar ---
+// --- Inicialização ---
 document.addEventListener("DOMContentLoaded", async () => {
   const imoveis = await buscarImoveis();
   renderImoveis(imoveis);
 });
 
+// Botão de mostrar/ocultar formulário de imóvel
 document.getElementById("btn-toggle-form").addEventListener("click", () => {
   document.getElementById("form-section").classList.toggle("hidden");
 });

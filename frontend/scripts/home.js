@@ -93,7 +93,6 @@ async function renderInquilinosList() {
     tbody.innerHTML = "";
 
     inquilinosData.forEach((inquilino) => {
-      console.log(inquilino)
       const row = document.createElement("tr");
       row.style.cursor = "pointer";
 
