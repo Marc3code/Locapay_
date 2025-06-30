@@ -57,19 +57,16 @@ async function getInquilinosComImovel() {
   return results;
 }
 
-
-
 // ------------------ SERVICES PUT ------------------
 const atualizarDataVencimento = async (novaData, id) => {
-  console.log("data que chega no service: ", novaData)
+  console.log("data que chega no service: ", novaData);
   const query = `UPDATE inquilinos_imoveis SET data_vencimento = ? WHERE inquilino_id = ?`;
   const values = [novaData, id];
 
   try {
     const [result] = await db.query(query, values);
 
-    return result; 
-
+    return result;
   } catch (err) {
     console.error("Erro ao atualizar data de vencimento:", err);
     return { erro: "Erro interno no servidor." };
@@ -77,30 +74,42 @@ const atualizarDataVencimento = async (novaData, id) => {
 };
 
 // ------------------ SERVICES POST ------------------
-const criarInquilino = async ({ name, phone, cpfCnpj }) => {
-  const [results] = await db.query(
-    "INSERT INTO inquilinos (nome, telefone, cpfCnpj) VALUES (?, ?, ?)",
-    [name, phone, cpfCnpj]
-  );
+const criarInquilino = async ( name, phone, cpfCnpj ) => {
+  const connection = await db.getConnection();
+  try {
+    await connection.beginTransaction();
 
-  const id_asaas = await asaasService.criarClienteAsaas({
-    name,
-    phone,
-    cpfCnpj,
-  });
+    const [results] = await connection.query(
+      "INSERT INTO inquilinos (nome, telefone, cpfCnpj) VALUES (?, ?, ?)",
+      [name, phone, cpfCnpj]
+    );
 
-  await db.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [
-    id_asaas,
-    results.insertId,
-  ]);
+    const id_asaas = await asaasService.criarClienteAsaas({
+      name,
+      phone,
+      cpfCnpj,
+    });
 
-  return {
-    id: results.insertId,
-    name,
-    phone,
-    cpfCnpj,
-    id_asaas,
-  };
+    await connection.query(
+      "UPDATE inquilinos SET id_asaas = ? WHERE inquilino_id = ?",
+      [id_asaas, results.insertId]
+    );
+
+    await connection.commit();
+
+    return {
+      id: results.insertId,
+      name,
+      phone,
+      cpfCnpj,
+      id_asaas,
+    };
+  } catch (err) {
+    await connection.rollback();
+    throw err;
+  } finally {
+    connection.release();
+  }
 };
 
 const vincularInquilinoImovel = async ({
@@ -154,5 +163,5 @@ module.exports = {
 
   vincularInquilinoImovel,
 
-  buscarTelefonePorCustomerId
+  buscarTelefonePorCustomerId,
 };

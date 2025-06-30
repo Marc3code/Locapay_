@@ -78,13 +78,16 @@ const atualizarDataVencimento = async (req, res) => {
 
 // ------------------ ROTAS POST ------------------
 async function criarInquilino(req, res) {
-  const { name, phone, cpfCnpj } = req.body;
+  const name = req.body.name;
+  const phone = req.body.phone;
+  const cpfCnpj = req.body.cpfCnpj;
+
   try {
-    const novoInquilino = await inquilinoService.criarInquilino({
+    const novoInquilino = await inquilinoService.criarInquilino(
       name,
       phone,
-      cpfCnpj,
-    });
+      cpfCnpj
+    );
     res.status(201).json(novoInquilino);
   } catch (err) {
     console.error("Erro ao adicionar inquilino:", err);
@@ -106,7 +109,9 @@ async function vincularInquilinoImovel(req, res) {
 async function bsucarTelefonePorCustomerId(req, res) {
   const { customerId } = req.params;
   try {
-    const telefone = await inquilinoService.buscarTelefonePorCustomerId(customerId);
+    const telefone = await inquilinoService.buscarTelefonePorCustomerId(
+      customerId
+    );
     if (telefone) {
       res.json(telefone);
     } else {
@@ -126,5 +131,5 @@ module.exports = {
   criarInquilino,
   atualizarDataVencimento,
   vincularInquilinoImovel,
-  bsucarTelefonePorCustomerId
+  bsucarTelefonePorCustomerId,
 };
