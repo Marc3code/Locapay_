@@ -68,6 +68,6 @@ async function gerarCobrancasDoMes() {
     console.log("🏁 Processamento concluído");
   }
 }
-gerarCobrancasDoMes();
+
 
 module.exports = gerarCobrancasDoMes;
