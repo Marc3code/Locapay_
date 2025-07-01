@@ -87,7 +87,7 @@ const criarInquilino = async (name, phone, cpf_cnpj) => {
     const id_asaas = await asaasService.criarClienteAsaas({
       name,
       phone,
-      cpf_cnpj,
+      cpfCnpj: cpf_cnpj,
     });
 
     await connection.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [

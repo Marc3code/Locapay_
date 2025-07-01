@@ -33,10 +33,12 @@ async function gerarCobrancasDoMes() {
         // 4. Gera a cobrança no sistema de pagamentos
 
         const cobrancaGerada = await cobrancaService.gerarCobranca({
+          contrato_id: inquilino.contrato_id,
           id_asaas: inquilino.id_asaas,
           inquilino_id: inquilino.inquilino_id,
           valor: inquilino.valor_aluguel,
           data_vencimento: dataVencimento,
+
         });
 
         // 5. Atualiza próxima data de vencimento

@@ -10,7 +10,7 @@ const getCobrancasPendentes = async () => {
       i.id AS inquilino_id,
       i.nome AS nome_inquilino,
       i.telefone AS telefone_inquilino,
-      i.id_asaas
+      i.id_asaas,
     FROM contratos c
     JOIN inquilinos i ON c.inquilino_id = i.id
     WHERE c.status = 'ativo'
@@ -31,11 +31,13 @@ const criarCobrancaPix = async ({
   valor,
   data_vencimento,
   contrato_id,
+  cpf_cnpj
 }) => {
   const pagamento = await asaasService.gerarPagamentoPix(
     id_asaas,
     valor,
-    data_vencimento
+    data_vencimento,
+    cpf_cnpj
   );
 
   const query = `

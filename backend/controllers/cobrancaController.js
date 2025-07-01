@@ -67,7 +67,7 @@ async function criarCobrancaPix(req, res) {
       id_asaas,
       valor,
       data_vencimento,
-      contrato_id,
+      contrato_id
     });
 
     res.json(pagamento);
