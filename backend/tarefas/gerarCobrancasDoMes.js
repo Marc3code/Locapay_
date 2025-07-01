@@ -2,7 +2,6 @@ const formatDate = require("../utils/formatDate");
 const gerarProximaData = require("../utils/gerarProximaDataVencimento");
 const cobrancaService = require("./services/cobrancaService");
 
-
 async function gerarCobrancasDoMes() {
   const hoje = formatDate(new Date());
   console.log("🗓️ Gerando cobranças do mês - Data atual:", hoje);
@@ -32,6 +31,7 @@ async function gerarCobrancasDoMes() {
         const dataVencimento = formatDate(inquilino.data_vencimento);
 
         // 4. Gera a cobrança no sistema de pagamentos
+
         const cobrancaGerada = await cobrancaService.gerarCobranca({
           id_asaas: inquilino.id_asaas,
           inquilino_id: inquilino.inquilino_id,
@@ -39,7 +39,6 @@ async function gerarCobrancasDoMes() {
           data_vencimento: dataVencimento,
         });
 
-      
         // 5. Atualiza próxima data de vencimento
         const novaDataVencimento = gerarProximaData(inquilino.data_vencimento);
 
@@ -54,7 +53,7 @@ async function gerarCobrancasDoMes() {
         );
       } catch (error) {
         console.error(
-          `❌ Falha no inquilino ${inquilino.nome}:`,
+          `❌ Falha no inquilino ${inquilino.nome_inquilino}:`,
           error.message
         );
         continue;
@@ -68,7 +67,6 @@ async function gerarCobrancasDoMes() {
   }
 }
 
-
-
+gerarCobrancasDoMes();
 
 module.exports = gerarCobrancasDoMes;
