@@ -98,13 +98,14 @@ async function criarInquilino(req, res) {
 async function vincularInquilinoImovel(req, res) {
   try {
     const dados = req.body;
-    const vinculo = await inquilinoService.vincularInquilinoImovel(dados);
+    const vinculo = await inquilinoService.vincularContrato(dados);
     res.status(201).json(vinculo);
   } catch (err) {
     console.error("Erro ao vincular inquilino a imóvel:", err);
     res.status(500).json({ erro: "Erro ao vincular inquilino a imóvel" });
   }
 }
+
 
 async function bsucarTelefonePorCustomerId(req, res) {
   const { customerId } = req.params;

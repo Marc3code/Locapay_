@@ -112,7 +112,7 @@ const criarInquilino = async ( name, phone, cpf_cnpj ) => {
   }
 };
 
-const vincularInquilinoImovel = async ({
+const vincularContrato = async ({
   inquilino_id,
   imovel_id,
   valor_aluguel,
@@ -123,15 +123,15 @@ const vincularInquilinoImovel = async ({
   complemento,
 }) => {
   const [results] = await db.query(
-    `INSERT INTO inquilinos_imoveis 
-     (inquilino_id, imovel_id, valor_aluguel, data_vencimento, data_inicio, data_fim, status, complemento) 
+    `INSERT INTO contratos 
+     (inquilino_id, imovel_id, valor_aluguel, data_inicio, data_vencimento, data_fim, status, complemento) 
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       inquilino_id,
       imovel_id,
       valor_aluguel,
-      data_vencimento,
       data_inicio || null,
+      data_vencimento || null,
       data_fim || null,
       status || "ativo",
       complemento || null,
@@ -143,13 +143,14 @@ const vincularInquilinoImovel = async ({
     inquilino_id,
     imovel_id,
     valor_aluguel,
-    data_vencimento,
     data_inicio,
+    data_vencimento,
     data_fim,
-    status,
+    status: status || "ativo",
     complemento,
   };
 };
+
 
 module.exports = {
   getTodosInquilinos,
@@ -161,7 +162,7 @@ module.exports = {
 
   criarInquilino,
 
-  vincularInquilinoImovel,
+  vincularContrato,
 
   buscarTelefonePorCustomerId,
 };
