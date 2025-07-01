@@ -10,7 +10,7 @@ const getCobrancasPendentes = async () => {
       i.id AS inquilino_id,
       i.nome AS nome_inquilino,
       i.telefone AS telefone_inquilino,
-      i.id_asaas,
+      i.id_asaas
     FROM contratos c
     JOIN inquilinos i ON c.inquilino_id = i.id
     WHERE c.status = 'ativo'
