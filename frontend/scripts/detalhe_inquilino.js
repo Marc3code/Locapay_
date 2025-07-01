@@ -46,7 +46,7 @@ async function carregarDados() {
     infoDiv.innerHTML = `
             <p><strong>Nome:</strong> ${inquilino.nome}</p>
             <p><strong>Telefone:</strong> ${inquilino.telefone}</p>
-            <p><strong>CPF/CNPJ:</strong> ${inquilino.cpfCnpj}</p>
+            <p><strong>CPF/CNPJ:</strong> ${inquilino.cpf_cnpj}</p>
             <p><strong>Endereço:</strong> ${inquilino.endereco}, ${
       inquilino.numero
     } ${inquilino.complemento || ""}</p>

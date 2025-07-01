@@ -1,6 +1,6 @@
 import { buscarInquilinos, buscarPagamentos } from "./service.js";
-
 import { carregarHeader } from "./renderHeader.js";
+
 carregarHeader("home");
 
 // Função para gerar iniciais do nome
@@ -48,19 +48,13 @@ function atualizarCards(pagamentos) {
   }
 
   document.getElementById("qtd-em-dia").textContent = qtdEmDia;
-  document.getElementById(
-    "desc-pagos"
-  ).textContent = `${qtdEmDia} inquilino(s) em dia`;
+  document.getElementById("desc-pagos").textContent = `${qtdEmDia} inquilino(s) em dia`;
 
   document.getElementById("qtd-pendentes").textContent = qtdPendentes;
-  document.getElementById(
-    "desc-pendentes"
-  ).textContent = `${qtdPendentes} inquilino(s) com pagamento pendente`;
+  document.getElementById("desc-pendentes").textContent = `${qtdPendentes} inquilino(s) com pagamento pendente`;
 
   document.getElementById("qtd-atrasados").textContent = qtdAtrasados;
-  document.getElementById(
-    "desc-atrasados"
-  ).textContent = `${qtdAtrasados} inquilino(s) com pagamento(s) atrasado(s)`;
+  document.getElementById("desc-atrasados").textContent = `${qtdAtrasados} inquilino(s) com pagamento(s) atrasado(s)`;
 }
 
 async function renderInquilinosList() {
@@ -81,12 +75,13 @@ async function renderInquilinosList() {
 
     const pagamentosDoMes = todosPagamentos.filter((p) => {
       const venc = new Date(p.due_date);
-      return venc.getMonth() === mesAtual && venc.getFullYear() === anoAtual;
+      const mes = venc.getMonth();
+      const ano = venc.getFullYear();
+      return mes === mesAtual && ano === anoAtual;
     });
 
     if (inquilinosData.length === 0) {
-      tbody.innerHTML =
-        '<tr><td colspan="6">Nenhum inquilino encontrado</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6">Nenhum inquilino encontrado</td></tr>';
       return;
     }
 
@@ -99,13 +94,11 @@ async function renderInquilinosList() {
       row.addEventListener("click", () => {
         window.location.href = `../public/detalhe_inquilino?inquilino_id=${inquilino.inquilino_id}`;
       });
-      
-      const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${
-        inquilino.complemento ? " - " + inquilino.complemento : ""
-      }`;
+
+      const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${inquilino.complemento ? " - " + inquilino.complemento : ""}`;
 
       const pagamento = pagamentosDoMes.find(
-        (p) => p.inquilino_id === inquilino.inquilino_id
+        (p) => p.contrato_id === inquilino.contrato_id
       );
 
       let statusText = "-";
@@ -120,17 +113,13 @@ async function renderInquilinosList() {
           statusText = "Atrasado";
           statusClass = "atrasado";
           vencimentoClass = "overdue-date";
-        }
-         else if (pagamento.status === "pago") {
+        } else if (pagamento.status === "pago") {
           statusText = "Pago";
           statusClass = "pago";
-          vencimentoClass = "due-date";
         }
       }
 
-      const vencimentoFormatado = pagamento
-        ? formatDate(pagamento.due_date)
-        : "-";
+      const vencimentoFormatado = pagamento ? formatDate(pagamento.due_date) : "-";
 
       row.innerHTML = `
         <td>
