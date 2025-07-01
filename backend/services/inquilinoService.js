@@ -39,20 +39,20 @@ async function getInquilinosComImovel() {
       i.telefone, 
       i.cpf_cnpj,
       i.id_asaas,
-      ii.id AS relacao_id,
-      ii.valor_aluguel, 
-      ii.data_vencimento,
-      ii.data_inicio,
-      ii.data_fim,
-      ii.status,
-      ii.complemento,
+      c.id AS contrato_id,
+      c.valor_aluguel, 
+      c.data_vencimento,
+      c.data_inicio,
+      c.data_fim,
+      c.status,
+      c.complemento,
       im.id AS imovel_id,
       im.tipo AS tipo_imovel, 
       im.endereco, 
       im.numero
     FROM inquilinos i
-    JOIN inquilinos_imoveis ii ON i.id = ii.inquilino_id
-    JOIN imoveis im ON ii.imovel_id = im.id
+    JOIN contratos c ON i.id = c.inquilino_id
+    JOIN imoveis im ON c.imovel_id = im.id
   `);
   return results;
 }
@@ -74,7 +74,7 @@ const atualizarDataVencimento = async (novaData, id) => {
 };
 
 // ------------------ SERVICES POST ------------------
-const criarInquilino = async ( name, phone, cpf_cnpj ) => {
+const criarInquilino = async (name, phone, cpf_cnpj) => {
   const connection = await db.getConnection();
   try {
     await connection.beginTransaction();
@@ -90,10 +90,10 @@ const criarInquilino = async ( name, phone, cpf_cnpj ) => {
       cpf_cnpj,
     });
 
-    await connection.query(
-      "UPDATE inquilinos SET id_asaas = ? WHERE id = ?",
-      [id_asaas, results.insertId]
-    );
+    await connection.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [
+      id_asaas,
+      results.insertId,
+    ]);
 
     await connection.commit();
 
@@ -150,7 +150,6 @@ const vincularContrato = async ({
     complemento,
   };
 };
-
 
 module.exports = {
   getTodosInquilinos,
