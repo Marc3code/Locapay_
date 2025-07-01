@@ -37,7 +37,7 @@ async function getInquilinosComImovel() {
       i.id AS inquilino_id, 
       i.nome, 
       i.telefone, 
-      i.cpfCnpj,
+      i.cpf_cnpj,
       i.id_asaas,
       ii.id AS relacao_id,
       ii.valor_aluguel, 
@@ -74,20 +74,20 @@ const atualizarDataVencimento = async (novaData, id) => {
 };
 
 // ------------------ SERVICES POST ------------------
-const criarInquilino = async ( name, phone, cpfCnpj ) => {
+const criarInquilino = async ( name, phone, cpf_cnpj ) => {
   const connection = await db.getConnection();
   try {
     await connection.beginTransaction();
 
     const [results] = await connection.query(
-      "INSERT INTO inquilinos (nome, telefone, cpfCnpj) VALUES (?, ?, ?)",
-      [name, phone, cpfCnpj]
+      "INSERT INTO inquilinos (nome, telefone, cpf_cnpj) VALUES (?, ?, ?)",
+      [name, phone, cpf_cnpj]
     );
 
     const id_asaas = await asaasService.criarClienteAsaas({
       name,
       phone,
-      cpfCnpj,
+      cpf_cnpj,
     });
 
     await connection.query(
@@ -101,7 +101,7 @@ const criarInquilino = async ( name, phone, cpfCnpj ) => {
       id: results.insertId,
       name,
       phone,
-      cpfCnpj,
+      cpf_cnpj,
       id_asaas,
     };
   } catch (err) {

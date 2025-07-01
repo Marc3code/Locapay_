@@ -3,14 +3,20 @@ const asaasService = require("./asaasService");
 
 const getCobrancasPendentes = async () => {
   const [results] = await db.query(`
-   SELECT ii.*, i.nome AS nome_inquilino, i.telefone AS telefone_inquilino, i.id_asaas FROM inquilinos_imoveis ii JOIN inquilinos i ON ii.inquilino_id = i.id;
+    SELECT 
+      c.*, 
+      i.nome AS nome_inquilino, 
+      i.telefone AS telefone_inquilino, 
+      i.id_asaas 
+    FROM contratos c 
+    JOIN inquilinos i ON c.inquilino_id = i.id;
   `);
   return results;
 };
 
 const getDataVencimentoPorId = async (inquilinoid) => {
   const [result] = await db.query(
-    "SELECT data_vencimento FROM inquilinos_imoveis WHERE inquilino_id = ?",
+    `SELECT data_vencimento FROM contratos WHERE inquilino_id = ?`,
     [inquilinoid]
   );
   return result;
@@ -20,7 +26,7 @@ const criarCobrancaPix = async ({
   id_asaas,
   valor,
   data_vencimento,
-  inquilino_id,
+  contrato_id,
 }) => {
   const pagamento = await asaasService.gerarPagamentoPix(
     id_asaas,
@@ -30,11 +36,11 @@ const criarCobrancaPix = async ({
 
   const query = `
     INSERT INTO pagamentos 
-    (inquilino_id, asaas_payment_id, due_date, payment_date, amount, link_pagamento) 
+    (contrato_id, asaas_payment_id, due_date, payment_date, amount, link_pagamento) 
     VALUES (?, ?, ?, ?, ?, ?)`;
 
   const values = [
-    inquilino_id,
+    contrato_id,
     pagamento.id,
     data_vencimento,
     null,
@@ -47,10 +53,15 @@ const criarCobrancaPix = async ({
   return pagamento;
 };
 
-const getPendenciasInquilino = async (id) => {
+const getPendenciasInquilino = async (inquilino_id) => {
   const [result] = await db.query(
-    "SELECT link_pagamento, due_date FROM pagamentos WHERE inquilino_id = ? AND (status = 'pendente' OR status = 'atrasado')",
-    [id]
+    `
+    SELECT p.link_pagamento, p.due_date 
+    FROM pagamentos p
+    JOIN contratos c ON p.contrato_id = c.id
+    WHERE c.inquilino_id = ? AND (p.status = 'pendente' OR p.status = 'atrasado')
+    `,
+    [inquilino_id]
   );
   return result;  
 };
