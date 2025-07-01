@@ -1,7 +1,8 @@
-home {//AJUSTAR LOGICA DOS CARDS, TA MOSTRANDO SÓ 1 VENCIDO, MAS ERA PRA TER 2}
+home {}
 
-inquilinos {}
+inquilinos {inativar inquilino}
 
-Imoveis {}
+Imoveis {inativar imovel}
 
-cobrancas {}
+detalhe_inquilino {remover passagem do id pela url}
+
