@@ -30,10 +30,9 @@ const getCobrancasPendentes = async (req, res) => {
   try {
     const response = await cobrancaService.getCobrancasPendentes();
 
-    if (!response) {
-      return res
-        .status(404)
-        .json({ erro: "Cobranças não encontradas." });
+
+    if (!response || response.length === 0) {
+      return res.status(404).json({ erro: "Cobranças não encontradas." });
     }
 
     return res.status(200).json(response);
@@ -42,6 +41,7 @@ const getCobrancasPendentes = async (req, res) => {
     res.status(500).json({ erro: "Erro ao buscar cobranças ativas." });
   }
 };
+
 
 const getPendenciasInquilino = async (req, res) => {
   const { id } = req.params;
