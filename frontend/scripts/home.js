@@ -108,8 +108,8 @@ async function renderInquilinosList() {
         (p) => p.inquilino_id === inquilino.inquilino_id
       );
 
-      let statusText = "Pendente";
-      let statusClass = "pendente";
+      let statusText = "-";
+      let statusClass = "-";
       let vencimentoClass = "due-date";
 
       if (pagamento) {
@@ -120,6 +120,11 @@ async function renderInquilinosList() {
           statusText = "Atrasado";
           statusClass = "atrasado";
           vencimentoClass = "overdue-date";
+        }
+         else if (pagamento.status === "pago") {
+          statusText = "Pago";
+          statusClass = "pago";
+          vencimentoClass = "due-date";
         }
       }
 
