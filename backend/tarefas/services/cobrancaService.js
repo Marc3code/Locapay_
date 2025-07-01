@@ -3,7 +3,7 @@ const API_BASE = "https://backend-isolado-production.up.railway.app";
 
 async function buscarCobrancas() {
   try {
-    const response = await fetch(`${API_BASE}/cobrancas/pendentes`, {
+    const response = await fetch(`${API_BASE}/cobrancas/`, {
       headers: { 'Content-Type': 'application/json' }
     });
     
