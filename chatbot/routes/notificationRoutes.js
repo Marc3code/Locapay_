@@ -31,4 +31,10 @@ router.post(
   notificationController.enviarNotificacaoPagamentoRealizadoController
 );
 
+router.post(
+  "/boas_vindas",
+  notificationController.enviarNotificacaoBoasVindasController
+);
+
+
 module.exports = router;

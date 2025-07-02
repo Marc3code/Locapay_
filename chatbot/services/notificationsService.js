@@ -72,9 +72,28 @@ async function enviarNotificacao3DiasAntes (data, telefone) {
   }
 };
 
+async function enviarNotificacaoBoasVindas (data, telefone) {
+  try {
+    const envio = await notificacoes.enviarNotificacaoBoasVindas(
+      data,
+      telefone
+    );
+    if (!envio.ok) {
+      return {
+        ok: false,
+        error: `Erro ao enviar notificação de pagamento realizado: ${envio.error}`,
+      };
+    }
+    return { ok: true, sid: envio.sid };
+  } catch (err) {
+    return { ok: false, error: err.message || err.toString() };
+  }
+};
+
 module.exports = {
   enviarNotificacaoCobrancadoMesService,
   enviarNotificacaoPagamentoAtrasado,
   enviarNotificacaoPagamentoRealizado,
-  enviarNotificacao3DiasAntes
+  enviarNotificacao3DiasAntes,
+  enviarNotificacaoBoasVindas
 };
