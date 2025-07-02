@@ -33,7 +33,29 @@ exports.handleWebhook = async (req, res) => {
     const link = await inquilinosService.buscarLinkPagamento(inquilino.id);
     resposta = `💳 Link para pagamento do aluguel:\n${link.paymentLink}`;
   } else if (text === "2") {
-    resposta = "🔍 Verificando pendências...";
+    const pagamentosAtrasados =
+      await inquilinosService.buscarPagamentosAtrasados(inquilino.id);
+    const pagamentosPendentes =
+      await inquilinosService.buscarPagamentosPendentes(inquilino.id);
+
+    const qtdAtrasados = pagamentosAtrasados.length;
+    const qtdPendentes = pagamentosPendentes.length;
+
+    resposta = `🔎 Situação de pagamentos:\n\n`;
+
+    if (qtdAtrasados > 0) {
+      resposta += `• ${qtdAtrasados} pagamento${
+        qtdAtrasados > 1 ? "s" : ""
+      } atrasado${qtdAtrasados > 1 ? "s" : ""}.\n`;
+    } else {
+      resposta += `• Nenhum pagamento atrasado.\n`;
+    }
+
+    if (qtdPendentes === 1) {
+      resposta += `• 1 pagamento pendente.`;
+    } else {
+      resposta += `• Nenhum pagamento pendente.`;
+    }
   } else {
     resposta =
       "❌ Não entendi o que você quis dizer.\nDigite *menu* para ver as opções.";
