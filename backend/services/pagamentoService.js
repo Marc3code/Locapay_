@@ -17,6 +17,22 @@ async function getLinkPagamentoPendente(inquilino_id) {
   return results.length > 0 ? results[0].link_pagamento : null;
 }
 
+async function buscarPagamentosAtrasados(inquilino_id) {
+  const [results] = await db.query(
+    `SELECT * FROM pagamentos where inquilino_id = ? and status = 'atrasado' ORDER BY due_date ASC`,
+    [inquilino_id]
+  );
+  return results;
+}
+
+async function buscarPagamentosPendentes(inquilino_id) {
+  const [results] = await db.query(
+    `SELECT * FROM pagamentos where inquilino_id = ? and status = 'pendente' ORDER BY due_date ASC`,
+    [inquilino_id]
+  );
+  return results;
+}
+
 async function atualizarStatusPagamento(paymentId, status) {
   const query = `UPDATE pagamentos SET status = ? WHERE asaas_payment_id = ?`;
 
@@ -42,4 +58,6 @@ module.exports = {
   getTodosPagamentos,
   getLinkPagamentoPendente,
   atualizarStatusPagamento,
+  buscarPagamentosAtrasados,
+  buscarPagamentosPendentes
 };

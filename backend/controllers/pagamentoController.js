@@ -29,6 +29,42 @@ async function buscarLinkPagamento(req, res) {
   }
 }
 
+async function buscarPagamentosAtrasados(req, res) {
+  const { inquilino_id } = req.params;
+  try {
+    const pagamentos = await pagamentoService.buscarPagamentosAtrasados(inquilino_id);
+    if (pagamentos) {
+      res.json({ success: true, paymentLink: link });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "Nenhum pagamento atrasado encontrado",
+      });
+    }
+  } catch (err) {
+    console.error("Erro ao buscar pagamentos:", err);
+    res.status(500).json({ success: false, error: "Erro interno no servidor" });
+  }
+}
+
+async function buscarPagamentosPendentes(req, res) {
+  const { inquilino_id } = req.params;
+  try {
+    const pagamentos = await pagamentoService.buscarPagamentosPendentes(inquilino_id);
+    if (pagamentos) {
+      res.json({ success: true, paymentLink: link });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "Nenhum pagamento pendente encontrado",
+      });
+    }
+  } catch (err) {
+    console.error("Erro ao buscar pagamentos:", err);
+    res.status(500).json({ success: false, error: "Erro interno no servidor" });
+  }
+}
+
 async function atualizarStatusPagamento(req, res) {
   const paymentId = req.body.paymentId; // Corrigido para camelCase
   const status = req.body.status;
@@ -72,4 +108,6 @@ module.exports = {
   listarTodos,
   buscarLinkPagamento,
   atualizarStatusPagamento,
+  buscarPagamentosAtrasados,
+  buscarPagamentosPendentes
 };
