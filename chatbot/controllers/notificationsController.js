@@ -93,9 +93,7 @@ async function enviarNotificacaoBoasVindasController (req, res) {
   try {
     const telefone = req.body.telefone;
 
-    const envio = await notificationService.enviarNotificacaoBoasVindas(
-      telefone
-    );
+    const envio = await notificationService.enviarNotificacaoBoasVindas(telefone);
 
     if (!envio.ok) {
       return res.status(400).json(envio);

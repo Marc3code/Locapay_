@@ -1,11 +1,11 @@
 const {
-  formatarNumeroWhatsappSemNonoDigito,
+  formatarNumeroWhatsapp,
 } = require("../utils/formatNumber");
 
 const { client, FROM_NUMBER } = require("./twilioClient");
 
 const enviarNotificacaoBoasVindas = (telefone) => {
-  const numeroFormatado = formatarNumeroWhatsappSemNonoDigito(telefone);
+  const numeroFormatado = formatarNumeroWhatsapp(telefone);
 
   const mensagem = `Olá! 👋 Seja bem-vindo(a) ao nosso sistema de gestão de aluguéis.
 
