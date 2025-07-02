@@ -2,8 +2,8 @@ import { buscarInquilinos, buscarPagamentos } from "./service.js";
 
 function formatDate(dateString) {
   if (!dateString) return "-";
-  const d = new Date(dateString);
-  return d.toLocaleDateString("pt-BR");
+  const [year, month, day] = dateString.split("T")[0].split("-");
+  return `${day}/${month}/${year}`;
 }
 
 function formatCurrency(value) {
@@ -42,7 +42,7 @@ async function carregarDados() {
     const pagamentosInquilino = pagamentos.filter(
       (p) => p.contrato_id === inquilino.contrato_id
     );
-    
+
     infoDiv.style.display = "block";
     infoDiv.classList.remove("loading");
     infoDiv.innerHTML = `

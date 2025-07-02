@@ -14,9 +14,9 @@ function getInitials(name) {
 
 // Função para formatar data (YYYY-MM-DD para DD/MM/YYYY)
 function formatDate(dateString) {
-  if (!dateString) return "";
-  const date = new Date(dateString);
-  return date.toLocaleDateString("pt-BR");
+  if (!dateString) return "-";
+  const [year, month, day] = dateString.split("T")[0].split("-");
+  return `${day}/${month}/${year}`;
 }
 
 function atualizarCards(pagamentos) {
@@ -48,13 +48,19 @@ function atualizarCards(pagamentos) {
   }
 
   document.getElementById("qtd-em-dia").textContent = qtdEmDia;
-  document.getElementById("desc-pagos").textContent = `${qtdEmDia} inquilino(s) em dia`;
+  document.getElementById(
+    "desc-pagos"
+  ).textContent = `${qtdEmDia} inquilino(s) em dia`;
 
   document.getElementById("qtd-pendentes").textContent = qtdPendentes;
-  document.getElementById("desc-pendentes").textContent = `${qtdPendentes} inquilino(s) com pagamento pendente`;
+  document.getElementById(
+    "desc-pendentes"
+  ).textContent = `${qtdPendentes} inquilino(s) com pagamento pendente`;
 
   document.getElementById("qtd-atrasados").textContent = qtdAtrasados;
-  document.getElementById("desc-atrasados").textContent = `${qtdAtrasados} inquilino(s) com pagamento(s) atrasado(s)`;
+  document.getElementById(
+    "desc-atrasados"
+  ).textContent = `${qtdAtrasados} inquilino(s) com pagamento(s) atrasado(s)`;
 }
 
 async function renderInquilinosList() {
@@ -81,7 +87,8 @@ async function renderInquilinosList() {
     });
 
     if (inquilinosData.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6">Nenhum inquilino encontrado</td></tr>';
+      tbody.innerHTML =
+        '<tr><td colspan="6">Nenhum inquilino encontrado</td></tr>';
       return;
     }
 
@@ -95,7 +102,9 @@ async function renderInquilinosList() {
         window.location.href = `../public/detalhe_inquilino?inquilino_id=${inquilino.inquilino_id}`;
       });
 
-      const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${inquilino.complemento ? " - " + inquilino.complemento : ""}`;
+      const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${
+        inquilino.complemento ? " - " + inquilino.complemento : ""
+      }`;
 
       const pagamento = pagamentosDoMes.find(
         (p) => p.contrato_id === inquilino.contrato_id
@@ -119,7 +128,9 @@ async function renderInquilinosList() {
         }
       }
 
-      const vencimentoFormatado = pagamento ? formatDate(pagamento.due_date) : "-";
+      const vencimentoFormatado = pagamento
+        ? formatDate(pagamento.due_date)
+        : "-";
 
       row.innerHTML = `
         <td>
