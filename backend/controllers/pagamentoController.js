@@ -12,9 +12,9 @@ async function listarTodos(req, res) {
 }
 
 async function buscarLinkPagamento(req, res) {
-  const { id } = req.params;
+  const { inquilino_id } = req.params;
   try {
-    const link = await pagamentoService.getLinkPagamentoPendente(id);
+    const link = await pagamentoService.getLinkPagamentoPendente(inquilino_id);
     if (link) {
       res.json({ success: true, paymentLink: link });
     } else {
@@ -48,9 +48,9 @@ async function buscarPagamentosAtrasados(req, res) {
 }
 
 async function buscarPagamentosPendentes(req, res) {
-  const { inquilino_id } = req.params;
+  const { id } = req.params;
   try {
-    const pagamentos = await pagamentoService.buscarPagamentosPendentes(inquilino_id);
+    const pagamentos = await pagamentoService.buscarPagamentosPendentes(id);
     if (pagamentos) {
       res.json(pagamentos);
     } else {
@@ -109,5 +109,5 @@ module.exports = {
   buscarLinkPagamento,
   atualizarStatusPagamento,
   buscarPagamentosAtrasados,
-  buscarPagamentosPendentes
+  buscarPagamentosPendentes,
 };
