@@ -92,10 +92,8 @@ async function enviarNotificacao3DiasAntesController (req, res) {
 async function enviarNotificacaoBoasVindasController (req, res) {
   try {
     const telefone = req.body.telefone;
-    const data = req.body.data;
 
     const envio = await notificationService.enviarNotificacaoBoasVindas(
-      data,
       telefone
     );
 

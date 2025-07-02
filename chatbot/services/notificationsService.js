@@ -75,7 +75,6 @@ async function enviarNotificacao3DiasAntes (data, telefone) {
 async function enviarNotificacaoBoasVindas (data, telefone) {
   try {
     const envio = await notificacoes.enviarNotificacaoBoasVindas(
-      data,
       telefone
     );
     if (!envio.ok) {
