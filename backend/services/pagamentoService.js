@@ -19,7 +19,11 @@ async function getLinkPagamentoPendente(inquilino_id) {
 
 async function buscarPagamentosAtrasados(inquilino_id) {
   const [results] = await db.query(
-    `SELECT * FROM pagamentos where inquilino_id = ? and status = 'atrasado' ORDER BY due_date ASC`,
+    `SELECT p.*
+     FROM pagamentos p
+     JOIN contratos c ON p.contrato_id = c.id
+     WHERE c.inquilino_id = ? AND p.status = 'atrasado'
+     ORDER BY p.due_date ASC`,
     [inquilino_id]
   );
   return results;
@@ -27,7 +31,11 @@ async function buscarPagamentosAtrasados(inquilino_id) {
 
 async function buscarPagamentosPendentes(inquilino_id) {
   const [results] = await db.query(
-    `SELECT * FROM pagamentos where inquilino_id = ? and status = 'pendente' ORDER BY due_date ASC`,
+    `SELECT p.*
+     FROM pagamentos p
+     JOIN contratos c ON p.contrato_id = c.id
+     WHERE c.inquilino_id = ? AND p.status = 'pendente'
+     ORDER BY p.due_date ASC`,
     [inquilino_id]
   );
   return results;
@@ -59,5 +67,5 @@ module.exports = {
   getLinkPagamentoPendente,
   atualizarStatusPagamento,
   buscarPagamentosAtrasados,
-  buscarPagamentosPendentes
+  buscarPagamentosPendentes,
 };
