@@ -41,18 +41,33 @@ exports.handleWebhook = async (req, res) => {
     const qtdAtrasados = pagamentosAtrasados.length;
     const qtdPendentes = pagamentosPendentes.length;
 
-    resposta = `🔎 Situação de pagamentos:\n\n`;
+    resposta = `🔎 *Situação de pagamentos:*\n\n`;
 
     if (qtdAtrasados > 0) {
       resposta += `• ${qtdAtrasados} pagamento${
         qtdAtrasados > 1 ? "s" : ""
-      } atrasado${qtdAtrasados > 1 ? "s" : ""}.\n`;
+      } atrasado${qtdAtrasados > 1 ? "s" : ""}:\n\n`;
+
+      pagamentosAtrasados.forEach((p, index) => {
+        const venc = new Date(p.due_date).toLocaleDateString("pt-BR");
+        const valor = parseFloat(p.amount).toFixed(2).replace(".", ",");
+        resposta += `🔸 *${index + 1}º pagamento:*\n`;
+        resposta += `📅 Vencimento: ${venc}\n`;
+        resposta += `💰 Valor: R$ ${valor}\n`;
+        resposta += `🔗 Link: ${p.link_pagamento}\n\n`;
+      });
     } else {
       resposta += `• Nenhum pagamento atrasado.\n`;
     }
 
     if (qtdPendentes === 1) {
-      resposta += `• 1 pagamento pendente.`;
+      const p = pagamentosPendentes[0];
+      const venc = new Date(p.due_date).toLocaleDateString("pt-BR");
+      const valor = parseFloat(p.amount).toFixed(2).replace(".", ",");
+      resposta += `• 1 pagamento pendente:\n`;
+      resposta += `📅 Vencimento: ${venc}\n`;
+      resposta += `💰 Valor: R$ ${valor}\n`;
+      resposta += `🔗 Link: ${p.link_pagamento}`;
     } else {
       resposta += `• Nenhum pagamento pendente.`;
     }
