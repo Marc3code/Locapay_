@@ -47,7 +47,7 @@ const criarClienteAsaas = async (clienteData) => {
         access_token: process.env.ASAAS_API_KEY,
       },
     });
-    notificationService.enviarNotificacaoBoasVindas(clienteData.telefone)
+    notificationService.enviarNotificacaoBoasVindas(clienteData.phone)
     return response.data.id;
 
   } catch (err) {
