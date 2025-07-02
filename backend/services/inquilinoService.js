@@ -1,5 +1,6 @@
 const db = require("../database/dbconnect");
 asaasService = require("./asaasService");
+const notificationService = require("../tarefas/services/notificationService");
 
 // ------------------ SERVICES GET ------------------
 
@@ -96,6 +97,8 @@ const criarInquilino = async (name, phone, cpf_cnpj) => {
     ]);
 
     await connection.commit();
+
+    notificationService.enviarNotificacaoBoasVindas(phone);
 
     return {
       id: results.insertId,

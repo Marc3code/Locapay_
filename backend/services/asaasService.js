@@ -1,6 +1,6 @@
 const axios = require("axios");
 require('dotenv').config();
-const notificationService = require("../tarefas/services/notificationService");
+
 
 const BASE_URL = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
 // Para produção: 'https://www.asaas.com/api/v3'
@@ -47,7 +47,6 @@ const criarClienteAsaas = async (clienteData) => {
         access_token: process.env.ASAAS_API_KEY,
       },
     });
-    notificationService.enviarNotificacaoBoasVindas(clienteData.phone)
     return response.data.id;
 
   } catch (err) {
