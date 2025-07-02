@@ -106,12 +106,12 @@ async function enviarNotificacaoLembretePagamento(data, telefone) {
   }
 }
 
-async function enviarNotificacaoBoasVindas(data, telefone) {
+async function enviarNotificacaoBoasVindas(telefone) {
   try {
     const response = await fetch(`${API_BASE}/notifications/boas_vindas`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data, telefone }),
+      body: JSON.stringify({ telefone }),
     });
 
     if (!response.ok) {
