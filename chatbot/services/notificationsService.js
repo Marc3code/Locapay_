@@ -72,7 +72,7 @@ async function enviarNotificacao3DiasAntes (data, telefone) {
   }
 };
 
-async function enviarNotificacaoBoasVindas (data, telefone) {
+async function enviarNotificacaoBoasVindas (telefone) {
   try {
     const envio = await notificacoes.enviarNotificacaoBoasVindas(
       telefone
