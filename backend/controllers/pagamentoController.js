@@ -34,7 +34,7 @@ async function buscarPagamentosAtrasados(req, res) {
   try {
     const pagamentos = await pagamentoService.buscarPagamentosAtrasados(inquilino_id);
     if (pagamentos) {
-      res.json({ success: true, paymentLink: link });
+      res.json(pagamentos);
     } else {
       res.status(404).json({
         success: false,
@@ -52,7 +52,7 @@ async function buscarPagamentosPendentes(req, res) {
   try {
     const pagamentos = await pagamentoService.buscarPagamentosPendentes(inquilino_id);
     if (pagamentos) {
-      res.json({ success: true, paymentLink: link });
+      res.json(pagamentos);
     } else {
       res.status(404).json({
         success: false,
