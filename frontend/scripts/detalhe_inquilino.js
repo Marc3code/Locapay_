@@ -31,6 +31,8 @@ async function carregarDados() {
     const inquilinos = await buscarInquilinos();
     const pagamentos = await buscarPagamentos();
 
+    console.log(pagamentos);
+
     const inquilino = inquilinos.find((i) => i.inquilino_id === inquilinoId);
 
     if (!inquilino) {
@@ -38,9 +40,9 @@ async function carregarDados() {
     }
 
     const pagamentosInquilino = pagamentos.filter(
-      (p) => p.inquilino_id === inquilinoId
+      (p) => p.contrato_id === inquilino.contrato_id
     );
-
+    
     infoDiv.style.display = "block";
     infoDiv.classList.remove("loading");
     infoDiv.innerHTML = `
