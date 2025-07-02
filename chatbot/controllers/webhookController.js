@@ -28,7 +28,7 @@ exports.handleWebhook = async (req, res) => {
       `Olá, ${inquilino.nome}.\n\n` +
       `👔 *Menu de Atendimento*\n` +
       `Por favor, selecione uma das opções abaixo para prosseguir:\n\n` +
-      `1️⃣ - Receber o link para pagamento do aluguel referente ao mês atual\n` +
+      `1️⃣ - Receber o link para pagamento do aluguel referente ao mês atual\n\n` +
       `2️⃣ - Consultar a situação atual dos seus pagamentos\n\n` +
       `Digite o número correspondente à opção desejada.`;
   } else if (text === "1") {
