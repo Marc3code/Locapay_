@@ -11,10 +11,13 @@ const enviarNotificacaoPagamentoRealizado = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      body: `✅ Pagamento recebido! Confirmamos o recebimento da sua fatura com vencimento em ${dataFormatada}.\n\nO comprovante está disponível no mesmo link utilizado para o pagamento. Obrigado!`,
+      body: `✅ Pagamento recebido com sucesso!\nConfirmamos o recebimento da sua fatura com vencimento em ${dataFormatada}.\n\nO comprovante está disponível no mesmo link utilizado para o pagamento. Muito obrigado!`,
     })
     .then((message) => {
-      console.log("✅ Notificação de pagamento realizado enviada:", message.sid);
+      console.log(
+        "✅ Notificação de pagamento realizado enviada:",
+        message.sid
+      );
       return { ok: true, sid: message.sid }; // <-- retorna ok e o id da mensagem se der certo
     })
     .catch((err) => {

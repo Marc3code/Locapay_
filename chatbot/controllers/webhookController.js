@@ -10,70 +10,81 @@ exports.handleWebhook = async (req, res) => {
   console.log("Conteúdo:", text);
 
   const numeroFormatado = formatarNumeroWhatsapp(from);
-  const inquilino = await inquilinosService.getInquilinoPorTelefone(
-    numeroFormatado
-  );
+  const inquilino = await inquilinosService.getInquilinoPorTelefone(numeroFormatado);
 
   if (!inquilino || !inquilino.id) {
     return sendResponse(
       res,
-      "❌ Não consegui identificar você. Por favor, entre em contato com o suporte."
+      "❌ Não foi possível identificar seu número. Por favor, entre em contato com o suporte para assistência."
     );
   }
 
   let resposta = "";
 
   if (
-    ["menu", "oi", "ola", "olá", "boa tarde", "boa noite", "bom dia"].includes(
-      text
-    )
+    ["menu", "oi", "ola", "olá", "boa tarde", "boa noite", "bom dia"].includes(text)
   ) {
-    resposta = `Olá, ${inquilino.nome}! 👋 Como posso te ajudar?\n\nEscolha uma opção:\n1️⃣ Pagar aluguel\n2️⃣ Verificar pendências\n`;
+    resposta =
+      `Olá, ${inquilino.nome}.\n\n` +
+      `👔 *Menu de Atendimento*\n` +
+      `Por favor, selecione uma das opções abaixo para prosseguir:\n\n` +
+      `1️⃣ - Receber o link para pagamento do aluguel referente ao mês atual\n` +
+      `2️⃣ - Consultar a situação atual dos seus pagamentos\n\n` +
+      `Digite o número correspondente à opção desejada.`;
   } else if (text === "1") {
     const link = await inquilinosService.buscarLinkPagamento(inquilino.id);
-    resposta = `💳 Link para pagamento do aluguel:\n${link.paymentLink}`;
+    if (!link || !link.paymentLink) {
+      resposta =
+        "❌ Não foi possível localizar o link de pagamento para o mês atual. Por favor, tente novamente mais tarde ou entre em contato com o suporte.";
+    } else {
+      resposta =
+        `💳 *Link para Pagamento*\n\n` +
+        `Segue o link para o pagamento do aluguel referente ao mês atual:\n` +
+        `${link.paymentLink}\n\n` +
+        `Por favor, utilize este link para efetuar o pagamento.`;
+    }
   } else if (text === "2") {
-    const pagamentosAtrasados =
-      await inquilinosService.buscarPagamentosAtrasados(inquilino.id);
-    const pagamentosPendentes =
-      await inquilinosService.buscarPagamentosPendentes(inquilino.id);
+    const pagamentosAtrasados = await inquilinosService.buscarPagamentosAtrasados(inquilino.id);
+    const pagamentosPendentes = await inquilinosService.buscarPagamentosPendentes(inquilino.id);
 
     const qtdAtrasados = pagamentosAtrasados.length;
     const qtdPendentes = pagamentosPendentes.length;
 
-    resposta = `🔎 *Situação de pagamentos:*\n\n`;
+    resposta = `🔎 *Situação Atual dos Pagamentos*\n\n`;
 
     if (qtdAtrasados > 0) {
-      resposta += `• ${qtdAtrasados} pagamento${
-        qtdAtrasados > 1 ? "s" : ""
-      } atrasado${qtdAtrasados > 1 ? "s" : ""}:\n\n`;
+      resposta += `• Você possui ${qtdAtrasados} pagamento${qtdAtrasados > 1 ? "s" : ""} atrasado${qtdAtrasados > 1 ? "s" : ""}:\n\n`;
 
       pagamentosAtrasados.forEach((p, index) => {
         const venc = new Date(p.due_date).toLocaleDateString("pt-BR");
         const valor = parseFloat(p.amount).toFixed(2).replace(".", ",");
-        resposta += `🔸 *${index + 1}º pagamento:*\n`;
-        resposta += `📅 Vencimento: ${venc}\n`;
-        resposta += `💰 Valor: R$ ${valor}\n`;
-        resposta += `🔗 Link: ${p.link_pagamento}\n\n`;
+        resposta +=
+          `🔸 *${index + 1}º pagamento:*\n` +
+          `📅 Vencimento: ${venc}\n` +
+          `💰 Valor: R$ ${valor}\n` +
+          `🔗 Link para pagamento: ${p.link_pagamento}\n\n`;
       });
     } else {
-      resposta += `• Nenhum pagamento atrasado.\n`;
+      resposta += `• Não há pagamentos em atraso.\n\n`;
     }
 
     if (qtdPendentes === 1) {
       const p = pagamentosPendentes[0];
       const venc = new Date(p.due_date).toLocaleDateString("pt-BR");
       const valor = parseFloat(p.amount).toFixed(2).replace(".", ",");
-      resposta += `• 1 pagamento pendente:\n`;
-      resposta += `📅 Vencimento: ${venc}\n`;
-      resposta += `💰 Valor: R$ ${valor}\n`;
-      resposta += `🔗 Link: ${p.link_pagamento}`;
+
+      resposta +=
+        `• Você possui 1 pagamento pendente:\n` +
+        `📅 Vencimento: ${venc}\n` +
+        `💰 Valor: R$ ${valor}\n` +
+        `🔗 Link para pagamento: ${p.link_pagamento}\n`;
     } else {
-      resposta += `• Nenhum pagamento pendente.`;
+      resposta += `• Não há pagamentos pendentes no momento.`;
     }
   } else {
     resposta =
-      "❌ Não entendi o que você quis dizer.\nDigite *menu* para ver as opções.";
+      "❌ Desculpe, não entendi sua solicitação.\n" +
+      "Digite *menu* para visualizar as opções disponíveis.";
   }
 
   return sendResponse(res, resposta);

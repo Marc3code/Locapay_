@@ -1,9 +1,3 @@
-const {
-  formatarNumeroWhatsappSemNonoDigito
-} = require("../utils/formatNumber");
-const { formatarData } = require("../utils/formatDate");
-const { client, FROM_NUMBER } = require("./twilioClient");
-
 const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
   const numeroFormatado = formatarNumeroWhatsappSemNonoDigito(telefone);
   const dataFormatada = formatarData(data);
@@ -11,18 +5,16 @@ const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      body: `Sua fatura do aluguel com vencimento no dia ${dataFormatada} foi gerada e já está disponível para pagamento. Para pagar agora é só digitar 1.`,
+      body: `📅 Sua fatura de aluguel com vencimento em ${dataFormatada} foi gerada e já está disponível para pagamento.\nPara efetuar o pagamento, basta digitar 1.`,
     })
     .then((message) => {
       console.log("✅ Notificação de cobrança do mês enviada:", message.sid);
-      return { ok: true, sid: message.sid }; // <-- retorna ok e o id da mensagem se der certo
+      return { ok: true, sid: message.sid };
     })
     .catch((err) => {
       console.error("❌ Erro ao enviar notificação:", err.message);
       return { ok: false, error: err.message };
     });
 };
-
-
 
 module.exports = { enviarNotificacaoCobrancaDoMes };
