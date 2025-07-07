@@ -1,10 +1,8 @@
 {
-    "build": {
-      "command": "",
-      "output": "."
-    },
-    "deploy": {
-      "startCommand": "npx serve ."
-    }
+  "build": {
+    "command": "npm install"
+  },
+  "start": {
+    "override": "node server.js"
   }
-  
+}
