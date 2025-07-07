@@ -3,13 +3,15 @@ const inquilinoService = require("../services/inquilinoService");
 // ------------------ controllers GET ------------------
 async function listarTodos(req, res) {
   try {
-    const inquilinos = await inquilinoService.getTodosInquilinos();
+    const locadorId = req.userId;
+    const inquilinos = await inquilinoService.getTodosInquilinos(locadorId);
     res.json(inquilinos);
   } catch (err) {
     console.error("Erro ao buscar inquilinos:", err);
     res.status(500).json({ erro: "Erro ao buscar inquilinos" });
   }
 }
+
 
 async function buscarPorId(req, res) {
   const { id } = req.params;
@@ -39,13 +41,15 @@ async function buscarPorTelefone(req, res) {
 
 async function listarComImovel(req, res) {
   try {
-    const resultados = await inquilinoService.getInquilinosComImovel();
+    const locadorId = req.userId;
+    const resultados = await inquilinoService.getInquilinosComImovel(locadorId);
     res.json(resultados);
   } catch (err) {
     console.error("Erro ao buscar inquilinos com imóvel:", err);
     res.status(500).json({ erro: "Erro ao buscar inquilinos com imóvel" });
   }
 }
+
 
 // ------------------ controllers PUT ------------------
 

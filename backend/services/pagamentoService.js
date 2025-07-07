@@ -1,42 +1,52 @@
 const db = require("../database/dbconnect");
 
-async function getTodosPagamentos() {
-  const [results] = await db.query("SELECT * FROM pagamentos");
+async function getTodosPagamentos(locadorId) {
+  const [results] = await db.query(
+    `SELECT p.* 
+     FROM pagamentos p
+     JOIN contratos c ON p.contrato_id = c.id
+     JOIN imoveis im ON c.imovel_id = im.id
+     WHERE im.locador_id = ?`,
+    [locadorId]
+  );
   return results;
 }
 
-async function getLinkPagamentoPendente(inquilino_id) {
+async function getLinkPagamentoPendente(inquilino_id, locadorId) {
   const [results] = await db.query(
     `SELECT p.link_pagamento 
      FROM pagamentos p
      JOIN contratos c ON p.contrato_id = c.id
-     WHERE c.inquilino_id = ? AND p.status = 'pendente'
+     JOIN imoveis im ON c.imovel_id = im.id
+     WHERE c.inquilino_id = ? AND p.status = 'pendente' AND im.locador_id = ?
      LIMIT 1`,
-    [inquilino_id]
+    [inquilino_id, locadorId]
   );
   return results.length > 0 ? results[0].link_pagamento : null;
 }
 
-async function buscarPagamentosAtrasados(inquilino_id) {
+async function buscarPagamentosAtrasados(inquilino_id, locadorId) {
   const [results] = await db.query(
     `SELECT p.*
      FROM pagamentos p
      JOIN contratos c ON p.contrato_id = c.id
-     WHERE c.inquilino_id = ? AND p.status = 'atrasado'
+     JOIN imoveis im ON c.imovel_id = im.id
+     WHERE c.inquilino_id = ? AND p.status = 'atrasado' AND im.locador_id = ?
      ORDER BY p.due_date ASC`,
-    [inquilino_id]
+    [inquilino_id, locadorId]
   );
   return results;
 }
 
-async function buscarPagamentosPendentes(inquilino_id) {
+async function buscarPagamentosPendentes(inquilino_id, locadorId) {
   const [results] = await db.query(
     `SELECT p.*
      FROM pagamentos p
      JOIN contratos c ON p.contrato_id = c.id
-     WHERE c.inquilino_id = ? AND p.status = 'pendente'
+     JOIN imoveis im ON c.imovel_id = im.id
+     WHERE c.inquilino_id = ? AND p.status = 'pendente' AND im.locador_id = ?
      ORDER BY p.due_date ASC`,
-    [inquilino_id]
+    [inquilino_id, locadorId]
   );
   return results;
 }
@@ -52,9 +62,7 @@ async function atualizarStatusPagamento(paymentId, status) {
       return { success: false, message: "Pagamento não encontrado" };
     }
 
-    console.log(
-      `Status do pagamento (${paymentId}) atualizado para '${status}'`
-    );
+    console.log(`Status do pagamento (${paymentId}) atualizado para '${status}'`);
     return { success: true, affectedRows: result.affectedRows };
   } catch (err) {
     console.error("Erro ao atualizar status do pagamento:", err);

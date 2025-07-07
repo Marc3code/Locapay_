@@ -1,8 +1,8 @@
-const API_BASE = "https://backend-isolado-production.up.railway.app";
+require('dotenv').config()
 
 async function buscarInquilinoPorId(id) {
   try {
-    const response = await fetch(`${API_BASE}/inquilinos/inquilino/${id}`, {
+    const response = await fetch(`${process.env.API_BASE}/inquilinos/inquilino/${id}`, {
       headers: { 'Content-Type': 'application/json' }
     });
     
@@ -18,7 +18,7 @@ async function buscarInquilinoPorId(id) {
 
 async function buscarPagamentos() {
   try {
-    const response = await fetch(`${API_BASE}/pagamentos`, {
+    const response = await fetch(`${process.env.API_BASE}/pagamentos`, {
       headers: { 'Content-Type': 'application/json' }
     });
     

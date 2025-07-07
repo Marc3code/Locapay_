@@ -1,8 +1,8 @@
-const API_BASE = "https://chatbot-isolado-production.up.railway.app";
+require('dotenv').config()
 
 async function enviarNotificacaoCobrancaDoMes(data, telefone) {
   try {
-    const response = await fetch(`${API_BASE}/notifications/cobranca_do_mes`, {
+    const response = await fetch(`${process.env.API_BASE_CHATBOT}/notifications/cobranca_do_mes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data, telefone }),
@@ -28,7 +28,7 @@ async function enviarNotificacaoCobrancaDoMes(data, telefone) {
 async function enviarNotificacaoPagamentoAtrasado(data, telefone) {
   try {
     const response = await fetch(
-      `${API_BASE}/notifications/pagamento_atrasado`,
+      `${process.env.API_BASE_CHATBOT}/notifications/pagamento_atrasado`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -56,7 +56,7 @@ async function enviarNotificacaoPagamentoAtrasado(data, telefone) {
 async function enviarNotificacaoPagamentoRealizado(data, telefone) {
   try {
     const response = await fetch(
-      `${API_BASE}/notifications/pagamento_realizado`,
+      `${process.env.API_BASE_CHATBOT}/notifications/pagamento_realizado`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -83,7 +83,7 @@ async function enviarNotificacaoPagamentoRealizado(data, telefone) {
 
 async function enviarNotificacaoLembretePagamento(data, telefone) {
   try {
-    const response = await fetch(`${API_BASE}/notifications/cobranca_3d`, {
+    const response = await fetch(`${process.env.API_BASE_CHATBOT}/notifications/cobranca_3d`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data, telefone }),
@@ -108,7 +108,7 @@ async function enviarNotificacaoLembretePagamento(data, telefone) {
 
 async function enviarNotificacaoBoasVindas(telefone) {
   try {
-    const response = await fetch(`${API_BASE}/notifications/boas_vindas`, {
+    const response = await fetch(`${process.env.API_BASE_CHATBOT}/notifications/boas_vindas`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ telefone }),

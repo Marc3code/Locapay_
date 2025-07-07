@@ -6,6 +6,8 @@ const inquilinoRoutes = require("./routes/inquilinoRoutes.js");
 const cobrancaRoutes = require("./routes/cobrancaRoutes.js");
 const pagamentoRoutes = require("./routes/pagamentoRoutes.js");
 const webhookRoutes = require("./routes/webhookRoutes.js");
+const dadosBROutes = require("./routes/dadosBancariosRoutes.js")
+const locadorRoutes = require("./routes/locadorRoutes.js")
 
 dotenv.config();
 
@@ -35,6 +37,8 @@ app.use("/inquilinos", inquilinoRoutes);
 app.use("/cobrancas", cobrancaRoutes);
 app.use("/pagamentos", pagamentoRoutes);
 app.use("/asaas_events", webhookRoutes);
+app.use("/bkdt", dadosBROutes)
+app.use("/user", locadorRoutes)
 
 // Webhook - Eventos do Asaas refatorado - funcionando;
 

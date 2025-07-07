@@ -4,8 +4,17 @@ const notificationService = require("../tarefas/services/notificationService");
 
 // ------------------ SERVICES GET ------------------
 
-async function getTodosInquilinos() {
-  const [results] = await db.query("SELECT * FROM inquilinos");
+async function getTodosInquilinos(locadorId) {
+  const [results] = await db.query(
+    `
+    SELECT DISTINCT i.*
+    FROM inquilinos i
+    JOIN contratos c ON i.id = c.inquilino_id
+    JOIN imoveis im ON c.imovel_id = im.id
+    WHERE im.locador_id = ?
+  `,
+    [locadorId]
+  );  
   return results;
 }
 
@@ -32,7 +41,7 @@ async function buscarTelefonePorCustomerId(customerId) {
   return results.length > 0 ? results[0] : null;
 }
 
-async function getInquilinosComImovel() {
+async function getInquilinosComImovel(locadorId) {
   const [results] = await db.query(`
     SELECT 
       i.id AS inquilino_id, 
@@ -54,9 +63,11 @@ async function getInquilinosComImovel() {
     FROM inquilinos i
     JOIN contratos c ON i.id = c.inquilino_id
     JOIN imoveis im ON c.imovel_id = im.id
-  `);
+    WHERE im.locador_id = ?
+  `, [locadorId]);
   return results;
 }
+
 
 // ------------------ SERVICES PUT ------------------
 const atualizarDataVencimento = async (novaData, id) => {

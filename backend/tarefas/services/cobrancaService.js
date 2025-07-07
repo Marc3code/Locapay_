@@ -1,9 +1,9 @@
+require('dotenv').config()
 
-const API_BASE = "https://backend-isolado-production.up.railway.app";
 
 async function buscarCobrancas() {
   try {
-    const response = await fetch(`${API_BASE}/cobrancas/`, {
+    const response = await fetch(`${process.env.API_BASE}/cobrancas/`, {
       headers: { 'Content-Type': 'application/json' }
     });
     
@@ -17,7 +17,7 @@ async function buscarCobrancas() {
 
 async function atualizarDataVencimento( novaData, id) {
   try {
-    const response = await fetch(`${API_BASE}/inquilinos/updt_data_vencimento/${id}`, {
+    const response = await fetch(`${process.env.API_BASE}/inquilinos/updt_data_vencimento/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data_vencimento: novaData})
@@ -33,7 +33,7 @@ async function atualizarDataVencimento( novaData, id) {
 
 async function gerarCobranca(dadosPagamento) {
   try {
-    const response = await fetch(`${API_BASE}/cobrancas`, {
+    const response = await fetch(`${process.env.API_BASE}/cobrancas`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(dadosPagamento)

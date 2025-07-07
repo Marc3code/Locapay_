@@ -1,7 +1,7 @@
 const db = require("../database/dbconnect");
 const asaasService = require("./asaasService");
 
-const getCobrancasPendentes = async () => {
+const getCobrancasPendentes = async (locadorId) => {
   const [results] = await db.query(`
     SELECT 
       c.id AS contrato_id,
@@ -13,10 +13,12 @@ const getCobrancasPendentes = async () => {
       i.id_asaas
     FROM contratos c
     JOIN inquilinos i ON c.inquilino_id = i.id
-    WHERE c.status = 'ativo'
-  `);
+    JOIN imoveis im ON c.imovel_id = im.id
+    WHERE c.status = 'ativo' AND im.locador_id = ?
+  `, [locadorId]);
   return results;
 };
+
 
 const getDataVencimentoPorId = async (inquilinoid) => {
   const [result] = await db.query(
@@ -59,18 +61,19 @@ const criarCobrancaPix = async ({
   return pagamento;
 };
 
-const getPendenciasInquilino = async (inquilino_id) => {
-  const [result] = await db.query(
-    `
+const getPendenciasInquilino = async (inquilino_id, locadorId) => {
+  const [result] = await db.query(`
     SELECT p.link_pagamento, p.due_date 
     FROM pagamentos p
     JOIN contratos c ON p.contrato_id = c.id
-    WHERE c.inquilino_id = ? AND (p.status = 'pendente' OR p.status = 'atrasado')
-    `,
-    [inquilino_id]
-  );
+    JOIN imoveis im ON c.imovel_id = im.id
+    WHERE c.inquilino_id = ? 
+      AND (p.status = 'pendente' OR p.status = 'atrasado')
+      AND im.locador_id = ?
+  `, [inquilino_id, locadorId]);
   return result;  
 };
+
 
 module.exports = {
   getCobrancasPendentes,

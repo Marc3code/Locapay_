@@ -3,7 +3,8 @@ const pagamentoService = require("../services/pagamentoService");
 // ------------------ controllers GET ------------------
 async function listarTodos(req, res) {
   try {
-    const pagamentos = await pagamentoService.getTodosPagamentos();
+    const locadorId = req.userId;
+    const pagamentos = await pagamentoService.getTodosPagamentos(locadorId);
     res.json(pagamentos);
   } catch (err) {
     console.error("Erro ao buscar pagamentos:", err);
@@ -13,8 +14,10 @@ async function listarTodos(req, res) {
 
 async function buscarLinkPagamento(req, res) {
   const { inquilino_id } = req.params;
+  const locadorId = req.userId;
+
   try {
-    const link = await pagamentoService.getLinkPagamentoPendente(inquilino_id);
+    const link = await pagamentoService.getLinkPagamentoPendente(inquilino_id, locadorId);
     if (link) {
       res.json({ success: true, paymentLink: link });
     } else {
@@ -31,9 +34,11 @@ async function buscarLinkPagamento(req, res) {
 
 async function buscarPagamentosAtrasados(req, res) {
   const { id } = req.params;
+  const locadorId = req.userId;
+
   try {
-    const pagamentos = await pagamentoService.buscarPagamentosAtrasados(id);
-    if (pagamentos) {
+    const pagamentos = await pagamentoService.buscarPagamentosAtrasados(id, locadorId);
+    if (pagamentos.length > 0) {
       res.json(pagamentos);
     } else {
       res.status(404).json({
@@ -49,9 +54,11 @@ async function buscarPagamentosAtrasados(req, res) {
 
 async function buscarPagamentosPendentes(req, res) {
   const { id } = req.params;
+  const locadorId = req.userId;
+
   try {
-    const pagamentos = await pagamentoService.buscarPagamentosPendentes(id);
-    if (pagamentos) {
+    const pagamentos = await pagamentoService.buscarPagamentosPendentes(id, locadorId);
+    if (pagamentos.length > 0) {
       res.json(pagamentos);
     } else {
       res.status(404).json({
@@ -66,7 +73,7 @@ async function buscarPagamentosPendentes(req, res) {
 }
 
 async function atualizarStatusPagamento(req, res) {
-  const paymentId = req.body.paymentId; // Corrigido para camelCase
+  const paymentId = req.body.paymentId; // camelCase
   const status = req.body.status;
 
   if (!paymentId || !status) {
@@ -76,10 +83,7 @@ async function atualizarStatusPagamento(req, res) {
   }
 
   try {
-    const result = await pagamentoService.atualizarStatusPagamento(
-      paymentId,
-      status
-    );
+    const result = await pagamentoService.atualizarStatusPagamento(paymentId, status);
 
     if (result && result.success) {
       return res.json({

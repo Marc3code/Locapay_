@@ -3,7 +3,8 @@ const imovelService = require("../services/imovelService");
 // ------------------ controllers GET ------------------
 async function listarTodos(req, res) {
   try {
-    const imoveis = await imovelService.getTodosImoveis();
+    const locadorId = req.userId;
+    const imoveis = await imovelService.getTodosImoveis(locadorId);
     res.json(imoveis);
   } catch (err) {
     console.error("Erro ao buscar imóveis:", err);
@@ -14,14 +15,15 @@ async function listarTodos(req, res) {
 // ------------------ controllers POST ------------------
 
 async function criarImovel(req, res) {
-  const tipo = req.body.tipo;
-  const endereco = req.body.endereco;
-  const numero = req.body.numero;
+  const { tipo, endereco, numero } = req.body;
+  const locadorId = req.userId;
+
   try {
     const novoImovel = await imovelService.criarImovel({
       tipo,
       endereco,
       numero,
+      locador_id: locadorId,
     });
     res.status(201).json(novoImovel);
   } catch (err) {
@@ -32,5 +34,5 @@ async function criarImovel(req, res) {
 
 module.exports = {
   listarTodos,
-  criarImovel
+  criarImovel,
 };
