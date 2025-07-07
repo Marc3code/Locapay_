@@ -1,37 +1,11 @@
-const API_INQUILINOS = "https://backend-isolado-production.up.railway.app/inquilinos";
-
 import { carregarHeader } from "./renderHeader.js";
+import {
+  buscarInquilinos,
+  buscarInquilinosComImovel,
+  cadastrarInquilino,
+} from "./service.js";
+
 carregarHeader("inquilinos");
-
-// Buscar inquilinos
-async function buscarInquilinos() {
-  try {
-    const res = await fetch(API_INQUILINOS);
-    if (!res.ok) throw new Error("Erro ao buscar inquilinos");
-    return await res.json();
-  } catch (err) {
-    console.error(err.message);
-    return [];
-  }
-}
-
-// Cadastrar novo inquilino
-async function cadastrarInquilino(inquilino) {
-    console.log(inquilino)
-  try {
-    const res = await fetch(API_INQUILINOS, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({name: inquilino.name, phone: inquilino.phone, cpfCnpj: inquilino.cpfCnpj}),
-    });
-    if (!res.ok) throw new Error("Erro ao cadastrar inquilino");
-    alert("Inquilino cadastrado com sucesso!");
-    return await res.json();
-  } catch (err) {
-    console.error(err.message);
-    alert("Erro ao cadastrar inquilino.");
-  }
-}
 
 // Renderiza tabela
 function renderInquilinos(lista) {
@@ -60,19 +34,25 @@ document
   .addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById("nome").value;
+    const nome = document.getElementById("nome").value;
     const cpfCnpj = document.getElementById("CPF").value;
-    const phone = document.getElementById("telefone").value;
+    const telefone = document.getElementById("telefone").value;
 
-    if (!nome || !telefone || !CPF) {
+    if (!nome || !telefone || !cpfCnpj) {
       alert("Preencha todos os campos.");
       return;
     }
 
-    const novo = { name, phone, cpfCnpj };
+    const novo = {
+      name: nome,
+      phone: telefone,
+      cpfCnpj: cpfCnpj,
+    };
+
     await cadastrarInquilino(novo);
     document.getElementById("form-inquilino").reset();
-    const lista = await buscarInquilinos();
+
+    const lista = await buscarInquilinosComImovel();
     renderInquilinos(lista);
   });
 

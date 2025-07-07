@@ -99,7 +99,8 @@ async function renderInquilinosList() {
       row.style.cursor = "pointer";
 
       row.addEventListener("click", () => {
-        window.location.href = `../public/detalhe_inquilino?inquilino_id=${inquilino.inquilino_id}`;
+        localStorage.setItem("inquilino_id", inquilino.inquilino_id);
+        window.location.href = "../public/detalhe_inquilino.html";
       });
 
       const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${

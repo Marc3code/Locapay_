@@ -1,65 +1,12 @@
-const API_IMOVEIS = "https://backend-isolado-production.up.railway.app/imoveis";
-const API_INQUILINOS = "https://backend-isolado-production.up.railway.app/inquilinos";
-const API_VINCULAR = "https://backend-isolado-production.up.railway.app/inquilinos/inquilino-imovel";
+import {
+  buscarImoveis,
+  buscarInquilinos,
+  cadastrarImovel,
+  vincularInquilino,
+} from "./service.js";
 
 import { carregarHeader } from "./renderHeader.js";
 carregarHeader("imoveis");
-
-// --- Buscar imóveis ---
-async function buscarImoveis() {
-  try {
-    const res = await fetch(API_IMOVEIS);
-    if (!res.ok) throw new Error("Erro ao buscar imóveis");
-    return await res.json();
-  } catch (err) {
-    console.error("Erro ao buscar imóveis:", err.message);
-    return [];
-  }
-}
-
-// --- Cadastrar imóvel ---
-async function cadastrarImovel(imovel) {
-  try {
-    const res = await fetch(API_IMOVEIS, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(imovel),
-    });
-    if (!res.ok) throw new Error("Erro ao cadastrar imóvel");
-    return await res.json();
-  } catch (err) {
-    console.error("Erro ao cadastrar imóvel:", err.message);
-    alert("Erro ao cadastrar imóvel.");
-  }
-}
-
-// --- Buscar inquilinos ---
-async function buscarInquilinos() {
-  try {
-    const res = await fetch(API_INQUILINOS);
-    if (!res.ok) throw new Error("Erro ao buscar inquilinos");
-    return await res.json();
-  } catch (err) {
-    console.error("Erro ao buscar inquilinos:", err.message);
-    return [];
-  }
-}
-
-// --- Vincular inquilino a imóvel ---
-async function vincularInquilino(dados) {
-  try {
-    const res = await fetch(API_VINCULAR, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify( dados ),
-    });
-    if (!res.ok) throw new Error("Erro ao vincular inquilino");
-    alert("Inquilino vinculado com sucesso!");
-  } catch (err) {
-    console.error("Erro ao vincular inquilino:", err.message);
-    alert("Erro ao vincular inquilino.");
-  }
-}
 
 // --- Renderiza imóveis ---
 function renderImoveis(lista) {
@@ -128,30 +75,36 @@ document.getElementById("btn-cancelar")?.addEventListener("click", () => {
 });
 
 // --- Envio do formulário de vínculo ---
-document.getElementById("form-vinculo")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
+document
+  .getElementById("form-vinculo")
+  ?.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const container = document.getElementById("formulario-vinculo-container");
-  const imovelId = parseInt(container.dataset.imovelId); // agora seguro
+    const container = document.getElementById("formulario-vinculo-container");
+    const imovelId = parseInt(container.dataset.imovelId);
 
-  const payload = {
-    inquilino_id: parseInt(document.getElementById("inquilino_id").value),
-    imovel_id: imovelId,
-    valor_aluguel: parseFloat(document.getElementById("valor_aluguel").value),
-    complemento: document.getElementById("complemento").value,
-    data_inicio: document.getElementById("data_inicio").value,
-    data_vencimento: document.getElementById("data_vencimento").value,
-    data_fim: document.getElementById("data_fim").value || null,
-  };
+    const payload = {
+      inquilino_id: parseInt(
+        document.getElementById("inquilino_id").value
+      ),
+      imovel_id: imovelId,
+      valor_aluguel: parseFloat(
+        document.getElementById("valor_aluguel").value
+      ),
+      complemento: document.getElementById("complemento").value,
+      data_inicio: document.getElementById("data_inicio").value,
+      data_vencimento: document.getElementById("data_vencimento").value,
+      data_fim: document.getElementById("data_fim").value || null,
+    };
 
-  try {
-    await vincularInquilino(payload);
-    container.classList.add("hidden");
-    document.getElementById("form-vinculo").reset();
-  } catch (err) {
-    console.error("Erro ao vincular:", err);
-  }
-});
+    try {
+      await vincularInquilino(payload);
+      container.classList.add("hidden");
+      document.getElementById("form-vinculo").reset();
+    } catch (err) {
+      console.error("Erro ao vincular:", err);
+    }
+  });
 
 // --- Cadastro de imóvel ---
 document
