@@ -100,7 +100,7 @@ async function renderInquilinosList() {
 
       row.addEventListener("click", () => {
         localStorage.setItem("inquilino_id", inquilino.inquilino_id);
-        window.location.href = "../public/detalhe_inquilino.html";
+        window.location.href = "/detalhe_inquilino.html";
       });
 
       const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${
