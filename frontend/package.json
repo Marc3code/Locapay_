@@ -1,11 +1,16 @@
 {
-    "name": "LocaPay",
-    "version": "1.0.0",
-    "scripts": {
-      "start": "npx serve ."
-    },
-    "dependencies": {
-      "serve": "^14.2.0"
-    }
-  }
-  
+  "name": "locapay",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "serve": "^14.2.0"
+  },
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
