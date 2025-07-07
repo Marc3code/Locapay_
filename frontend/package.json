@@ -8,7 +8,7 @@
     "express": "^5.1.0",
     "serve": "^14.2.0"
   },
-  "main": "index.js",
+  "main": "server.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
