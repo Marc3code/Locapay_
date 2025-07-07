@@ -18,7 +18,7 @@ form.addEventListener("submit", async (e) => {
 
     if (response.ok && data.token) {
       localStorage.setItem("token", data.token);
-      window.location.href = "/frontend/public/home.html"; // redireciona após login
+      window.location.href = "/home.html"; // redireciona após login
     } else {
       mensagemErro.textContent = data.erro || "Credenciais inválidas";
     }
