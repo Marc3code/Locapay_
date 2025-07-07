@@ -1,8 +1,0 @@
-{
-  "build": {
-    "command": "npm install"
-  },
-  "start": {
-    "override": "node server.js"
-  }
-}
