@@ -1,6 +1,6 @@
 // scripts/injectHeader.js
 export async function carregarHeader(paginaAtiva) {
-  const response = await fetch("../components/header.html");
+  const response = await fetch("components/header.html");
   const html = await response.text();
   const headerContainer = document.createElement("div");
   headerContainer.innerHTML = html;
