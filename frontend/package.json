@@ -2,7 +2,7 @@
   "name": "locapay",
   "version": "1.0.0",
   "scripts": {
-    "start": "npx serve ."
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^5.1.0",
