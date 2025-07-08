@@ -20,13 +20,11 @@ exports.login = async (req, res) => {
   if (!valid) return res.status(401).json({ erro: 'Senha incorreta' });
 
   const token = jwt.sign({ id: locador.id }, 'seu_segredo_jwt', { expiresIn: '1d' });
-  res.json({ token, user:{
-    id: locador.id
-  } });
+  res.json({ token });
 };
 
 exports.buscarDadosGerais = async (req, res) => {
-  const { id } = req.body;
+  const id  = req.userId;
 
   const locador = await locadorService.buscarDadosGerais(id);
   if (!locador) return res.status(400).json({ erro: 'Locador nao encontrado não encontrado' });
