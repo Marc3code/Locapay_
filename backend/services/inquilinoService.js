@@ -7,11 +7,7 @@ const notificationService = require("../tarefas/services/notificationService");
 async function getTodosInquilinos(locadorId) {
   const [results] = await db.query(
     `
-    SELECT DISTINCT i.*
-    FROM inquilinos i
-    JOIN contratos c ON i.id = c.inquilino_id
-    JOIN imoveis im ON c.imovel_id = im.id
-    WHERE im.locador_id = ?
+    SELECT * from inquilinos WHERE locador_id = ?
   `,
     [locadorId]
   );  
