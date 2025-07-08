@@ -1,4 +1,4 @@
-import { buscarInquilinos, buscarPagamentos } from "./service.js";
+import { buscarInquilinosComContrato, buscarPagamentos } from "./service.js";
 
 function formatDate(dateString) {
   if (!dateString) return "-";
@@ -30,7 +30,7 @@ if (!inquilinoId) {
 
 async function carregarDados() {
   try {
-    const inquilinos = await buscarInquilinos();
+    const inquilinos = await buscarInquilinosComContrato();
     const pagamentos = await buscarPagamentos();
 
     const inquilino = inquilinos.find((i) => i.inquilino_id === inquilinoId);

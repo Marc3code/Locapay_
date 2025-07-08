@@ -24,7 +24,7 @@ export const buscarDadosGerais = async () => {
 
     return await response.json();
   } catch (err) {
-    console.error("Erro ao buscar inquilinos:", err);
+    console.error("Erro ao buscar dados gerais:", err);
     return [];
   }
 };
@@ -45,15 +45,15 @@ export const buscarDadosBancarios = async (id) => {
 
     return await response.json();
   } catch (err) {
-    console.error("Erro ao buscar inquilinos:", err);
+    console.error("Erro ao buscar dados bancarios:", err);
     return [];
   }
 };
 
 // ======================= INQUILINOS =======================
 
-// Buscar inquilinos vinculados ao locador logado
-export const buscarInquilinos = async () => {
+// Buscar inquilinos vinculados ao locador logado com contrato
+export const buscarInquilinosComContrato = async () => {
   try {
     const response = await fetch(
       `${API_BASE}/inquilinos/inquilinos-com-imovel`,
@@ -74,6 +74,31 @@ export const buscarInquilinos = async () => {
     return [];
   }
 };
+
+// Buscar inquilinos vinculados ao locador logado sem contrato
+export const buscarInquilinos= async () => {
+  try {
+    const response = await fetch(
+      `${API_BASE}/inquilinos`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error("Erro ao buscar inquilinos:", err);
+    return [];
+  }
+};
+
+
 
 // ======================= PAGAMENTOS =======================
 

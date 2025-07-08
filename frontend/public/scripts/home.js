@@ -1,4 +1,4 @@
-import { buscarInquilinos, buscarPagamentos } from "./service.js";
+import { buscarInquilinosComContrato, buscarPagamentos } from "./service.js";
 import { carregarHeader } from "./header/renderHeader.js";
 
 carregarHeader("home");
@@ -68,7 +68,7 @@ async function renderInquilinosList() {
     const tbody = document.querySelector("tbody");
     tbody.innerHTML = '<tr><td colspan="5">Carregando inquilinos...</td></tr>';
 
-    const inquilinosData = await buscarInquilinos();
+    const inquilinosData = await buscarInquilinosComContrato();
     const todosPagamentos = await buscarPagamentos();
 
     // Atualiza os cards com TODOS os pagamentos

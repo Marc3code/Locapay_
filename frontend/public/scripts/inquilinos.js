@@ -1,7 +1,6 @@
 import { carregarHeader } from "./header/renderHeader.js";
 import {
   buscarInquilinos,
-  buscarInquilinosComImovel,
   cadastrarInquilino,
 } from "./service.js";
 
