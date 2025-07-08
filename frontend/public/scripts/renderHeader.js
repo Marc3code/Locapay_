@@ -1,6 +1,6 @@
 export async function carregarHeader(paginaAtiva) {
   try {
-    const response = await fetch("../components/header.html");
+    const response = await fetch("./frontend/public/components/header.html");
     if (!response.ok) throw new Error("Erro ao carregar header");
 
     const html = await response.text();
