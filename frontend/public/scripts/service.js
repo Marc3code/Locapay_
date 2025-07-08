@@ -7,6 +7,50 @@ function getToken() {
   return localStorage.getItem("token");
 }
 
+// ======================= LOCADOR =======================
+
+// Buscar dados do locador logado
+export const buscarLocador = async (id) => {
+  try {
+    const response = await fetch(`${API_BASE}/user-info`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify(id),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error("Erro ao buscar inquilinos:", err);
+    return [];
+  }
+};
+
+// Buscar dados bancarios do locador logado
+export const buscarDadosBancarios = async (id) => {
+  try {
+    const response = await fetch(`${API_BASE}/bkdt/dados-bancarios`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify(id),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error("Erro ao buscar inquilinos:", err);
+    return [];
+  }
+};
+
 // ======================= INQUILINOS =======================
 
 // Buscar inquilinos vinculados ao locador logado
