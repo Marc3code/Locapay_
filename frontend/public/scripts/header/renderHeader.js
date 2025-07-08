@@ -1,4 +1,4 @@
-import { atualizarNomeLocador } from "./atualizarNomeLocador.js"; 
+import atualizarNomeLocador from "./atualizarNomeLocador.js";
 
 export async function carregarHeader(paginaAtiva) {
   try {
