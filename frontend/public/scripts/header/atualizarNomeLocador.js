@@ -1,8 +1,8 @@
-import { buscarDadosGerais } from "../service";
+import { buscarDadosGerais } from "../service.js";
 
 async function atualizarNomeLocador() {
   try {
-    // Supondo que você tenha o ID do locador guardado, por exemplo no localStorage
+    
     const locadorId = localStorage.getItem("locador_id");
     if (!locadorId) {
       console.warn("ID do locador não encontrado");
