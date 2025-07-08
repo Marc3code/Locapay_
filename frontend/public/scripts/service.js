@@ -10,7 +10,7 @@ function getToken() {
 // ======================= LOCADOR =======================
 
 // Buscar dados do locador logado
-export const buscarLocador = async (id) => {
+export const buscarDadosGerais = async (id) => {
   try {
     const response = await fetch(`${API_BASE}/user/info`, {
       headers: {

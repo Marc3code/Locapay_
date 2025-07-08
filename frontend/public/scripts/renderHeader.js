@@ -1,3 +1,5 @@
+import { atualizarNomeLocador } from "../components/atualizarNomeLocador.js"; 
+
 export async function carregarHeader(paginaAtiva) {
   try {
     const response = await fetch("./components/header.html");
@@ -13,6 +15,9 @@ export async function carregarHeader(paginaAtiva) {
     if (activeLink) activeLink.classList.add("active");
 
     document.body.prepend(headerContainer.firstElementChild);
+
+    // Chama a função para atualizar o nome do locador no header
+    atualizarNomeLocador();
   } catch (err) {
     console.error("Erro ao injetar header:", err);
   }
