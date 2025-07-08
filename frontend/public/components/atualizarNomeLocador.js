@@ -1,4 +1,4 @@
-import { buscarDadosGerais } from "./service.js";
+import { buscarDadosGerais } from "../scripts/service";
 
 async function atualizarNomeLocador() {
   try {
