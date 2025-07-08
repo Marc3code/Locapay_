@@ -85,13 +85,9 @@ document
     const imovelId = parseInt(container.dataset.imovelId);
 
     const payload = {
-      inquilino_id: parseInt(
-        document.getElementById("inquilino_id").value
-      ),
+      inquilino_id: parseInt(document.getElementById("inquilino_id").value),
       imovel_id: imovelId,
-      valor_aluguel: parseFloat(
-        document.getElementById("valor_aluguel").value
-      ),
+      valor_aluguel: parseFloat(document.getElementById("valor_aluguel").value),
       complemento: document.getElementById("complemento").value,
       data_inicio: document.getElementById("data_inicio").value,
       data_vencimento: document.getElementById("data_vencimento").value,
@@ -100,10 +96,13 @@ document
 
     try {
       await vincularInquilino(payload);
+      alert("Inquilino vinculado com sucesso!");
+
       container.classList.add("hidden");
       document.getElementById("form-vinculo").reset();
     } catch (err) {
       console.error("Erro ao vincular:", err);
+      alert("Erro ao vincular inquilino.");
     }
   });
 
@@ -123,11 +122,18 @@ document
     }
 
     const novoImovel = { tipo, endereco, numero };
-    await cadastrarImovel(novoImovel);
 
-    this.reset();
-    const imoveis = await buscarImoveis();
-    renderImoveis(imoveis);
+    try {
+      await cadastrarImovel(novoImovel);
+      alert("Imóvel cadastrado com sucesso!");
+
+      this.reset();
+      const imoveis = await buscarImoveis();
+      renderImoveis(imoveis);
+    } catch (err) {
+      console.error("Erro ao cadastrar imóvel:", err);
+      alert("Erro ao cadastrar imóvel.");
+    }
   });
 
 // --- Inicialização ---
