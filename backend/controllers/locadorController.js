@@ -20,7 +20,9 @@ exports.login = async (req, res) => {
   if (!valid) return res.status(401).json({ erro: 'Senha incorreta' });
 
   const token = jwt.sign({ id: locador.id }, 'seu_segredo_jwt', { expiresIn: '1d' });
-  res.json({ token });
+  res.json({ token, user:{
+    id: locador.id
+  } });
 };
 
 exports.buscarDadosGerais = async (req, res) => {
