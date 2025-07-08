@@ -33,3 +33,5 @@ async function atualizarNomeLocador() {
 
 // Rodar a função quando o DOM estiver carregado
 document.addEventListener("DOMContentLoaded", atualizarNomeLocador);
+
+export default atualizarNomeLocador;
