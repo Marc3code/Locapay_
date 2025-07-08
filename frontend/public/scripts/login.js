@@ -15,9 +15,12 @@ form.addEventListener("submit", async (e) => {
     });
 
     const data = await response.json();
+    
+
 
     if (response.ok && data.token) {
       localStorage.setItem("token", data.token);
+      localStorage.setItem("locador_id", data.user.id);
       window.location.href = "/home.html"; // redireciona após login
     } else {
       mensagemErro.textContent = data.erro || "Credenciais inválidas";
