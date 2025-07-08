@@ -18,7 +18,7 @@ router.put(
 );
 
 // ------------------ ROTAS POST ------------------
-router.post("/", inquilinoController.criarInquilino);
+router.post("/", auth, inquilinoController.criarInquilino);
 router.post("/inquilino-imovel", inquilinoController.vincularInquilinoImovel)
 
 module.exports = router;
