@@ -10,13 +10,12 @@ function getToken() {
 // ======================= LOCADOR =======================
 
 // Buscar dados do locador logado
-export const buscarDadosGerais = async (id) => {
+export const buscarDadosGerais = async () => {
   try {
     const response = await fetch(`${API_BASE}/user/info`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
-      body: JSON.stringify(id),
     });
 
     if (!response.ok) {
