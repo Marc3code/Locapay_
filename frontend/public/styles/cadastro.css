@@ -37,14 +37,12 @@ body {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   width: 360px;
-  text-align: center;
 }
 
 h2 {
-  font-size: 28px;
+  text-align: center;
   margin-bottom: 1.5rem;
-  color: var(--primary);
-  font-weight: 700;
+  color: var(--dark);
 }
 
 label {
@@ -52,7 +50,6 @@ label {
   margin-top: 1rem;
   font-weight: 600;
   color: var(--gray);
-  text-align: left;
 }
 
 input {
@@ -93,21 +90,4 @@ button:hover {
 
 .success {
   color: var(--success);
-}
-
-.register-link {
-  margin-top: 1.2rem;
-  font-size: 0.95rem;
-  color: var(--gray);
-}
-
-.register-link a {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 500;
-  margin-left: 5px;
-}
-
-.register-link a:hover {
-  text-decoration: underline;
 }

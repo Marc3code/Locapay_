@@ -1,4 +1,4 @@
-import { carregarHeader } from "./renderHeader.js";
+import { carregarHeader } from "./header/renderHeader.js";
 import {
   buscarInquilinos,
   buscarInquilinosComImovel,
