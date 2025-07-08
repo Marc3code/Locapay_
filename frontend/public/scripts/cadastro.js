@@ -12,8 +12,38 @@ form.addEventListener('submit', async (e) => {
   const cpf_cnpj = form.cpf_cnpj.value.trim();
   const telefone = form.telefone.value.trim();
 
+  // Expressões regulares para validação
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const cpfCnpjRegex = /^\d{11}$|^\d{14}$/;
+  const telefoneRegex = /^\+?\d{12,14}$/;
+
+  // Verificações
   if (!nome || !email || !senha || !cpf_cnpj || !telefone) {
     msg.textContent = 'Preencha todos os campos corretamente.';
+    msg.classList.add('error');
+    return;
+  }
+
+  if (!emailRegex.test(email)) {
+    msg.textContent = 'Informe um e-mail válido.';
+    msg.classList.add('error');
+    return;
+  }
+
+  if (senha.length < 6) {
+    msg.textContent = 'A senha deve ter no mínimo 6 caracteres.';
+    msg.classList.add('error');
+    return;
+  }
+
+  if (!cpfCnpjRegex.test(cpf_cnpj)) {
+    msg.textContent = 'CPF ou CNPJ inválido. Digite 11 ou 14 números.';
+    msg.classList.add('error');
+    return;
+  }
+
+  if (!telefoneRegex.test(telefone)) {
+    msg.textContent = 'Telefone inválido. Ex: +5584912345678';
     msg.classList.add('error');
     return;
   }
