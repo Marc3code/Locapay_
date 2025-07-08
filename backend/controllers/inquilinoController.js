@@ -85,12 +85,14 @@ async function criarInquilino(req, res) {
   const name = req.body.name;
   const phone = req.body.phone;
   const cpfCnpj = req.body.cpfCnpj;
+  const locadorId = req.userId;
 
   try {
     const novoInquilino = await inquilinoService.criarInquilino(
       name,
       phone,
-      cpfCnpj
+      cpfCnpj,
+      locadorId
     );
     res.status(201).json(novoInquilino);
   } catch (err) {

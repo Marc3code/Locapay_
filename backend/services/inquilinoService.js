@@ -86,14 +86,14 @@ const atualizarDataVencimento = async (novaData, id) => {
 };
 
 // ------------------ SERVICES POST ------------------
-const criarInquilino = async (name, phone, cpf_cnpj) => {
+const criarInquilino = async (name, phone, cpf_cnpj, locador_id) => {
   const connection = await db.getConnection();
   try {
     await connection.beginTransaction();
 
     const [results] = await connection.query(
-      "INSERT INTO inquilinos (nome, telefone, cpf_cnpj) VALUES (?, ?, ?)",
-      [name, phone, cpf_cnpj]
+      "INSERT INTO inquilinos (nome, telefone, cpf_cnpj, locador_id) VALUES (?, ?, ?, ?)",
+      [name, phone, cpf_cnpj, locador_id]
     );
 
     const id_asaas = await asaasService.criarClienteAsaas({
@@ -116,6 +116,7 @@ const criarInquilino = async (name, phone, cpf_cnpj) => {
       name,
       phone,
       cpf_cnpj,
+      locador_id,
       id_asaas,
     };
   } catch (err) {
