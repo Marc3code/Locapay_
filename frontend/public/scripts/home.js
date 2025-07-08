@@ -1,5 +1,5 @@
 import { buscarInquilinos, buscarPagamentos } from "./service.js";
-import { carregarHeader } from "./renderHeader.js";
+import { carregarHeader } from "./header/renderHeader.js";
 
 carregarHeader("home");
 
