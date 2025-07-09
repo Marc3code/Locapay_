@@ -218,7 +218,7 @@ nav a:hover::after {
 }
 
 .auth-form.active {
-  max-height: 1000px; 
+  max-height: 1000px;
   opacity: 1;
 }
 
@@ -342,42 +342,48 @@ nav a:hover::after {
 }
 
 .plans-table {
+  max-width: 100%;
+  margin: 0 auto 40px;
   overflow-x: auto;
-  margin-bottom: 40px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--light-gray);
 }
 
 .plans-table table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 30px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 
 .plans-table th,
 .plans-table td {
-  padding: 15px;
-  text-align: left;
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 14px;
   border-bottom: 1px solid var(--light-gray);
 }
 
 .plans-table th {
-  font-weight: 600;
-  color: var(--gray);
-  font-size: 14px;
+  background-color: var(--secondary);
+  color: white;
   text-transform: uppercase;
+  font-weight: 600;
   letter-spacing: 0.5px;
-  background-color: #f8f9fa;
-}
-
-.plans-table tr:hover {
-  background-color: rgba(26, 115, 232, 0.03);
 }
 
 .plans-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: var(--primary-light);
 }
 
-.plans-table tr:nth-child(even):hover {
-  background-color: rgba(26, 115, 232, 0.03);
+.plans-table tr:hover {
+  background-color: rgba(26, 115, 232, 0.1);
+  transition: var(--transition);
+}
+
+.plans-table td {
+  color: var(--dark);
 }
 
 .plan-benefits {
