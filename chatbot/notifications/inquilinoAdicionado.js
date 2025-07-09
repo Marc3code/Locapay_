@@ -1,5 +1,4 @@
 const {
-  formatarNumeroWhatsapp,
   formatarNumeroWhatsappSemNonoDigito,
 } = require("../utils/formatNumber");
 
