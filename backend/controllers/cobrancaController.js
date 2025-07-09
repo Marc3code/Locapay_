@@ -42,6 +42,21 @@ const getCobrancasPendentes = async (req, res) => {
   }
 };
 
+const getCobrancasSeremFeitas = async (req, res) => {
+  try {
+    const response = await cobrancaService.getCobrancasSeremFeitas();
+
+    if (!response || response.length === 0) {
+      return res.status(404).json({ erro: "Cobranças não encontradas." });
+    }
+
+    return res.status(200).json(response);
+  } catch (err) {
+    console.error("Erro ao buscar cobranças ativas:", err);
+    res.status(500).json({ erro: "Erro ao buscar cobranças ativas." });
+  }
+};
+
 
 const getPendenciasInquilino = async (req, res) => {
   const { id: inquilinoId } = req.params;
@@ -85,4 +100,5 @@ module.exports = {
   getCobrancasPendentes,
   criarCobrancaPix,
   getPendenciasInquilino,
+  getCobrancasSeremFeitas
 };

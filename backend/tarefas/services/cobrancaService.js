@@ -2,7 +2,7 @@ require("dotenv").config();
 
 async function buscarCobrancas() {
   try {
-    const response = await fetch(`${process.env.API_BASE}/cobrancas/pendentes`, {
+    const response = await fetch(`${process.env.API_BASE}/cobrancas/serem_feitas`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

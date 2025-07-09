@@ -2,7 +2,8 @@ const db = require("../database/dbconnect");
 const asaasService = require("./asaasService");
 
 const getCobrancasPendentes = async (locadorId) => {
-  const [results] = await db.query(`
+  const [results] = await db.query(
+    `
     SELECT 
       c.id AS contrato_id,
       c.valor_aluguel,
@@ -15,10 +16,27 @@ const getCobrancasPendentes = async (locadorId) => {
     JOIN inquilinos i ON c.inquilino_id = i.id
     JOIN imoveis im ON c.imovel_id = im.id
     WHERE c.status = 'ativo' AND im.locador_id = ?
-  `, [locadorId]);
+  `,
+    [locadorId]
+  );
   return results;
 };
 
+const getCobrancasSeremFeitas = async () => {
+  const [results] = await db.query(
+    `SELECT 
+  i.*,                       
+  c.id AS contrato_id,
+  c.valor_aluguel,
+  c.data_vencimento,
+  c.status AS contrato_status,
+  c.imovel_id
+FROM inquilinos i
+JOIN contratos c ON c.inquilino_id = i.id;
+`
+  );
+  return results;
+};
 
 const getDataVencimentoPorId = async (inquilinoid) => {
   const [result] = await db.query(
@@ -33,7 +51,7 @@ const criarCobrancaPix = async ({
   valor,
   data_vencimento,
   contrato_id,
-  cpf_cnpj
+  cpf_cnpj,
 }) => {
   const pagamento = await asaasService.gerarPagamentoPix(
     id_asaas,
@@ -62,7 +80,8 @@ const criarCobrancaPix = async ({
 };
 
 const getPendenciasInquilino = async (inquilino_id, locadorId) => {
-  const [result] = await db.query(`
+  const [result] = await db.query(
+    `
     SELECT p.link_pagamento, p.due_date 
     FROM pagamentos p
     JOIN contratos c ON p.contrato_id = c.id
@@ -70,14 +89,16 @@ const getPendenciasInquilino = async (inquilino_id, locadorId) => {
     WHERE c.inquilino_id = ? 
       AND (p.status = 'pendente' OR p.status = 'atrasado')
       AND im.locador_id = ?
-  `, [inquilino_id, locadorId]);
-  return result;  
+  `,
+    [inquilino_id, locadorId]
+  );
+  return result;
 };
-
 
 module.exports = {
   getCobrancasPendentes,
   getDataVencimentoPorId,
   criarCobrancaPix,
-  getPendenciasInquilino
+  getPendenciasInquilino,
+  getCobrancasSeremFeitas,
 };
