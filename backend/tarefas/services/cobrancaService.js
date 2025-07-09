@@ -6,7 +6,7 @@ async function buscarCobrancas() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.INTERNAL_TOKEN}`,
+        Authorization: `Bearer ${process.env.INTERN_TOKEN}`,
       },
     });
 
