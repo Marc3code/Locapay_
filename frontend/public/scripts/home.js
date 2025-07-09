@@ -1,166 +1,190 @@
-import { buscarInquilinosComContrato, buscarPagamentos } from "./service.js";
-import { carregarHeader } from "./header/renderHeader.js";
-
-carregarHeader("home");
-
-// Função para gerar iniciais do nome
-function getInitials(name) {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
-}
-
-// Função para formatar data (YYYY-MM-DD para DD/MM/YYYY)
-function formatDate(dateString) {
-  if (!dateString) return "-";
-  const [year, month, day] = dateString.split("T")[0].split("-");
-  return `${day}/${month}/${year}`;
-}
-
-function atualizarCards(pagamentos) {
-  const statusPorInquilino = {};
-
-  pagamentos.forEach((pagamento) => {
-    const id = pagamento.inquilino_id;
-    const status = pagamento.status;
-
-    if (!statusPorInquilino[id]) {
-      statusPorInquilino[id] = new Set();
-    }
-
-    statusPorInquilino[id].add(status);
-  });
-
-  let qtdEmDia = 0;
-  let qtdPendentes = 0;
-  let qtdAtrasados = 0;
-
-  for (const statusSet of Object.values(statusPorInquilino)) {
-    if (statusSet.has("atrasado")) {
-      qtdAtrasados++;
-    } else if (statusSet.has("pendente")) {
-      qtdPendentes++;
-    } else {
-      qtdEmDia++;
-    }
-  }
-
-  document.getElementById("qtd-em-dia").textContent = qtdEmDia;
-  document.getElementById(
-    "desc-pagos"
-  ).textContent = `${qtdEmDia} inquilino(s) em dia`;
-
-  document.getElementById("qtd-pendentes").textContent = qtdPendentes;
-  document.getElementById(
-    "desc-pendentes"
-  ).textContent = `${qtdPendentes} inquilino(s) com pagamento pendente`;
-
-  document.getElementById("qtd-atrasados").textContent = qtdAtrasados;
-  document.getElementById(
-    "desc-atrasados"
-  ).textContent = `${qtdAtrasados} inquilino(s) com pagamento(s) atrasado(s)`;
-}
-
-async function renderInquilinosList() {
-  try {
-    const tbody = document.querySelector("tbody");
-    tbody.innerHTML = '<tr><td colspan="5">Carregando inquilinos...</td></tr>';
-
-    const inquilinosData = await buscarInquilinosComContrato();
-    const todosPagamentos = await buscarPagamentos();
-
-    // Atualiza os cards com TODOS os pagamentos
-    atualizarCards(todosPagamentos);
-
-    // Filtra só os pagamentos do mês atual para exibir na tabela
-    const hoje = new Date();
-    const mesAtual = hoje.getMonth();
-    const anoAtual = hoje.getFullYear();
-
-    const pagamentosDoMes = todosPagamentos.filter((p) => {
-      const venc = new Date(p.due_date);
-      const mes = venc.getMonth();
-      const ano = venc.getFullYear();
-      return mes === mesAtual && ano === anoAtual;
+document.addEventListener('DOMContentLoaded', function() {
+  // Elementos da página
+  const authTabs = document.querySelectorAll('.auth-tab');
+  const authForms = document.querySelectorAll('.auth-form');
+  const showSignupBtn = document.getElementById('show-signup');
+  const showLoginBtn = document.getElementById('show-login');
+  const ctaSignupBtn = document.getElementById('cta-signup');
+  const authSection = document.getElementById('auth-section');
+  const msgDiv = document.getElementById('msg');
+  
+  // Alternar entre abas de cadastro e login
+  authTabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      // Remove a classe active de todas as abas e formulários
+      authTabs.forEach(t => t.classList.remove('active'));
+      authForms.forEach(f => f.classList.remove('active'));
+      
+      // Adiciona a classe active à aba clicada e ao formulário correspondente
+      this.classList.add('active');
+      const formId = this.getAttribute('data-tab');
+      document.querySelector(`.auth-form[data-form="${formId}"]`).classList.add('active');
     });
+  });
+  
+  // Botões "Comece agora" e "Já tem conta" no hero section
+  if (showSignupBtn && authSection) {
+    showSignupBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      scrollToAuthSection('signup');
+    });
+  }
+  
+  if (showLoginBtn && authSection) {
+    showLoginBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      scrollToAuthSection('login');
+    });
+  }
+  
+  if (ctaSignupBtn && authSection) {
+    ctaSignupBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      scrollToAuthSection('signup');
+    });
+  }
+  
+  function scrollToAuthSection(tab) {
+    authSection.scrollIntoView({ behavior: 'smooth' });
+    
+    // Ativa a aba solicitada
+    authTabs.forEach(t => t.classList.remove('active'));
+    authForms.forEach(f => f.classList.remove('active'));
+    document.querySelector(`.auth-tab[data-tab="${tab}"]`).classList.add('active');
+    document.querySelector(`.auth-form[data-form="${tab}"]`).classList.add('active');
+  }
+  
+  // Validação do formulário de cadastro
+  const signupForm = document.getElementById('form-cadastro-locador');
+  if (signupForm) {
+    signupForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      msgDiv.textContent = '';
+      msgDiv.className = 'message';
 
-    if (inquilinosData.length === 0) {
-      tbody.innerHTML =
-        '<tr><td colspan="6">Nenhum inquilino encontrado</td></tr>';
-      return;
-    }
+      const nome = signupForm.nome.value.trim();
+      const email = signupForm.email.value.trim();
+      const senha = signupForm.senha.value;
+      const cpf_cnpj = signupForm.cpf_cnpj.value.trim();
+      const telefone = signupForm.telefone.value.trim();
+      const plano = signupForm.plano.value;
 
-    tbody.innerHTML = "";
+      // Expressões regulares para validação
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const cpfCnpjRegex = /^\d{11}$|^\d{14}$/;
+      const telefoneRegex = /^\+?\d{12,14}$/;
 
-    inquilinosData.forEach((inquilino) => {
-      const row = document.createElement("tr");
-      row.style.cursor = "pointer";
-
-      row.addEventListener("click", () => {
-        localStorage.setItem("inquilino_id", inquilino.inquilino_id);
-        window.location.href = "/detalhe_inquilino.html";
-      });
-
-      const enderecoCompleto = `${inquilino.endereco}, ${inquilino.numero}${
-        inquilino.complemento ? " - " + inquilino.complemento : ""
-      }`;
-
-      const pagamento = pagamentosDoMes.find(
-        (p) => p.contrato_id === inquilino.contrato_id
-      );
-
-      let statusText = "-";
-      let statusClass = "-";
-      let vencimentoClass = "due-date";
-
-      if (pagamento) {
-        if (pagamento.status === "pendente") {
-          statusText = "Pendente";
-          statusClass = "pendente";
-        } else if (pagamento.status === "atrasado") {
-          statusText = "Atrasado";
-          statusClass = "atrasado";
-          vencimentoClass = "overdue-date";
-        } else if (pagamento.status === "pago") {
-          statusText = "Pago";
-          statusClass = "pago";
-        }
+      // Verificações
+      if (!nome || !email || !senha || !cpf_cnpj || !telefone || !plano) {
+        showError('Preencha todos os campos corretamente.');
+        return;
       }
 
-      const vencimentoFormatado = pagamento
-        ? formatDate(pagamento.due_date)
-        : "-";
+      if (!emailRegex.test(email)) {
+        showError('Informe um e-mail válido.');
+        return;
+      }
 
-      row.innerHTML = `
-        <td>
-          <div class="inquilino-info">
-            <div class="inquilino-avatar">${getInitials(inquilino.nome)}</div>
-            <div>
-              <div class="inquilino-name">${inquilino.nome}</div>
-              <div class="inquilino-property">${inquilino.telefone}</div>
-            </div>
-          </div>
-        </td>
-        <td>${enderecoCompleto}</td>
-        <td>R$ ${parseFloat(inquilino.valor_aluguel)
-          .toFixed(2)
-          .replace(".", ",")}</td>
-        <td><span class="status ${statusClass}">${statusText}</span></td>
-        <td class="${vencimentoClass}">${vencimentoFormatado}</td>
-      `;
+      if (senha.length < 6) {
+        showError('A senha deve ter no mínimo 6 caracteres.');
+        return;
+      }
 
-      tbody.appendChild(row);
+      if (!cpfCnpjRegex.test(cpf_cnpj)) {
+        showError('CPF ou CNPJ inválido. Digite 11 ou 14 números.');
+        return;
+      }
+
+      if (!telefoneRegex.test(telefone)) {
+        showError('Telefone inválido. Ex: +5584912345678');
+        return;
+      }
+
+      try {
+        const res = await fetch('https://backend-isolado-production.up.railway.app/user/locadores', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            nome, 
+            email, 
+            senha, 
+            cpf_cnpj, 
+            telefone,
+            plano // Adicionando o plano selecionado
+          })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          showSuccess('Cadastro realizado com sucesso!');
+          signupForm.reset();
+          
+          // Redireciona após 2 segundos
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 2000);
+        } else {
+          showError(data.erro || 'Erro ao cadastrar locador.');
+        }
+      } catch (err) {
+        showError('Erro na conexão com o servidor.');
+        console.error(err);
+      }
     });
-  } catch (error) {
-    console.error("Erro ao renderizar inquilinos:", error);
-    const tbody = document.querySelector("tbody");
-    tbody.innerHTML = '<tr><td colspan="6">Erro ao carregar dados</td></tr>';
   }
-}
+  
+  // Validação do formulário de login
+  const loginForm = document.getElementById('login-form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      msgDiv.textContent = '';
+      msgDiv.className = 'message';
 
-// Inicializar a aplicação
-document.addEventListener("DOMContentLoaded", () => {
-  renderInquilinosList();
+      const email = loginForm.email.value.trim();
+      const senha = loginForm.senha.value;
+
+      if (!email || !senha) {
+        showError('Preencha todos os campos.');
+        return;
+      }
+
+      try {
+        const response = await fetch('https://backend-isolado-production.up.railway.app/user/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, senha })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.token) {
+          localStorage.setItem('token', data.token);
+          showSuccess('Login realizado com sucesso!');
+          
+          // Redireciona após 1 segundo
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+        } else {
+          showError(data.erro || 'Credenciais inválidas');
+        }
+      } catch (error) {
+        showError('Erro ao conectar com o servidor');
+        console.error('Erro na requisição:', error);
+      }
+    });
+  }
+  
+  // Funções auxiliares para exibir mensagens
+  function showError(message) {
+    msgDiv.textContent = message;
+    msgDiv.classList.add('error');
+  }
+  
+  function showSuccess(message) {
+    msgDiv.textContent = message;
+    msgDiv.classList.add('success');
+  }
 });

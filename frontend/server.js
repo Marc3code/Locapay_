@@ -10,7 +10,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Redireciona a raiz para o login
 app.get("/", (req, res) => {
-  res.redirect("/login.html");
+  res.redirect("/home.html");
 });
 
 

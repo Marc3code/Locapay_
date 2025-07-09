@@ -1,11 +1,55 @@
-// service.js
-
 const API_BASE = "https://backend-isolado-production.up.railway.app";
 
 // Função auxiliar para obter o token armazenado
-function getToken() {
+export function getToken() {
   return localStorage.getItem("token");
 }
+
+// ======================= AUTENTICAÇÃO =======================
+
+// Cadastrar novo locador
+export const cadastrarLocador = async (dados) => {
+  try {
+    const response = await fetch(`${API_BASE}/user/locadores`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.erro || 'Erro ao cadastrar locador');
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Erro ao cadastrar locador:", err);
+    return { erro: err.message };
+  }
+};
+
+// Fazer login
+export const fazerLogin = async (credenciais) => {
+  try {
+    const response = await fetch(`${API_BASE}/user/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credenciais)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.erro || 'Credenciais inválidas');
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Erro ao fazer login:", err);
+    return { erro: err.message };
+  }
+};
 
 // ======================= LOCADOR =======================
 
@@ -76,7 +120,7 @@ export const buscarInquilinosComContrato = async () => {
 };
 
 // Buscar inquilinos vinculados ao locador logado sem contrato
-export const buscarInquilinos= async () => {
+export const buscarInquilinos = async () => {
   try {
     const response = await fetch(
       `${API_BASE}/inquilinos`,
@@ -97,8 +141,6 @@ export const buscarInquilinos= async () => {
     return [];
   }
 };
-
-
 
 // ======================= PAGAMENTOS =======================
 
@@ -179,13 +221,10 @@ export const vincularInquilino = async (dados) => {
   }
 };
 
-const API_INQUILINOS =
-  "https://backend-isolado-production.up.railway.app/inquilinos";
-
 // Buscar todos os inquilinos do locador logado
 export const buscarInquilinosComImovel = async () => {
   try {
-    const response = await fetch(`${API_INQUILINOS}/inquilinos-com-imovel`, {
+    const response = await fetch(`${API_BASE}/inquilinos/inquilinos-com-imovel`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
@@ -205,7 +244,7 @@ export const buscarInquilinosComImovel = async () => {
 // Cadastrar novo inquilino
 export const cadastrarInquilino = async (inquilino) => {
   try {
-    const response = await fetch(API_INQUILINOS, {
+    const response = await fetch(`${API_BASE}/inquilinos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
