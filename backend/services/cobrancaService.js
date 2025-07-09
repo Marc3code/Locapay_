@@ -25,15 +25,23 @@ const getCobrancasPendentes = async (locadorId) => {
 const getCobrancasSeremFeitas = async () => {
   const [results] = await db.query(
     `SELECT 
-  i.*,                       
-  c.id AS contrato_id,
-  c.valor_aluguel,
-  c.data_vencimento,
-  c.status AS contrato_status,
-  c.imovel_id
-FROM inquilinos i
-JOIN contratos c ON c.inquilino_id = i.id;
-`
+      i.id AS inquilino_id,
+      i.nome AS nome_inquilino,
+      i.telefone AS telefone_inquilino,
+      i.cpf_cnpj,
+      i.id_asaas,
+      i.locador_id,
+
+      c.id AS contrato_id,
+      c.valor_aluguel,
+      c.data_vencimento,
+      c.status AS contrato_status,
+
+      im.id AS imovel_id
+    FROM contratos c
+    JOIN inquilinos i ON c.inquilino_id = i.id
+    JOIN imoveis im ON c.imovel_id = im.id
+    WHERE c.status = 'ativo';`
   );
   return results;
 };
