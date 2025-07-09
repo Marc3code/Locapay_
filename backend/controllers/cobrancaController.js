@@ -47,7 +47,7 @@ const getCobrancasSeremFeitas = async (req, res) => {
     const response = await cobrancaService.getCobrancasSeremFeitas();
 
     if (!response || response.length === 0) {
-      return res.status(404).json({ erro: "Cobranças não encontradas." });
+      return res.status(200).json({ erro: "Não há contratos." });
     }
 
     return res.status(200).json(response);

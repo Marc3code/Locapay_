@@ -2,6 +2,6 @@ const agendarTarefa = require("../agendarTarefa");
 const gerarCobrancasDoMes = require("../../tarefas/gerarCobrancasDoMes");
 
 // Roda no 1º dia do mês às 01:00
-agendarTarefa("00 15 * * *", gerarCobrancasDoMes);
+agendarTarefa("05 00 * * *", gerarCobrancasDoMes);
 
 
