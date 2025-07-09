@@ -7,7 +7,7 @@ const auth = require("../middleware/authMiddleware");
 // Atualizado para usar contratoId ao invés de inquilinoid
 router.get("/getdatavencimento/:contratoId", cobrancaController.getDataVencimentoPorId);
 
-router.get("/", auth, cobrancaController.getCobrancasPendentes);
+router.get("/pendentes", auth, cobrancaController.getCobrancasPendentes);
 
 router.post("/", cobrancaController.criarCobrancaPix);
 
