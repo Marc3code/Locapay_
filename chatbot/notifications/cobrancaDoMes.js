@@ -1,6 +1,7 @@
 const {
   formatarNumeroWhatsappSemNonoDigito,
 } = require("../utils/formatNumber");
+const { formatarData } = require("../utils/formatDate");
 
 const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
   const numeroFormatado = formatarNumeroWhatsappSemNonoDigito(telefone);
