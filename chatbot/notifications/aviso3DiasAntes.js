@@ -3,6 +3,8 @@ const {
 } = require("../utils/formatNumber");
 const { formatarData } = require("../utils/formatDate");
 
+const { client, FROM_NUMBER } = require("./twilioClient");
+
 const enviarNotificacao3DiasAntes = (data, telefone) => {
   const numeroFormatado = formatarNumeroWhatsappSemNonoDigito(telefone);
   const dataFormatada = formatarData(data);
