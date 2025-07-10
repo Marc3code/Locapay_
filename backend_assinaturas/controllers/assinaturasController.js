@@ -24,12 +24,12 @@ async function buscarAssinatura(req, res) {
 }
 
 async function adicionarAssinatura(req, res) {
-  const { locador_id, plano_id} = req.body;
+  const {data} = req.body;
 
   try {
     const resultado = await assinaturaService.adicionarAssinatura(
-      locador_id,
-      plano_id
+      data.locador_id,
+      data.plano_id
     );
 
     return res.status(201).json(resultado);
