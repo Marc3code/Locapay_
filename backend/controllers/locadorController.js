@@ -4,12 +4,11 @@ const locadorService = require("../services/locadorService");
 require("dotenv").config();
 
 exports.registrar = async (req, res) => {
-  const { nome, email, senha, cpf_cnpj, telefone, plano } = req.body;
+  const { nome, senha, cpf_cnpj, telefone, plano } = req.body;
   const senha_hash = await bcrypt.hash(senha, 10);
 
   const locadorId = await locadorService.criarLocador({
     nome,
-    email,
     senha_hash,
     cpf_cnpj,
     telefone,
@@ -46,9 +45,9 @@ exports.registrar = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email, senha } = req.body;
+  const { cpf_cnpj, senha } = req.body;
 
-  const locador = await locadorService.buscarPorEmail(email);
+  const locador = await locadorService.buscarPorCpf_Cnpj(cpf_cnpj);
   if (!locador) return res.status(400).json({ erro: "E-mail não encontrado" });
 
   const valid = await bcrypt.compare(senha, locador.senha_hash);

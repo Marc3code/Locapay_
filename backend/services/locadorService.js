@@ -3,12 +3,11 @@ const db = require("../database/dbconnect");
 exports.criarLocador = async (locador) => {
   const [result] = await db.query(
     `
-    INSERT INTO locadores (nome, email, senha_hash, cpf_cnpj, telefone)
+    INSERT INTO locadores (nome, senha_hash, cpf_cnpj, telefone)
     VALUES (?, ?, ?, ?, ?)
   `,
     [
       locador.nome,
-      locador.email,
       locador.senha_hash,
       locador.cpf_cnpj,
       locador.telefone,
@@ -18,9 +17,9 @@ exports.criarLocador = async (locador) => {
   return result.insertId;
 };
 
-exports.buscarPorEmail = async (email) => {
-  const [rows] = await db.query(`SELECT * FROM locadores WHERE email = ?`, [
-    email,
+exports.buscarPorEmail = async (cpf_cnpj) => {
+  const [rows] = await db.query(`SELECT * FROM locadores WHERE cpf_cnpj = ?`, [
+    cpf_cnpj,
   ]);
   return rows[0];
 };
@@ -31,7 +30,6 @@ exports.buscarDadosGerais = async (id) => {
       l.nome,
       l.telefone,
       l.cpf_cnpj,
-      l.email,
       l.data_cadastro,
       d.banco_codigo,
       d.banco_nome,
