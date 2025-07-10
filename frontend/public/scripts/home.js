@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
             senha, 
             cpf_cnpj, 
             telefone,
-            plano // Adicionando o plano selecionado
+            plano 
           })
         });
 
@@ -120,9 +120,9 @@ document.addEventListener('DOMContentLoaded', function() {
           showSuccess('Cadastro realizado com sucesso!');
           signupForm.reset();
           
-          // Redireciona após 2 segundos
+          // Recarrega a página após 2 segundos
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.reload()
           }, 2000);
         } else {
           showError(data.erro || 'Erro ao cadastrar locador.');
