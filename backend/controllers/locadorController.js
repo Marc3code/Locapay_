@@ -7,7 +7,7 @@ exports.registrar = async (req, res) => {
   const { nome, email, senha, cpf_cnpj, telefone, plano_id } = req.body;
   const senha_hash = await bcrypt.hash(senha, 10);
 
-  const id = await locadorService.criarLocador({
+  const locadorId = await locadorService.criarLocador({
     nome,
     email,
     senha_hash,
@@ -24,7 +24,7 @@ exports.registrar = async (req, res) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
         },
-        body: JSON.stringify({ locador_id: id, plano_id: plano_id }),
+        body: JSON.stringify({ locador_id: locadorId, plano_id: plano_id }),
       }
     );
 
@@ -32,13 +32,13 @@ exports.registrar = async (req, res) => {
       const erro = await respostaAssinatura.text();
       console.warn("Assinatura não registrada, mas locador foi criado:", erro);
       return res.status(201).json({
-        id,
+        user,
         aviso:
           "Locador registrado, mas ocorreu um erro ao registrar a assinatura.",
       });
     }
 
-    res.status(201).json({ id });
+    res.status(201).json({ locadorId });
   } catch (err) {
     console.error("Erro no registro:", err);
     res.status(500).json({ erro: "Erro no registro do locador." });
