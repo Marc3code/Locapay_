@@ -7,7 +7,7 @@ const auth = require('../middlewares/authMiddleware');
 router.get("/:locador_id", assinaturaController.buscarAssinatura);
 
 // Adicionar nova assinatura
-router.post("/", assinaturaController.adicionarAssinatura);
+router.post("/", auth, assinaturaController.adicionarAssinatura);
 
 router.put("/atualizar-datas", assinaturaController.atualizarDatasInicioFim)
 
