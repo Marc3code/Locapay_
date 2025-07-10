@@ -17,7 +17,7 @@ exports.criarLocador = async (locador) => {
   return result.insertId;
 };
 
-exports.buscarPorEmail = async (cpf_cnpj) => {
+exports.buscarPorCpf_Cnpj = async (cpf_cnpj) => {
   const [rows] = await db.query(`SELECT * FROM locadores WHERE cpf_cnpj = ?`, [
     cpf_cnpj,
   ]);
