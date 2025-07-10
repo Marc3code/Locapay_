@@ -5,7 +5,17 @@ require('dotenv').config();
 const assinaturaRoutes = require('./routes/assinaturasRoutes')
 
 
-app.use(cors()); 
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://locapay-production.up.railway.app",
+      "https://backend-isolado-production.up.railway.app"
+    ],
+    methods: ["GET", "POST", "PUT"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 
@@ -16,7 +26,7 @@ app.get('/', (req, res) => {
   res.send('API funcionando!');
 });
 
-app.use(assinaturaRoutes)
+app.use('/assinaturas', assinaturaRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);

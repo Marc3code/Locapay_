@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const assinaturaController = require("../controllers/assinaturasController");
+const auth = require('../middlewares/authMiddleware');
 
 // Buscar assinatura de um locador
 router.get("/:locador_id", assinaturaController.buscarAssinatura);
