@@ -24,7 +24,7 @@ exports.registrar = async (req, res) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
         },
-        body: JSON.stringify({ id, plano_id }),
+        body: JSON.stringify({ locador_id: id, plano_id: plano_id }),
       }
     );
 
