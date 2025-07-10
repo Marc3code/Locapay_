@@ -4,7 +4,7 @@ exports.criarLocador = async (locador) => {
   const [result] = await db.query(
     `
     INSERT INTO locadores (nome, senha_hash, cpf_cnpj, telefone)
-    VALUES (?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?)
   `,
     [
       locador.nome,
