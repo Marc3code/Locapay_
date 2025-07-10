@@ -24,12 +24,12 @@ async function buscarAssinatura(req, res) {
 }
 
 async function adicionarAssinatura(req, res) {
-  const {data} = req.body;
+  const { locador_id, plano_id } = req.body;
 
   try {
     const resultado = await assinaturaService.adicionarAssinatura(
-      data.locador_id,
-      data.plano_id
+      locador_id,
+      plano_id
     );
 
     return res.status(201).json(resultado);
@@ -43,7 +43,7 @@ async function adicionarAssinatura(req, res) {
 }
 
 async function atualizarDatasInicioFim() {
-    const { locador_id } = req.params;
+  const { locador_id } = req.params;
   const { data_inicio, data_fim } = req.body;
 
   try {
@@ -55,7 +55,10 @@ async function atualizarDatasInicioFim() {
 
     return res.status(200).json(resultado);
   } catch (error) {
-    console.error("Erro no controller atualizarStatusAssinatura:", error.message);
+    console.error(
+      "Erro no controller atualizarStatusAssinatura:",
+      error.message
+    );
     return res.status(500).json({
       sucesso: false,
       mensagem: "Erro ao atualizar status da assinatura",
@@ -95,7 +98,10 @@ async function atualizarStatusAssinatura(req, res) {
 
     return res.status(200).json(resultado);
   } catch (error) {
-    console.error("Erro no controller atualizarStatusAssinatura:", error.message);
+    console.error(
+      "Erro no controller atualizarStatusAssinatura:",
+      error.message
+    );
     return res.status(500).json({
       sucesso: false,
       mensagem: "Erro ao atualizar status da assinatura",
