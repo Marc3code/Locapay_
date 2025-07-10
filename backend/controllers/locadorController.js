@@ -32,7 +32,7 @@ exports.registrar = async (req, res) => {
       const erro = await respostaAssinatura.text();
       console.warn("Assinatura não registrada, mas locador foi criado:", erro);
       return res.status(201).json({
-        user,
+        locadorId,
         aviso:
           "Locador registrado, mas ocorreu um erro ao registrar a assinatura.",
       });
