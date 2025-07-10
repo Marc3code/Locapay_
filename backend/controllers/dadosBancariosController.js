@@ -1,7 +1,7 @@
 const dadosBancariosService = require('../services/dadosBancariosService');
 
 exports.salvar = async (req, res) => {
-  const { id } = req.userId;
+  const id = req.userId;
   const dados = req.body;
 
   try {
@@ -14,7 +14,7 @@ exports.salvar = async (req, res) => {
 };
 
 exports.buscar = async (req, res) => {
-  const { id } = req.userId;
+  const id = req.userId;
 
   try {
     const resposta = await dadosBancariosService.obterDados(id);
