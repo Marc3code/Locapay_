@@ -1,5 +1,5 @@
 const express = require('express');
-const auth = require('../middleware/authMiddleware');
+const auth = require('../middlewares/authMiddleware');
 const dadosCtrl = require('../controllers/dadosBancariosController');
 
 const router = express.Router();
