@@ -1,18 +1,30 @@
-const dadosService = require('../services/dadosBancariosService');
+const dadosBancariosService = require('../services/dadosBancariosService');
 
-exports.atualizar = async (req, res) => {
-  const locadorId = req.userId;
+exports.salvar = async (req, res) => {
+  const { id } = req.params;
   const dados = req.body;
 
-  await dadosService.salvarDadosBancarios(locadorId, dados);
-  res.json({ message: 'Dados bancários salvos com sucesso.' });
+  try {
+    const resposta = await dadosBancariosService.enviarDados(id, dados);
+    return res.status(resposta.status).json(await resposta.json());
+  } catch (err) {
+    console.error("Erro ao salvar dados bancários remotamente:", err.message);
+    return res.status(500).json({ erro: "Erro ao salvar dados bancários" });
+  }
 };
 
-exports.obter = async (req, res) => {
-  const locadorId = req.userId;
-  const dados = await dadosService.buscarDadosBancarios(locadorId);
+exports.buscar = async (req, res) => {
+  const { id } = req.params;
 
-  if (!dados) return res.status(404).json({ erro: 'Dados não encontrados' });
-
-  res.json(dados);
+  try {
+    const resposta = await dadosBancariosService.obterDados(id);
+    if (!resposta.ok) {
+      return res.status(resposta.status).json(await resposta.json());
+    }
+    const dados = await resposta.json();
+    return res.json(dados);
+  } catch (err) {
+    console.error("Erro ao buscar dados bancários remotamente:", err.message);
+    return res.status(500).json({ erro: "Erro ao buscar dados bancários" });
+  }
 };

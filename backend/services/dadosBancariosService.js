@@ -1,23 +1,26 @@
-const db = require('../database/dbconnect');
+const API_URL = process.env.API_BASE_ASSINATURAS;
+const API_KEY = process.env.ASSINATURAS_API_KEY;
 
-exports.salvarDadosBancarios = async (locadorId, dados) => {
-  await db.query(`
-    INSERT INTO dados_bancarios_locadores (
-      locador_id, banco_codigo, banco_nome, agencia, conta, conta_digito, tipo_conta, chave_pix
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE
-      banco_codigo = VALUES(banco_codigo),
-      banco_nome = VALUES(banco_nome),
-      agencia = VALUES(agencia),
-      conta = VALUES(conta),
-      conta_digito = VALUES(conta_digito),
-      tipo_conta = VALUES(tipo_conta),
-      chave_pix = VALUES(chave_pix),
-      data_ultima_atualizacao = NOW()
-  `, [locadorId, dados.banco_codigo, dados.banco_nome, dados.agencia, dados.conta, dados.conta_digito, dados.tipo_conta, dados.chave_pix]);
+exports.enviarDados = async (locadorId, dados) => {
+  const url = `${API_URL}/dados-bancarios/${locadorId}`;
+
+  return await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${API_KEY}`
+    },
+    body: JSON.stringify(dados)
+  });
 };
 
-exports.buscarDadosBancarios = async (locadorId) => {
-  const [rows] = await db.query(`SELECT * FROM dados_bancarios_locadores WHERE locador_id = ?`, [locadorId]);
-  return rows[0];
+exports.obterDados = async (locadorId) => {
+  const url = `${API_URL}/dados-bancarios/${locadorId}`;
+
+  return await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${API_KEY}`
+    }
+  });
 };
