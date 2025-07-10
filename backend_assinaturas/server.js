@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config();
 const assinaturaRoutes = require('./routes/assinaturasRoutes')
+const dadosBancariosRoutes = require('./routes/dadosBancariosRoutes')
 
 
 app.use(
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/assinaturas', assinaturaRoutes);
+app.use('/bkData', dadosBancariosRoutes)
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
