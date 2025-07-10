@@ -29,9 +29,7 @@ async function adicionarAssinatura(req, res) {
   try {
     const resultado = await assinaturaService.adicionarAssinatura(
       locador_id,
-      plano_id,
-      data_inicio,
-      data_fim
+      plano_id
     );
 
     return res.status(201).json(resultado);
