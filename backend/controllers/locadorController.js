@@ -4,7 +4,7 @@ const locadorService = require("../services/locadorService");
 require("dotenv").config();
 
 exports.registrar = async (req, res) => {
-  const { nome, email, senha, cpf_cnpj, telefone, plano_id } = req.body;
+  const { nome, email, senha, cpf_cnpj, telefone, plano } = req.body;
   const senha_hash = await bcrypt.hash(senha, 10);
 
   const locadorId = await locadorService.criarLocador({
@@ -24,7 +24,7 @@ exports.registrar = async (req, res) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
         },
-        body: JSON.stringify({ locador_id: locadorId, plano_id: plano_id }),
+        body: JSON.stringify({ locador_id: locadorId, plano_id: plano }),
       }
     );
 
