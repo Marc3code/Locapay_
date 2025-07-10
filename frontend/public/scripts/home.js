@@ -63,25 +63,19 @@ document.addEventListener('DOMContentLoaded', function() {
       msgDiv.className = 'message';
 
       const nome = signupForm.nome.value.trim();
-      const email = signupForm.email.value.trim();
       const senha = signupForm.senha.value;
       const cpf_cnpj = signupForm.cpf_cnpj.value.trim();
       const telefone = signupForm.telefone.value.trim();
       const plano = signupForm.plano.value;
 
       // Expressões regulares para validação
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
       const cpfCnpjRegex = /^\d{11}$|^\d{14}$/;
       const telefoneRegex = /^\+?\d{12,14}$/;
 
       // Verificações
-      if (!nome || !email || !senha || !cpf_cnpj || !telefone || !plano) {
+      if (!nome || !senha || !cpf_cnpj || !telefone || !plano) {
         showError('Preencha todos os campos corretamente.');
-        return;
-      }
-
-      if (!emailRegex.test(email)) {
-        showError('Informe um e-mail válido.');
         return;
       }
 
@@ -106,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             nome, 
-            email, 
             senha, 
             cpf_cnpj, 
             telefone,
@@ -142,10 +135,10 @@ document.addEventListener('DOMContentLoaded', function() {
       msgDiv.textContent = '';
       msgDiv.className = 'message';
 
-      const email = loginForm.email.value.trim();
+      const cpf_cnpj = loginForm.cpf_cnpj.value.trim();
       const senha = loginForm.senha.value;
 
-      if (!email || !senha) {
+      if (!cpf_cnpj || !senha) {
         showError('Preencha todos os campos.');
         return;
       }
@@ -154,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const response = await fetch('https://backend-isolado-production.up.railway.app/user/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, senha })
+          body: JSON.stringify({ cpf_cnpj, senha })
         });
 
         const data = await response.json();
