@@ -8,6 +8,7 @@ const router = express.Router();
 router.post('/locadores', locadorCtrl.registrar);
 router.post('/login', locadorCtrl.login);
 router.get('/info', auth, locadorCtrl.buscarDadosGerais)
+router.get('/locador/por-inquilino/:inquilino_id', locadorCtrl.buscarLocadorPorInquilino )
 
 
 module.exports = router;

@@ -49,3 +49,22 @@ exports.buscarDadosGerais = async (id) => {
   );
   return rows[0];
 };
+
+exports.buscarLocadorPorInquilino = async (inquilinoId) => {
+  const query = `
+    SELECT l.id AS locador_id, l.nome, l.telefone
+    FROM contratos c
+    JOIN imoveis i ON c.imovel_id = i.id
+    JOIN locadores l ON i.locador_id = l.id
+    WHERE c.inquilino_id = ?
+    LIMIT 1
+  `;
+
+  const [rows] = await db.query(query, [inquilinoId]);
+
+  if (rows.length === 0) {
+    return null;
+  }
+
+  return rows[0];
+}

@@ -31,7 +31,7 @@ async function getInquilinoPorTelefone(telefone) {
 
 async function buscarTelefonePorCustomerId(customerId) {
   const [results] = await db.query(
-    "SELECT nome, telefone FROM inquilinos WHERE id_asaas = ?",
+    "SELECT id, nome, telefone FROM inquilinos WHERE id_asaas = ?",
     [customerId]
   );
   return results.length > 0 ? results[0] : null;

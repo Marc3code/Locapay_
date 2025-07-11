@@ -70,3 +70,20 @@ exports.buscarDadosGerais = async (req, res) => {
 
   res.json(locador);
 };
+
+exports.buscarLocadorPorInquilino = async (req, res) => {
+   const { inquilino_id } = req.params;
+
+  try {
+    const locador = await locadorService.buscarLocadorPorInquilino(inquilino_id);
+
+    if (!locador) {
+      return res.status(404).json({ erro: "Locador não encontrado para esse inquilino." });
+    }
+
+    return res.json(locador);
+  } catch (error) {
+    console.error("Erro ao buscar locador por inquilino:", error);
+    return res.status(500).json({ erro: "Erro interno do servidor." });
+  }
+}
