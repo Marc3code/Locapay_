@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Painel Financeiro - Locapay</title>
+    <link rel="stylesheet" href="./styles/financeiro.css" />
+    <link rel="stylesheet" href="../components/header_style.css" />
+    <!-- Ícones FontAwesome (opcional para ícones) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-pZQ5H+F14IrJJ2R4v+9hC0h0q7Jx+J6OXWcM9A/jVQW7tDkRLs4MrFhf3jRfh2q7RwvxL15i8n2WkUMy0bSUXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <main class="container">
+      <section class="status-cards">
+        <div class="status-card success">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Saldo disponível</div>
+            </div>
+            <div class="card-icon">
+              <i class="fas fa-wallet"></i>
+            </div>
+          </div>
+          <div class="card-value" id="saldoTotal">R$ 0,00</div>
+        </div>
+
+        <div class="status-card warning">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Saldo bloqueado</div>
+            </div>
+            <div class="card-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="card-value" id="saldoBloqueado">R$ 0,00</div>
+        </div>
+      </section>
+
+      <button class="filter-btn" id="btnSacar">Solicitar Saque</button>
+
+      <section class="inquilinos-section">
+        <div class="section-header">
+          <h3>Histórico de Saques</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Valor</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaSaques"></tbody>
+        </table>
+      </section>
+
+      <section class="inquilinos-section">
+        <div class="section-header">
+          <h3>Movimentações de Saldo</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Descrição</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaTransacoes"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script type="module" src="./scripts/financeiro.js"></script>
+  </body>
+</html>
