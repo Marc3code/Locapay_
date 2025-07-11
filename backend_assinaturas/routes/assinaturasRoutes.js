@@ -9,7 +9,7 @@ router.get("/:locador_id", assinaturaController.buscarAssinatura);
 // Adicionar nova assinatura
 router.post("/", auth, assinaturaController.adicionarAssinatura);
 
-router.put("/atualizar-datas", assinaturaController.atualizarDatasInicioFim)
+router.put("/atualizar-datas/:id", assinaturaController.atualizarDatasInicioFim)
 
 // Atualizar plano da assinatura
 router.put("/:locador_id", assinaturaController.atualizarAssinatura);
