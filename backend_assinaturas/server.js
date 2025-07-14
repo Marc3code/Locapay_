@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 app.use('/assinaturas', assinaturaRoutes);
 app.use('/bk-data', dadosBancariosRoutes)
 app.use('/saldos_locadores', saldos_locadores)
-app.use('/transacoes_saldos', transacoes_saldosRoutes)
+app.use('/transacoes_saldo', transacoes_saldosRoutes)
 
 
 app.listen(PORT, () => {
