@@ -17,11 +17,18 @@ async function processarEvento(event, payment) {
     console.log("evento PAYMENT_RECEIVED recebido");
     const atualizaStatus = await atualizarStatusPagamento("pago", payment.id);
     const valorPagamento = payment.value - 1.99;
-    const registraTransacao = await registrarTransacao(locadorData.id);
+
+    const registraTransacao = await registrarTransacao(
+      locadorData.locador_id,
+      valorPagamento,
+      payment.id
+    );
+
     const atualizaSaldoLocador = await atualizarSaldoLocador(
       locadorData.id,
       valorPagamento
     );
+
     console.log(atualizaStatus);
     notificationService.enviarNotificacaoPagamentoRealizado(
       payment.dueDate,
@@ -119,13 +126,63 @@ async function buscarLocadorPorInquilino(inquilinoId) {
   }
 }
 
-async function registrarTransacao(locadorId) {
-  console.log("locador Id: ", locadorId);
+async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
+  const descricao = `Pagamento do inquilino ${inquilinoId} para locador ${locadorId}`;
+
+  try {
+    const response = await fetch(
+      `${API_BASE_ASSINATURAS}/transacoes_saldo/adicionar`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: process.env.ASSINATURAS_API_KEY,
+        },
+        body: JSON.stringify({
+          locador_id: locadorId,
+          tipo: "entrada",
+          descricao,
+          valor: valor,
+          origem_pagamento_id: pagamentoId,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.warn("Erro ao registrar transação no saldo.");
+      return { error: "Erro ao registrar transação" };
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (err) {
+    console.error("Erro ao registrar transação:", err.message);
+    return { error: "Erro na comunicação com o servidor" };
+  }
 }
 
-async function atualizarSaldoLocador(locadorId, valorPagamento) {
-  console.log("locador Id: ", locadorId);
-  console.log("valor a ser adicionado: ", valorPagamento);
+async function atualizarSaldoLocador(locadorId, valorAdicionado) {
+  try {
+    const response = await fetch(`${API_BASE_ASSINATURAS}/saldos_locadores/atualizar`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        locador_id: locadorId,
+        valor: valorAdicionado,
+      }),
+    });
+
+    if (!response.ok) {
+      console.warn("Erro ao atualizar saldo do locador.");
+      return { error: "Erro ao atualizar saldo" };
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (err) {
+    console.error("Erro ao atualizar saldo do locador:", err.message);
+    return { error: "Erro na comunicação com o servidor" };
+  }
 }
 
 module.exports = {
