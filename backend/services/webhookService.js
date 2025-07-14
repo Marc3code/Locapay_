@@ -102,7 +102,7 @@ async function buscarInquilinoData(customerId) {
 async function buscarLocadorPorInquilino(inquilinoId) {
   try {
     const response = await fetch(
-      `https://backend-isolado-production.up.railway.app/locador/por-inquilino/${inquilinoId}`
+      `https://backend-isolado-production.up.railway.app/user/locador/por-inquilino/${inquilinoId}`
     );
     if (!response.ok)
       throw new Error(
