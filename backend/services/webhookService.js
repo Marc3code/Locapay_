@@ -1,6 +1,7 @@
 const notificationService = require("../tarefas/services/notificationService");
 const formatarTelefone = require("../utils/formatarTelefone");
 const API_BACKEND = "https://backend-isolado-production.up.railway.app";
+require('dotenv').config();
 
 async function processarEvento(event, payment) {
   const inquilinoData = await buscarInquilinoData(payment.customer);
@@ -65,7 +66,7 @@ async function atualizarStatusPagamento(status, paymentId) {
       {
         method: "PUT",
         headers: { "Content-Type": "application/json", 
-          
+
          },
         body: JSON.stringify({ status, paymentId }),
       }
