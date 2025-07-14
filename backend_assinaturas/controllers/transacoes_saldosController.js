@@ -1,6 +1,7 @@
 const transacoes_saldoService = require("../services/transacoes_saldosService");
 
 async function registrarTransacao(req, res) {
+    console.log(req.body)
   const { locador_id, tipo, valor, origem_pagamento_id, descricao } = req.body;
 
   if (!locador_id || !valor || !origem_pagamento_id || !tipo) {

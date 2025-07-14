@@ -1,12 +1,12 @@
 const db = require("../database/dbconnect");
 
-exports.registrarTransacao = async ({
+exports.registrarTransacao = async (
   locador_id,
   tipo,
   valor,
-  origem_pagamento_id = null,
-  descricao = null,
-}) => {
+  origem_pagamento_id,
+  descricao,
+) => {
   try {
     const query = `
       INSERT INTO transacoes_saldo 
