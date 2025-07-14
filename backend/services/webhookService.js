@@ -6,6 +6,7 @@ async function processarEvento(event, payment) {
   const inquilinoData = await buscarInquilinoData(payment.customer);
   const locadorData = await buscarLocadorPorInquilino(inquilinoData.id);
   console.log(inquilinoData);
+  console.log(locadorData);
   const telefoneInquilino = formatarTelefone(inquilinoData.telefone);
   if (!event || !payment.id) {
     console.warn("Evento ou ID do pagamento ausente.");
@@ -16,7 +17,7 @@ async function processarEvento(event, payment) {
     console.log("evento PAYMENT_RECEIVED recebido");
     const atualizaStatus = await atualizarStatusPagamento("pago", payment.id);
     const valorPagamento = payment.value - 1.99;
-    const resgistraTransacao = await registrarTransacao(locadorData.id);
+    const registraTransacao = await registrarTransacao(locadorData.id);
     const atualizaSaldoLocador = await atualizarSaldoLocador(
       locadorData.id,
       valorPagamento
