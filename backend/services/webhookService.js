@@ -131,7 +131,7 @@ async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
 
   try {
     const response = await fetch(
-      `${API_BASE_ASSINATURAS}/transacoes_saldo/adicionar`,
+      `${process.env.API_BASE_ASSINATURAS}/transacoes_saldo/adicionar`,
       {
         method: "POST",
         headers: {
@@ -163,14 +163,20 @@ async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
 
 async function atualizarSaldoLocador(locadorId, valorAdicionado) {
   try {
-    const response = await fetch(`${API_BASE_ASSINATURAS}/saldos_locadores/atualizar`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        locador_id: locadorId,
-        valor: valorAdicionado,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/saldos_locadores/atualizar`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: process.env.ASSINATURAS_API_KEY,
+        },
+        body: JSON.stringify({
+          locador_id: locadorId,
+          valor: valorAdicionado,
+        }),
+      }
+    );
 
     if (!response.ok) {
       console.warn("Erro ao atualizar saldo do locador.");
