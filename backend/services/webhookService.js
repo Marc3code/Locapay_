@@ -138,7 +138,7 @@ async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: process.env.ASSINATURAS_API_KEY,
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
         },
         body: JSON.stringify({
           locador_id: locadorId,
@@ -172,7 +172,7 @@ async function atualizarSaldoLocador(locadorId, valorAdicionado) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: process.env.ASSINATURAS_API_KEY,
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
         },
         body: JSON.stringify({
           locador_id: locadorId,
