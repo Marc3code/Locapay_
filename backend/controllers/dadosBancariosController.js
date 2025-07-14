@@ -1,5 +1,6 @@
 const dadosBancariosService = require("../services/dadosBancariosService");
 
+//precisa ajustar o retorno em caso de possível duplicidade, mas ta funcionando
 exports.salvar = async (req, res) => {
   const id = req.userId;
   const dados = req.body;
