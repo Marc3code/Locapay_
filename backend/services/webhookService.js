@@ -1,7 +1,7 @@
 const notificationService = require("../tarefas/services/notificationService");
 const formatarTelefone = require("../utils/formatarTelefone");
 const API_BACKEND = "https://backend-isolado-production.up.railway.app";
-require('dotenv').config();
+require("dotenv").config();
 
 async function processarEvento(event, payment) {
   const inquilinoData = await buscarInquilinoData(payment.customer);
@@ -65,9 +65,7 @@ async function atualizarStatusPagamento(status, paymentId) {
       `${API_BACKEND}/pagamentos/updt_statusPagamento`,
       {
         method: "PUT",
-        headers: { "Content-Type": "application/json", 
-
-         },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status, paymentId }),
       }
     );
@@ -153,8 +151,9 @@ async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
     );
 
     if (!response.ok) {
-      console.warn("Erro ao registrar transação.");
-      return { error: "Erro ao registrar transação" };
+      const errorText = await response.text();
+      console.warn("Erro ao registrar transação:", response.status, errorText);
+      return { error: "Erro ao registrar transação", status: response.status };
     }
 
     const data = await response.json();
