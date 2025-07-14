@@ -20,6 +20,7 @@ async function processarEvento(event, payment) {
 
     const registraTransacao = await registrarTransacao(
       locadorData.locador_id,
+      inquilinoData.id,
       valorPagamento,
       payment.id
     );
