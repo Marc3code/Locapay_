@@ -38,7 +38,7 @@ exports.buscarTransacoes = async ({
 }) => {
   try {
     const query = `
-      select * from transacoes_saldos where locador_id = ?
+      select * from transacoes_saldo where locador_id = ?
     `;
 
     const [result] = await db.query(query, locador_id);
