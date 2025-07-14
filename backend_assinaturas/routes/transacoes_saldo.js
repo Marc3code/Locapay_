@@ -5,7 +5,7 @@ const transacoes_saldosCtrl = require('../controllers/transacoes_saldosControlle
 const router = express.Router();
 
 // Dados bancários (autenticado)
-router.get('/adicionar', auth, transacoes_saldosCtrl.registrarTransacao);
+router.post('/adicionar', auth, transacoes_saldosCtrl.registrarTransacao);
 router.get('/buscar', auth, transacoes_saldosCtrl.buscarTransacoes)
 
 module.exports = router;
