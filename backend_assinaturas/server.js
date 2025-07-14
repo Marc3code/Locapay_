@@ -4,6 +4,8 @@ const cors = require('cors');
 require('dotenv').config();
 const assinaturaRoutes = require('./routes/assinaturasRoutes')
 const dadosBancariosRoutes = require('./routes/dadosBancariosRoutes')
+const transacoes_saldosRoutes = require('./routes/transacoes_saldo')
+const saldos_locadores = require('./routes/saldos_locadoresRoutes')
 
 
 app.use(
@@ -29,8 +31,8 @@ app.get('/', (req, res) => {
 
 app.use('/assinaturas', assinaturaRoutes);
 app.use('/bk-data', dadosBancariosRoutes)
-app.use('/saldos_locadores', )
-app.use('/transacoes_saldos', )
+app.use('/saldos_locadores', saldos_locadores)
+app.use('/transacoes_saldos', transacoes_saldosRoutes)
 
 
 app.listen(PORT, () => {
