@@ -64,7 +64,9 @@ async function atualizarStatusPagamento(status, paymentId) {
       `${API_BACKEND}/pagamentos/updt_statusPagamento`,
       {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", 
+          
+         },
         body: JSON.stringify({ status, paymentId }),
       }
     );
@@ -150,7 +152,7 @@ async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
     );
 
     if (!response.ok) {
-      console.warn("Erro ao registrar transação no saldo.");
+      console.warn("Erro ao registrar transação.");
       return { error: "Erro ao registrar transação" };
     }
 
