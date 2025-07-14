@@ -264,3 +264,43 @@ export const cadastrarInquilino = async (inquilino) => {
     alert("Erro ao cadastrar inquilino.");
   }
 };
+
+export const buscarMovimentações = async () => {
+  try {
+    const response = await fetch(`${API_BASE}/locadores/registro-transacoes`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Erro ao buscar registros de transações:", err);
+    alert("Não conseguimos buscar seus registros de transações. Por favor, entre em contato com o suporte.")
+  }
+};
+
+export const buscarSaldo = async () => {
+  try {
+    const response = await fetch(`${API_BASE}/locadores/buscar-saldo`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Erro ao buscar saldos:", err);
+    alert("Não conseguimos buscar seus dados de saldo. Por favor, entre em contato com o suporte.");
+  }
+};
