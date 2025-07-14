@@ -6,16 +6,15 @@ require("dotenv").config();
 async function processarEvento(event, payment) {
   const inquilinoData = await buscarInquilinoData(payment.customer);
   const locadorData = await buscarLocadorPorInquilino(inquilinoData.id);
-  console.log(inquilinoData);
-  console.log(locadorData);
   const telefoneInquilino = formatarTelefone(inquilinoData.telefone);
+
   if (!event || !payment.id) {
     console.warn("Evento ou ID do pagamento ausente.");
     return { error: "Evento ou ID do pagamento ausente." };
   }
 
   if (event === "PAYMENT_RECEIVED") {
-    console.log("evento PAYMENT_RECEIVED recebido");
+    console.log("Evento PAYMENT_RECEIVED recebido");
     const atualizaStatus = await atualizarStatusPagamento("pago", payment.id);
     const valorPagamento = payment.value - 1.99;
 
@@ -31,27 +30,34 @@ async function processarEvento(event, payment) {
       valorPagamento
     );
 
-    console.log(atualizaStatus);
+    console.log("Status de pagamento atualizado:", atualizaStatus.success ? "sucesso" : "falha");
+    console.log("Registro de transação:", registraTransacao.success ? "sucesso" : "falha");
+    console.log("Atualização do saldo do locador:", atualizaSaldoLocador.success ? "sucesso" : "falha");
+
     notificationService.enviarNotificacaoPagamentoRealizado(
       payment.dueDate,
       telefoneInquilino
     );
+
   } else if (event === "PAYMENT_OVERDUE") {
-    console.log("evento PAYMENT_OVERDUE recebido");
+    console.log("Evento PAYMENT_OVERDUE recebido");
     const atualiza = await atualizarStatusPagamento("atrasado", payment.id);
-    console.log(atualiza);
+    console.log("Status de pagamento atualizado para atrasado:", atualiza.success ? "sucesso" : "falha");
+
     notificationService.enviarNotificacaoPagamentoAtrasado(
       payment.dueDate,
       telefoneInquilino
     );
+
   } else if (event === "PAYMENT_CREATED") {
-    console.log("Evento PAYMENT_CREATED recebido.");
+    console.log("Evento PAYMENT_CREATED recebido");
 
     await notificationService.enviarNotificacaoCobrancaDoMes(
       payment.dueDate,
       telefoneInquilino
     );
     return { message: "Pagamento criado, sem ação necessária." };
+
   } else {
     console.log(`Evento ${event} não tratado.`);
     return { message: `Evento ${event} não é suportado.` };
@@ -71,41 +77,29 @@ async function atualizarStatusPagamento(status, paymentId) {
     );
 
     if (response.ok) {
-      return {
-        success: true,
-        message: `Status atualizado para ${status}`,
-      };
+      return { success: true };
     }
 
     console.warn(`Falha ao atualizar status: ${response.statusText}`);
-    return {
-      error: "Falha na atualização",
-      statusCode: response.status,
-    };
+    return { success: false, error: response.statusText };
   } catch (err) {
-    console.error(`Erro ao atualizar status para ${status}:`, err);
-    return {
-      error: "Erro na comunicação com o servidor",
-      details: err.message,
-    };
+    console.error(`Erro ao atualizar status:`, err.message);
+    return { success: false, error: err.message };
   }
 }
 
-//fuuncao para buscar dados do inquilino
+// Função para buscar dados do inquilino
 async function buscarInquilinoData(customerId) {
   try {
     const response = await fetch(
       `https://backend-isolado-production.up.railway.app/inquilinos/get-inquilino/por-customer-id/${customerId}`
     );
-    if (!response.ok)
-      throw new Error(`Erro ao buscar dados do inquilino: ${response.status}`);
+    if (!response.ok) throw new Error(`Erro ao buscar dados do inquilino`);
+
     return await response.json();
   } catch (err) {
-    console.error(`Erro ao buscar inquilino: ${customerId}:`, err);
-    return {
-      error: "Erro na comunicação com o servidor",
-      details: err.message,
-    };
+    console.error(`Erro ao buscar inquilino:`, err.message);
+    return { error: err.message };
   }
 }
 
@@ -114,22 +108,17 @@ async function buscarLocadorPorInquilino(inquilinoId) {
     const response = await fetch(
       `https://backend-isolado-production.up.railway.app/user/locador/por-inquilino/${inquilinoId}`
     );
-    if (!response.ok)
-      throw new Error(
-        `Erro ao buscar dados do locador por inquilino: ${response.status}`
-      );
+    if (!response.ok) throw new Error(`Erro ao buscar dados do locador`);
+
     return await response.json();
   } catch (err) {
-    console.error(`Erro ao buscar Locador por inquilino: ${inquilinoId}:`, err);
-    return {
-      error: "Erro na comunicação com o servidor",
-      details: err.message,
-    };
+    console.error(`Erro ao buscar locador:`, err.message);
+    return { error: err.message };
   }
 }
 
 async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
-  const descricao = `Pagamento do inquilino ${inquilinoId} para locador ${locadorId}`;
+   const descricao = `Pagamento do inquilino ${inquilinoId} para locador ${locadorId}`;
 
   try {
     const response = await fetch(
@@ -144,7 +133,7 @@ async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
           locador_id: locadorId,
           tipo: "entrada",
           descricao,
-          valor: valor,
+          valor,
           origem_pagamento_id: pagamentoId,
         }),
       }
@@ -153,14 +142,14 @@ async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
     if (!response.ok) {
       const errorText = await response.text();
       console.warn("Erro ao registrar transação:", response.status, errorText);
-      return { error: "Erro ao registrar transação", status: response.status };
+      return { success: false, error: errorText };
     }
 
-    const data = await response.json();
-    return { success: true, data };
+    await response.json();
+    return { success: true };
   } catch (err) {
     console.error("Erro ao registrar transação:", err.message);
-    return { error: "Erro na comunicação com o servidor" };
+    return { success: false, error: err.message };
   }
 }
 
@@ -183,14 +172,14 @@ async function atualizarSaldoLocador(locadorId, valorAdicionado) {
 
     if (!response.ok) {
       console.warn("Erro ao atualizar saldo do locador.");
-      return { error: "Erro ao atualizar saldo" };
+      return { success: false };
     }
 
-    const data = await response.json();
-    return { success: true, data };
+    await response.json();
+    return { success: true };
   } catch (err) {
     console.error("Erro ao atualizar saldo do locador:", err.message);
-    return { error: "Erro na comunicação com o servidor" };
+    return { success: false, error: err.message };
   }
 }
 
