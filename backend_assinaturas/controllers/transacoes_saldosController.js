@@ -1,7 +1,6 @@
-const transacoes_saldoService = require("../services/transacoes_saldosService");
+const transacoes_saldoService = require("../services/transacoes_saldoService");
 
 async function registrarTransacao(req, res) {
-    console.log(req.body)
   const { locador_id, tipo, valor, origem_pagamento_id, descricao } = req.body;
 
   if (!locador_id || !valor || !origem_pagamento_id || !tipo) {
@@ -12,7 +11,13 @@ async function registrarTransacao(req, res) {
   }
 
   try {
-    const resultado = await transacoes_saldoService.registrarTransacao(locador_id, tipo, valor, origem_pagamento_id, descricao);
+    const resultado = await transacoes_saldoService.registrarTransacao(
+      locador_id,
+      tipo,
+      valor,
+      origem_pagamento_id,
+      descricao
+    );
     return res.status(200).json(resultado);
   } catch (error) {
     console.error("Erro no controller ao registrar transação:", error);
@@ -34,7 +39,9 @@ async function buscarTransacoes(req, res) {
   }
 
   try {
-    const resultado = await transacoes_saldoService.buscarTransacoes(locador_id);
+    const resultado = await transacoes_saldoService.buscarTransacoes(
+      locador_id
+    );
     return res.status(200).json(resultado);
   } catch (error) {
     console.error("Erro no controller ao buscar transações:", error);
@@ -47,5 +54,5 @@ async function buscarTransacoes(req, res) {
 
 module.exports = {
   registrarTransacao,
-  buscarTransacoes
+  buscarTransacoes,
 };
