@@ -6,9 +6,26 @@ exports.salvar = async (req, res) => {
 
   try {
     const resposta = await dadosBancariosService.enviarDados(id, dados);
+    const dadosResposta = await resposta.json();
 
     let respostaSaldoLocador = null;
 
+    // Se já existem dados bancários, retorna com mensagem apropriada
+    if (
+      !resposta.ok &&
+      (dadosResposta?.erro?.code === "ER_DUP_ENTRY" ||
+        dadosResposta?.mensagem?.toLowerCase().includes("já existem"))
+    ) {
+      return res.status(409).json({
+        dadosBancarios: {
+          sucesso: false,
+          mensagem: "Já existem dados bancários cadastrados para este locador.",
+        },
+        saldoLocador: null,
+      });
+    }
+
+    // Só tenta criar o saldo se os dados bancários foram salvos com sucesso
     try {
       const resposta2 = await fetch(
         `${process.env.API_BASE_ASSINATURAS}/saldos_locadores/adicionar`,
@@ -25,20 +42,27 @@ exports.salvar = async (req, res) => {
       if (resposta2.ok) {
         respostaSaldoLocador = await resposta2.json();
       } else {
-        console.log(`Erro ao criar linha de saldo para o locador: ${id}`);
-        respostaSaldoLocador = {
-          error: `Erro ao criar linha de saldo para o locador: ${id}`,
-        };
+        const textoErro = await resposta2.text();
+        if (textoErro.includes("Duplicate entry")) {
+          respostaSaldoLocador = {
+            sucesso: false,
+            mensagem: "Saldo do locador já existe.",
+          };
+        } else {
+          respostaSaldoLocador = {
+            sucesso: false,
+            mensagem: "Erro ao criar saldo para o locador.",
+            erro: textoErro,
+          };
+        }
       }
     } catch (err) {
-      console.error(err);
       respostaSaldoLocador = {
-        error: "Erro ao comunicar com saldo do locador",
-        details: err.message,
+        sucesso: false,
+        mensagem: "Erro ao comunicar com o serviço de saldo do locador.",
+        erro: err.message,
       };
     }
-
-    const dadosResposta = await resposta.json();
 
     return res.status(resposta.status).json({
       dadosBancarios: dadosResposta,
@@ -49,6 +73,8 @@ exports.salvar = async (req, res) => {
     return res.status(500).json({ erro: "Erro ao salvar dados bancários" });
   }
 };
+
+
 
 exports.buscar = async (req, res) => {
   const id = req.userId;
