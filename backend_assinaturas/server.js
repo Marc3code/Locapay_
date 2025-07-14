@@ -29,6 +29,9 @@ app.get('/', (req, res) => {
 
 app.use('/assinaturas', assinaturaRoutes);
 app.use('/bk-data', dadosBancariosRoutes)
+app.use('/saldos_locadores', )
+app.use('/transacoes_saldos', )
+
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
