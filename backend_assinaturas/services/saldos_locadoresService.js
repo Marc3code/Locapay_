@@ -62,3 +62,22 @@ exports.adicionarSaldoLocador = async (locadorId) => {
   }
 };
 
+exports.buscarSaldoLocador = async (locadorId) => {
+  try {
+    const [result] = await db.query(
+      `
+      SELECT * FROM saldos_locadores where locador_id = ?
+    `,
+      [locadorId]
+    );
+
+    return result
+  } catch (err) {
+    console.error("Erro ao buscar saldo do locador:", err);
+    return {
+      sucesso: false,
+      mensagem: "Erro no banco de dados ao buscar saldo.",
+      erro: err,
+    };
+  }
+};
