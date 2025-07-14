@@ -32,3 +32,33 @@ exports.atualizarSaldoLocador = async (locadorId, valorAdicionado) => {
   }
 };
 
+exports.adicionarSaldoLocador = async (locadorId) => {
+  try {
+    const [result] = await db.query(
+      `
+      INSERT INTO saldos_locadores (locador_id, saldo_total, saldo_bloqueado) values (?, 0.00, 0.00)
+    `,
+      [locadorId]
+    );
+
+    if (result.affectedRows === 0) {
+      return {
+        sucesso: false,
+        mensagem: "Locador não encontrado.",
+      };
+    }
+
+    return {
+      sucesso: true,
+      mensagem: `Linha de saldo criada com sucesso.`,
+    };
+  } catch (err) {
+    console.error("Erro ao criar linha de saldo do locador:", err);
+    return {
+      sucesso: false,
+      mensagem: "Erro no banco de dados ao criar linha de saldo do locador.",
+      erro: err,
+    };
+  }
+};
+

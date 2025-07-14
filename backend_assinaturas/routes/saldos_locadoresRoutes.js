@@ -6,6 +6,6 @@ const router = express.Router();
 
 // Dados bancários (autenticado)
 router.put('/atualizar', auth, saldosCtrl.atualizarSaldo);
-//router.post('/adicionar')
+router.post('/adicionar', auth, saldosCtrl.AdicionarSaldo);
 
 module.exports = router;

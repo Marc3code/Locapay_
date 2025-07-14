@@ -22,6 +22,29 @@ async function atualizarSaldo(req, res) {
   }
 }
 
+async function AdicionarSaldo(req, res) {
+  const { locador_id } = req.body;
+
+  if (!locador_id) {
+    return res.status(400).json({
+      sucesso: false,
+      mensagem: "locador_id é obrigatório.",
+    });
+  }
+
+  try {
+    const resultado = await saldoService.adicionarSaldoLocador(locador_id);
+    return res.status(200).json(resultado);
+  } catch (error) {
+    console.error("Erro no controller ao criar linha de saldo:", error);
+    return res.status(500).json({
+      sucesso: false,
+      mensagem: "Erro interno ao criar linha de saldo do locador.",
+    });
+  }
+}
+
 module.exports = {
   atualizarSaldo,
+  AdicionarSaldo
 };
