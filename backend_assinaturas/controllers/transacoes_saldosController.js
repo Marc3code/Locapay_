@@ -59,7 +59,7 @@ async function registrarTransacao(req, res) {
 }
 
 async function buscarTransacoes(req, res) {
-  const { locador_id } = req.params;
+  const  locador_id  = req.params.locador_id;
 
   if (!locador_id) {
     return res.status(400).json({
@@ -69,9 +69,7 @@ async function buscarTransacoes(req, res) {
   }
 
   try {
-    const resultado = await transacoes_saldoService.buscarTransacoes(
-      locador_id
-    );
+    const resultado = await transacoes_saldoService.buscarTransacoes(locador_id);
     return res.status(200).json(resultado);
   } catch (error) {
     console.error("Erro no controller ao buscar transações:", error);

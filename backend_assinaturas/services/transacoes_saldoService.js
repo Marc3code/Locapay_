@@ -5,7 +5,7 @@ exports.registrarTransacao = async (
   tipo,
   valor,
   origem_pagamento_id,
-  descricao,
+  descricao
 ) => {
   try {
     const query = `
@@ -33,19 +33,15 @@ exports.registrarTransacao = async (
   }
 };
 
-exports.buscarTransacoes = async ({
-  locador_id,
-}) => {
+exports.buscarTransacoes = async (locador_id) => {
   try {
-    const query = `
-      select * from transacoes_saldo where locador_id = ?
-    `;
+    const query = "SELECT * FROM transacoes_saldo WHERE locador_id = ?";
 
-    const [result] = await db.query(query, locador_id);
+    const [result] = await db.query(query, [locador_id]);
 
     return {
       sucesso: true,
-      result
+      result,
     };
   } catch (err) {
     console.error("Erro ao buscar transações:", err);
