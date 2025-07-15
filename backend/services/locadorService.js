@@ -103,7 +103,7 @@ exports.buscarRegistroTransacoes = async (locador_id) => {
       }
     );
 
-    if (!response.successo) {
+    if (!response.ok) {
       console.warn("Erro na resposta da API de registros de transações:", response.status);
       return null;
     }
