@@ -1,7 +1,24 @@
-const db = require('../database/dbconnect');
+const db = require("../database/dbconnect");
 
 exports.salvarDadosBancarios = async (locadorId, dados) => {
-  await db.query(`
+  // Buscar dados anteriores
+  const [rows] = await db.query(
+    "SELECT * FROM dados_bancarios_locadores WHERE locador_id = ?",
+    [locadorId]
+  );
+
+  const dadosAntigos = rows[0] || {};
+
+  const banco_codigo = dados.banco_codigo ?? dadosAntigos.banco_codigo ?? null;
+  const banco_nome = dados.banco_nome ?? dadosAntigos.banco_nome ?? null;
+  const agencia = dados.agencia ?? dadosAntigos.agencia ?? null;
+  const conta = dados.conta ?? dadosAntigos.conta ?? null;
+  const conta_digito = dados.conta_digito ?? dadosAntigos.conta_digito ?? null;
+  const tipo_conta = dados.tipo_conta ?? dadosAntigos.tipo_conta ?? null;
+  const chave_pix = dados.chave_pix ?? dadosAntigos.chave_pix ?? null;
+
+  await db.query(
+    `
     INSERT INTO dados_bancarios_locadores (
       locador_id, banco_codigo, banco_nome, agencia, conta, conta_digito, tipo_conta, chave_pix
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -14,10 +31,24 @@ exports.salvarDadosBancarios = async (locadorId, dados) => {
       tipo_conta = VALUES(tipo_conta),
       chave_pix = VALUES(chave_pix),
       data_ultima_atualizacao = NOW()
-  `, [locadorId, dados.banco_codigo, dados.banco_nome, dados.agencia, dados.conta, dados.conta_digito, dados.tipo_conta, dados.chave_pix]);
+  `,
+    [
+      locadorId,
+      banco_codigo,
+      banco_nome,
+      agencia,
+      conta,
+      conta_digito,
+      tipo_conta,
+      chave_pix,
+    ]
+  );
 };
 
 exports.buscarDadosBancarios = async (locadorId) => {
-  const [rows] = await db.query(`SELECT * FROM dados_bancarios_locadores WHERE locador_id = ?`, [locadorId]);
+  const [rows] = await db.query(
+    `SELECT * FROM dados_bancarios_locadores WHERE locador_id = ?`,
+    [locadorId]
+  );
   return rows[0];
 };
