@@ -284,6 +284,7 @@ export const buscarMovimentações = async () => {
     alert("Não conseguimos buscar seus registros de transações. Por favor, entre em contato com o suporte.")
   }
 };
+//alo
 
 export const buscarSaldo = async () => {
   try {
