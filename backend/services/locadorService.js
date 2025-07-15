@@ -116,3 +116,29 @@ exports.buscarRegistroTransacoes = async (locador_id) => {
     return null;
   }
 };
+
+exports.buscarRegistroSaques = async (locador_id) => {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/saques/buscar/${locador_id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.warn("Erro na resposta da API de registros de saques:", response.status);
+      return null;
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error("Erro ao buscar registros de saques do locador:");
+    console.log(err);
+    return null;
+  }
+};
