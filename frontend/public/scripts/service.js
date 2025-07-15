@@ -97,6 +97,30 @@ export const buscarDadosBancarios = async (id) => {
   }
 };
 
+export const cadastrarChavePix = async (chave) => {
+  try {
+    const response = await fetch(`${API_BASE}/bkdt/dados-bancarios/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({ chave_pix: chave }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.erro || "Erro ao cadastrar dados bancários");
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Erro ao cadastrar dados bancários:", err);
+    return { erro: err.message };
+  }
+};
+
 // ======================= INQUILINOS =======================
 
 // Buscar inquilinos vinculados ao locador logado com contrato

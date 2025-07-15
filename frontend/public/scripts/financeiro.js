@@ -1,4 +1,9 @@
-import { buscarSaldo, buscarMovimentações, buscarSaques } from "./service.js";
+import {
+  buscarSaldo,
+  buscarMovimentações,
+  buscarSaques,
+  cadastrarChavePix,
+} from "./service.js";
 import { carregarHeader } from "./header/renderHeader.js";
 
 carregarHeader("financeiro");
@@ -135,4 +140,44 @@ btnConfirmar.addEventListener("click", () => {
   );
 
   modalSaque.style.display = "none";
+});
+
+const modalChavePix = document.getElementById("modalChavePix");
+const btnChavePix = document.getElementById("btnChavePix");
+const btnSalvarChave = document.getElementById("salvarChavePix");
+const btnCancelarChave = document.getElementById("cancelarChavePix");
+const inputChavePix = document.getElementById("inputChavePix");
+
+// Abrir modal de chave Pix
+btnChavePix.addEventListener("click", () => {
+  inputChavePix.value = "";
+  modalChavePix.style.display = "flex";
+});
+
+// Cancelar modal
+btnCancelarChave.addEventListener("click", () => {
+  modalChavePix.style.display = "none";
+});
+
+// Salvar chave Pix
+btnSalvarChave.addEventListener("click", async () => {
+  const chave = inputChavePix.value.trim();
+  if (!chave) {
+    alert("Por favor, preencha a chave Pix.");
+    return;
+  }
+  try {
+    const cadastro = await cadastrarChavePix(chave);
+
+    if (cadastro?.erro) {
+      alert(`Erro ao cadastrar chave Pix: ${cadastro.erro}`);
+      return;
+    }
+
+    alert("Chave Pix cadastrada com sucesso!");
+    modalChavePix.style.display = "none";
+  } catch (err) {
+    console.error("Erro ao cadastrar chave Pix:", err);
+    alert("Erro ao cadastrar chave Pix. Tente novamente mais tarde.");
+  }
 });

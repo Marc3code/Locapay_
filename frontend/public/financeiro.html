@@ -45,6 +45,8 @@
 
       <button class="filter-btn" id="btnSacar">Solicitar Saque</button>
 
+      <button class="filter-btn" id="btnChavePix">Cadastrar Chave Pix</button>
+
       <section class="inquilinos-section">
         <div class="section-header">
           <h3>Histórico de Saques</h3>
@@ -98,6 +100,31 @@
           <button id="confirmarSaque" class="filter-btn">Confirmar</button>
           <button
             id="cancelarSaque"
+            class="filter-btn"
+            style="background: var(--danger)"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Cadastro da Chave Pix -->
+    <div id="modalChavePix" class="modal-overlay" style="display: none">
+      <div class="modal-content">
+        <h3>Cadastrar Chave Pix</h3>
+        <p>
+          Informe sua chave Pix. Ela será usada para transferências futuras.
+        </p>
+        <input
+          type="text"
+          id="inputChavePix"
+          placeholder="Chave Pix (email, CPF, telefone ou aleatória)"
+        />
+        <div class="modal-actions">
+          <button id="salvarChavePix" class="filter-btn">Salvar</button>
+          <button
+            id="cancelarChavePix"
             class="filter-btn"
             style="background: var(--danger)"
           >
