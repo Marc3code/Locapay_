@@ -117,3 +117,4 @@ exports.buscarRegistroTransacoes = async (locador_id) => {
   }
 };
 
+//alo
