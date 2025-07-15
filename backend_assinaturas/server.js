@@ -6,6 +6,7 @@ const assinaturaRoutes = require('./routes/assinaturasRoutes')
 const dadosBancariosRoutes = require('./routes/dadosBancariosRoutes')
 const transacoes_saldosRoutes = require('./routes/transacoes_saldo')
 const saldos_locadores = require('./routes/saldos_locadoresRoutes')
+const saquesRoute = require('./routes/saquesRoutes')
 
 
 app.use(
@@ -32,7 +33,8 @@ app.get('/', (req, res) => {
 app.use('/assinaturas', assinaturaRoutes);
 app.use('/bk-data', dadosBancariosRoutes)
 app.use('/saldos_locadores', saldos_locadores)
-app.use('/transacoes_saldo', transacoes_saldosRoutes)
+app.use('/transacoes_saldo', transacoes_saldosRoutes);
+app.use('/saques', saquesRoute)
 
 
 app.listen(PORT, () => {
