@@ -1,4 +1,4 @@
-import { buscarSaldo } from "./service.js";
+import { buscarSaldo, buscarMovimentações } from "./service.js";
 import { carregarHeader } from "./header/renderHeader.js";
 
 carregarHeader("financeiro");
@@ -19,7 +19,7 @@ function formatarData(dataString) {
 async function atualizarSaldos() {
   try {
     const saldo = await buscarSaldo();
-    document.getElementById("saldoTotal").textContent = formatarValor(saldo.saldo_disponivel ?? 0);
+    document.getElementById("saldoTotal").textContent = formatarValor(saldo.saldo_total ?? 0);
     document.getElementById("saldoBloqueado").textContent = formatarValor(saldo.saldo_bloqueado ?? 0);
   } catch (error) {
     console.error("Erro ao buscar saldo:", error);
@@ -60,7 +60,7 @@ async function renderizarSaques() {
 // Renderiza movimentações de saldo na tabela
 async function renderizarMovimentacoes() {
   try {
-    const movimentacoes = await buscarMovimentacoes();
+    const movimentacoes = await buscarMovimentações();
     const tbody = document.getElementById("tabelaTransacoes");
     if (!movimentacoes.length) {
       tbody.innerHTML = '<tr><td colspan="4">Nenhuma movimentação encontrada</td></tr>';
