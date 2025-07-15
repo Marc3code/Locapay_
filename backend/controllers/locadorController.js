@@ -93,12 +93,12 @@ exports.buscarLocadorPorInquilino = async (req, res) => {
 };
 
 exports.buscarSaldoLocador = async (req, res) => {
-  const  locador_id  = req.userId;
+  const locador_id = req.userId;
 
   try {
     const saldo = await locadorService.buscarSaldoLocador(locador_id);
 
-    if (!saldo ) {
+    if (!saldo) {
       return res.status(404).json({ erro: "Erro ao buscar saldo do locador" });
     }
 
@@ -110,13 +110,15 @@ exports.buscarSaldoLocador = async (req, res) => {
 };
 
 exports.buscarRegistroTransacoes = async (req, res) => {
-  const  locador_id  = req.userId;
+  const locador_id = req.userId;
 
   try {
     const response = await locadorService.buscarRegistroTransacoes(locador_id);
 
-    if (!response ) {
-      return res.status(404).json({ erro: "Erro ao buscar registro de transacoes do locador" });
+    if (!response) {
+      return res
+        .status(404)
+        .json({ erro: "Erro ao buscar registro de transacoes do locador" });
     }
 
     return res.json(response.result);
@@ -127,18 +129,55 @@ exports.buscarRegistroTransacoes = async (req, res) => {
 };
 
 exports.buscarRegistroSaques = async (req, res) => {
-  const  locador_id  = req.userId;
+  const locador_id = req.userId;
 
   try {
     const response = await locadorService.buscarRegistroSaques(locador_id);
 
-    if (!response ) {
-      return res.status(404).json({ erro: "Erro ao buscar registro de transacoes do locador" });
+    if (!response) {
+      return res
+        .status(404)
+        .json({ erro: "Erro ao buscar registro de transacoes do locador" });
     }
 
     return res.json(response.result);
   } catch (error) {
     console.error("Erro ao buscar registro de transacoes do locador:", error);
     return res.status(500).json({ erro: "Erro interno do servidor." });
+  }
+};
+
+exports.realizarSaque = async (req, res) => {
+  const locadorId = req.userId;
+  const valor = req.body.valor;
+  const chave_pix = req.body.chave_pix
+  const dadosLocador = locadorService.buscarDadosGerais()
+
+  try {
+    const recipientAccountId = await locadorService.buscarRecipientId(
+      locadorId
+    );
+
+    if (recipientAccountId === null){
+      try{
+        const cadastrarRecipientId = await locadorService.cadastrarContaDestinoPix(dadosLocador.nome, dadosLocador.cpf_cnpj, chave_pix)
+      }catch(err){}
+    }
+
+    const resultado = await realizarSaque(valor, recipientAccountId);
+
+    if (!resultado.sucesso) {
+      return res.status(500).json({ erro: resultado.erro });
+    }
+
+    
+
+    return res.status(200).json({
+      mensagem: "Saque realizado com sucesso!",
+      transferencia: resultado.dados,
+    });
+  } catch (err) {
+    console.error("Erro no controller:", err.message);
+    return res.status(500).json({ erro: "Erro ao processar saque." });
   }
 };

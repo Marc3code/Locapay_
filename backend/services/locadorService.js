@@ -1,5 +1,5 @@
-const { json } = require("express");
 const db = require("../database/dbconnect");
+const { transferirPix, criarContaDestinoPix } = require("./asaasService");
 
 exports.criarLocador = async (locador) => {
   const [result] = await db.query(
@@ -104,7 +104,10 @@ exports.buscarRegistroTransacoes = async (locador_id) => {
     );
 
     if (!response.ok) {
-      console.warn("Erro na resposta da API de registros de transações:", response.status);
+      console.warn(
+        "Erro na resposta da API de registros de transações:",
+        response.status
+      );
       return null;
     }
 
@@ -130,7 +133,10 @@ exports.buscarRegistroSaques = async (locador_id) => {
     );
 
     if (!response.ok) {
-      console.warn("Erro na resposta da API de registros de saques:", response.status);
+      console.warn(
+        "Erro na resposta da API de registros de saques:",
+        response.status
+      );
       return null;
     }
 
@@ -142,3 +148,79 @@ exports.buscarRegistroSaques = async (locador_id) => {
     return null;
   }
 };
+
+exports.buscarRecipientId = async (locador_id) => {
+  const query =
+    "SELECT recipient_account_id FROM dados_bancarios_locadores WHERE locador_id = ?";
+  try {
+    const [rows] = await db.query(query, [locador_id]);
+    if (rows.length === 0) return null;
+    return rows[0].recipient_account_id;
+  } catch (err) {
+    console.error("Erro ao buscar recipient_account_id:", err);
+    console.log("Erro ao buscar recipient_account_id");
+  }
+};
+
+exports.cadastrarContaDestinoPix = async (
+  nome_locador,
+  cpf_cnpj,
+  chave_pix
+) => {
+  try {
+    const resultado = await criarContaDestinoPix({
+      nome_locador,
+      cpf_cnpj,
+      chave_pix,
+    });
+
+    return {
+      sucesso: true,
+      recipientAccountId: resultado,
+    };
+  } catch (err) {
+    console.error("Erro ao criar conta destino Pix:", err.message);
+    return {
+      sucesso: false,
+      erro: err.message,
+    };
+  }
+};
+
+exports.realizarSaque = async (valor, recipientAccountId) => {
+  try {
+    const resultado = await transferirPix({
+      valor,
+      recipientAccountId,
+    });
+
+    return {
+      sucesso: true,
+      dados: resultado,
+    };
+  } catch (err) {
+    console.error("Erro ao realizar transferência Pix:", err.message);
+    return {
+      sucesso: false,
+      erro: err.message,
+    };
+  }
+};
+
+exports.registrarSaque = async (locador_id, valor) => {
+  //tem que retornar o id do saque criado pra atualizar o status 
+};
+
+exports.atualizarStatusSaque = async (saque_id, status) => {};
+
+exports.adicionarRegistroTransacao = async (
+  locador_id,
+  tipo,
+  descricao,
+  valor,
+  origem_pagamento
+) => {};
+
+exports.atualizarSaldoAtual = async (locador_id, saldo_total, saldo_bloqueado) {
+
+}

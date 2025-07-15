@@ -56,8 +56,62 @@ const criarClienteAsaas = async (clienteData) => {
 };
 
 
+const criarContaDestinoPix = async ({ name, cpfCnpj, pixKey }) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/recipientAccount`,
+      {
+        name,
+        cpfCnpj,
+        bankAccount: {
+          type: "PIX",
+          pixKey,
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          access_token: process.env.ASAAS_API_KEY,
+        }
+      }
+    );
+
+    return response.data.id;
+  } catch (err) {
+    console.error("Erro ao criar conta de destino:", err.response?.data || err.message);
+    throw new Error(err.response?.data?.message || "Erro ao criar conta de destino");
+  }
+};
+
+
+
+const transferirPix = async ({ valor, recipientAccountId }) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/transfers`,
+      {
+        value: valor,
+        recipientAccountId: recipientAccountId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          access_token: process.env.ASAAS_API_KEY,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (err) {
+    console.error("Erro ao transferir via Pix:", err.response?.data || err.message);
+    throw new Error(err.response?.data?.message || "Erro ao transferir via Pix");
+  }
+};
+
 
 module.exports = {
   gerarPagamentoPix,
   criarClienteAsaas,
+  criarContaDestinoPix,
+  transferirPix
 };
