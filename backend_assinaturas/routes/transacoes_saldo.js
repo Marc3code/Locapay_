@@ -6,6 +6,6 @@ const router = express.Router();
 
 // Dados bancários (autenticado)
 router.post('/adicionar', auth, transacoes_saldosCtrl.registrarTransacao);
-router.get('/buscar', auth, transacoes_saldosCtrl.buscarTransacoes)
+router.get('/buscar/:locador_id', auth, transacoes_saldosCtrl.buscarTransacoes)
 
 module.exports = router;
