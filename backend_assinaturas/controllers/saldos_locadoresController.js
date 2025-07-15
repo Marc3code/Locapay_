@@ -45,7 +45,7 @@ async function AdicionarSaldo(req, res) {
 }
 
 async function buscarSaldo(req, res) {
-  const { locador_id } = req.body;
+  const { locador_id } = req.params;
 
   if (!locador_id ) {
     return res.status(400).json({
