@@ -20,7 +20,7 @@ async function processarEvento(event, payment) {
 
     const registraTransacao = await registrarTransacao(
       locadorData.locador_id,
-      inquilinoData.id,
+      inquilinoData.nome,
       valorPagamento,
       payment.id
     );
@@ -117,8 +117,8 @@ async function buscarLocadorPorInquilino(inquilinoId) {
   }
 }
 
-async function registrarTransacao(locadorId, inquilinoId, valor, pagamentoId) {
-   const descricao = `Pagamento do inquilino ${inquilinoId} para locador ${locadorId}`;
+async function registrarTransacao(locadorId, nome_inquilino, valor, pagamentoId) {
+   const descricao = `Pagamento do inquilino ${nome_inquilino}`;
 
   try {
     const response = await fetch(
