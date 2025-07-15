@@ -1,4 +1,4 @@
-import { buscarDadosGerais } from "./service.js";
+import { buscarSaldo } from "./service.js";
 import { carregarHeader } from "./header/renderHeader.js";
 
 carregarHeader("financeiro");
