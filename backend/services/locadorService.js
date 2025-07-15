@@ -1,3 +1,4 @@
+const { json } = require("express");
 const db = require("../database/dbconnect");
 
 exports.criarLocador = async (locador) => {
@@ -6,12 +7,7 @@ exports.criarLocador = async (locador) => {
     INSERT INTO locadores (nome, senha_hash, cpf_cnpj, telefone)
     VALUES (?, ?, ?, ?)
   `,
-    [
-      locador.nome,
-      locador.senha_hash,
-      locador.cpf_cnpj,
-      locador.telefone,
-    ]
+    [locador.nome, locador.senha_hash, locador.cpf_cnpj, locador.telefone]
   );
 
   return result.insertId;
@@ -67,4 +63,30 @@ exports.buscarLocadorPorInquilino = async (inquilinoId) => {
   }
 
   return rows[0];
-}
+};
+
+exports.buscarSaldoLocador = async (locador_id) => {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/saldos_locadores/buscar/${locador_id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.warn("Erro na resposta da API de saldos:", response.status);
+      return null;
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error("Erro ao buscar saldo do locador:");
+    console.log(err);
+    return null;
+  }
+};

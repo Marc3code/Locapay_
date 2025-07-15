@@ -72,13 +72,17 @@ exports.buscarDadosGerais = async (req, res) => {
 };
 
 exports.buscarLocadorPorInquilino = async (req, res) => {
-   const { inquilino_id } = req.params;
+  const { inquilino_id } = req.params;
 
   try {
-    const locador = await locadorService.buscarLocadorPorInquilino(inquilino_id);
+    const locador = await locadorService.buscarLocadorPorInquilino(
+      inquilino_id
+    );
 
     if (!locador) {
-      return res.status(404).json({ erro: "Locador não encontrado para esse inquilino." });
+      return res
+        .status(404)
+        .json({ erro: "Locador não encontrado para esse inquilino." });
     }
 
     return res.json(locador);
@@ -86,4 +90,21 @@ exports.buscarLocadorPorInquilino = async (req, res) => {
     console.error("Erro ao buscar locador por inquilino:", error);
     return res.status(500).json({ erro: "Erro interno do servidor." });
   }
-}
+};
+
+exports.buscarSaldoLocador = async (req, res) => {
+  const { locador_id } = req.userId;
+
+  try {
+    const saldo = await locadorService.buscarSaldoLocador(locador_id);
+
+    if (!saldo ) {
+      return res.status(404).json({ erro: "Erro ao buscar saldo do locador" });
+    }
+
+    return res.json(saldo);
+  } catch (error) {
+    console.error("Erro ao buscar saldo do locador:", error);
+    return res.status(500).json({ erro: "Erro interno do servidor." });
+  }
+};
