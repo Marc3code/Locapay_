@@ -56,7 +56,7 @@ async function buscarSaldo(req, res) {
 
   try {
     const resultado = await saldoService.buscarSaldoLocador(locador_id);
-    return res.status(200).json(resultado);
+    return res.status(200).json(resultado[0]);
   } catch (error) {
     console.error("Erro no controller ao buscar saldo:", error);
     return res.status(500).json({
