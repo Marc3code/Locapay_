@@ -74,7 +74,7 @@ async function renderizarMovimentacoes() {
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
-        <td>${formatarData(mov.data)}</td>
+        <td>${formatarData(mov.criado_em)}</td>
         <td>${mov.descricao ?? "-"}</td>
         <td>${mov.tipo ?? "-"}</td>
         <td>${formatarValor(mov.valor)}</td>
