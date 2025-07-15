@@ -285,6 +285,27 @@ export const buscarMovimentações = async () => {
   }
 };
 
+export const buscarSaques = async () => {
+  try {
+    const response = await fetch(`${API_BASE}/user/buscar-registro-saques`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Erro ao buscar registros de transações:", err);
+    alert("Não conseguimos buscar seus registros de transações. Por favor, entre em contato com o suporte.")
+  }
+};
+
+
 
 export const buscarSaldo = async () => {
   try {

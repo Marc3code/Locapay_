@@ -1,4 +1,4 @@
-import { buscarSaldo, buscarMovimentações } from "./service.js";
+import { buscarSaldo, buscarMovimentações, buscarSaques } from "./service.js";
 import { carregarHeader } from "./header/renderHeader.js";
 
 carregarHeader("financeiro");
@@ -19,7 +19,6 @@ function formatarData(dataString) {
 async function atualizarSaldos() {
   try {
     const saldo = await buscarSaldo();
-    console.log(saldo)
     document.getElementById("saldoTotal").textContent = formatarValor(saldo.saldo_total ?? 0);
     document.getElementById("saldoBloqueado").textContent = formatarValor(saldo.saldo_bloqueado ?? 0);
   } catch (error) {
@@ -44,7 +43,7 @@ async function renderizarSaques() {
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
-        <td>${formatarData(saque.data)}</td>
+        <td>${formatarData(saque.criado_em)}</td>
         <td>${formatarValor(saque.valor)}</td>
         <td>${saque.status ?? "-"}</td>
       `;
@@ -62,7 +61,6 @@ async function renderizarSaques() {
 async function renderizarMovimentacoes() {
   try {
     const movimentacoes = await buscarMovimentações();
-    console.log(movimentacoes)
     const tbody = document.getElementById("tabelaTransacoes");
     if (!movimentacoes.length) {
       tbody.innerHTML = '<tr><td colspan="4">Nenhuma movimentação encontrada</td></tr>';
