@@ -90,3 +90,30 @@ exports.buscarSaldoLocador = async (locador_id) => {
     return null;
   }
 };
+
+exports.buscarRegistroTransacoes = async (locador_id) => {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/transacoes_saldo/buscar/${locador_id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+      }
+    );
+
+    if (!response.successo) {
+      console.warn("Erro na resposta da API de registros de transações:", response.status);
+      return null;
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error("Erro ao buscar registros de transações do locador:");
+    console.log(err);
+    return null;
+  }
+};
+

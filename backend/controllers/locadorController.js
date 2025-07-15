@@ -108,3 +108,20 @@ exports.buscarSaldoLocador = async (req, res) => {
     return res.status(500).json({ erro: "Erro interno do servidor." });
   }
 };
+
+exports.buscarRegistroTransacoes = async (req, res) => {
+  const { locador_id } = req.userId;
+
+  try {
+    const saldo = await locadorService.buscarRegistroTransacoes(locador_id);
+
+    if (!saldo ) {
+      return res.status(404).json({ erro: "Erro ao buscar registro de transacoes do locador" });
+    }
+
+    return res.json(saldo);
+  } catch (error) {
+    console.error("Erro ao buscar registro de transacoes do locador:", error);
+    return res.status(500).json({ erro: "Erro interno do servidor." });
+  }
+};
