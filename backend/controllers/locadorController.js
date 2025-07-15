@@ -93,7 +93,7 @@ exports.buscarLocadorPorInquilino = async (req, res) => {
 };
 
 exports.buscarSaldoLocador = async (req, res) => {
-  const { locador_id } = req.userId;
+  const  locador_id  = req.userId;
 
   try {
     const saldo = await locadorService.buscarSaldoLocador(locador_id);
@@ -110,7 +110,7 @@ exports.buscarSaldoLocador = async (req, res) => {
 };
 
 exports.buscarRegistroTransacoes = async (req, res) => {
-  const { locador_id } = req.userId;
+  const  locador_id  = req.userId;
 
   try {
     const saldo = await locadorService.buscarRegistroTransacoes(locador_id);
