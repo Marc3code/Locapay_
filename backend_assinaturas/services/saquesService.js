@@ -1,4 +1,4 @@
-const db = require('../database/dbconnect')
+const db = require("../database/dbconnect");
 
 exports.buscarSaques = async (locador_id) => {
   try {
@@ -18,3 +18,43 @@ exports.buscarSaques = async (locador_id) => {
     };
   }
 };
+
+exports.registrarSaque = async (locador_id, valor) => {
+  try {
+    const query = "INSERT INTO saques (locador_id, valor) VALUES (?, ?)";
+
+    const [result] = await db.query(query, [locador_id, valor]);
+
+    return {
+      id: result.insertId,
+    };
+  } catch (err) {
+    console.error("Erro ao registrar saque:", err);
+    return {
+      mensagem: "Erro ao registrar saque",
+      erro: err,
+    };
+  }
+};
+
+exports.atualizarStatusSaque = async (saque_id, status) => {
+  try {
+    const query = "UPDATE saques SET status = ? WHERE id = ?";
+
+    const [result] = await db.query(query, [status, saque_id]);
+
+    return {
+      linhasAfetadas: result.affectedRows,
+    };
+  } catch (err) {
+    console.error("Erro ao atualizar status do saque:", err);
+    return {
+      mensagem: "Erro ao atualizar status do saque",
+      erro: err,
+    };
+  }
+};
+
+
+
+

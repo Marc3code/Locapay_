@@ -1,7 +1,7 @@
 const saldoService = require("../services/saldos_locadoresService");
 
 async function atualizarSaldo(req, res) {
-  const { locador_id, valor } = req.body;
+  const { locador_id, valor} = req.body;
 
   if (!locador_id || !valor) {
     return res.status(400).json({
@@ -21,6 +21,29 @@ async function atualizarSaldo(req, res) {
     });
   }
 }
+
+async function atualizarSaldoSaque(req, res) {
+  const { locador_id, saldo_total, saldo_bloqueado} = req.body;
+
+  if (!locador_id || !saldo_total || !saldo_bloqueado) {
+    return res.status(400).json({
+      sucesso: false,
+      mensagem: "locador_id, saldo total ou saldo bloqueado nao informados.",
+    });
+  }
+
+  try {
+    const resultado = await saldoService.atualizarSaldoLocadorSaque(locador_id, saldo_total, saldo_bloqueado);
+    return res.status(200).json(resultado);
+  } catch (error) {
+    console.error("Erro no controller ao atualizar saldo pós saque:", error);
+    return res.status(500).json({
+      sucesso: false,
+      mensagem: "Erro interno ao atualizar saldo do locador pós saque.",
+    });
+  }
+}
+
 
 async function AdicionarSaldo(req, res) {
   const { locador_id } = req.body;
@@ -69,5 +92,6 @@ async function buscarSaldo(req, res) {
 module.exports = {
   atualizarSaldo,
   AdicionarSaldo,
-  buscarSaldo
+  buscarSaldo,
+  atualizarSaldoSaque
 };
