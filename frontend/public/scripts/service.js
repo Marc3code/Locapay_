@@ -1,5 +1,7 @@
 const API_BASE = "https://backend-isolado-production.up.railway.app";
 
+// ======================= TOKEN =======================
+
 // Função auxiliar para obter o token armazenado
 export function getToken() {
   return localStorage.getItem("token");
@@ -11,15 +13,15 @@ export function getToken() {
 export const cadastrarLocador = async (dados) => {
   try {
     const response = await fetch(`${API_BASE}/user/locadores`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dados)
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.erro || 'Erro ao cadastrar locador');
+      throw new Error(data.erro || "Erro ao cadastrar locador");
     }
 
     return data;
@@ -33,15 +35,15 @@ export const cadastrarLocador = async (dados) => {
 export const fazerLogin = async (credenciais) => {
   try {
     const response = await fetch(`${API_BASE}/user/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credenciais)
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credenciais),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.erro || 'Credenciais inválidas');
+      throw new Error(data.erro || "Credenciais inválidas");
     }
 
     return data;
@@ -73,6 +75,7 @@ export const buscarDadosGerais = async () => {
   }
 };
 
+// ======================= DADOS BANCÁRIOS =======================
 // Buscar dados bancarios do locador logado
 export const buscarDadosBancarios = async (id) => {
   try {
@@ -122,14 +125,11 @@ export const buscarInquilinosComContrato = async () => {
 // Buscar inquilinos vinculados ao locador logado sem contrato
 export const buscarInquilinos = async () => {
   try {
-    const response = await fetch(
-      `${API_BASE}/inquilinos`,
-      {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      }
-    );
+    const response = await fetch(`${API_BASE}/inquilinos`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`Erro HTTP: ${response.status}`);
@@ -202,6 +202,8 @@ export const cadastrarImovel = async (imovel) => {
   }
 };
 
+// ======================= INQUILINOS =======================
+
 // Vincular inquilino a imóvel
 export const vincularInquilino = async (dados) => {
   try {
@@ -224,11 +226,14 @@ export const vincularInquilino = async (dados) => {
 // Buscar todos os inquilinos do locador logado
 export const buscarInquilinosComImovel = async () => {
   try {
-    const response = await fetch(`${API_BASE}/inquilinos/inquilinos-com-imovel`, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
+    const response = await fetch(
+      `${API_BASE}/inquilinos/inquilinos-com-imovel`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Erro HTTP: ${response.status}`);
@@ -265,15 +270,20 @@ export const cadastrarInquilino = async (inquilino) => {
   }
 };
 
+// ======================= MOVIMENTAÇÕES FINANCEIRAS =======================
+
 export const buscarMovimentações = async () => {
   try {
-    const response = await fetch(`${API_BASE}/user/buscar-registro-transacoes`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
+    const response = await fetch(
+      `${API_BASE}/user/buscar-registro-transacoes`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Erro HTTP: ${response.status}`);
@@ -281,7 +291,9 @@ export const buscarMovimentações = async () => {
     return await response.json();
   } catch (err) {
     console.error("Erro ao buscar registros de transações:", err);
-    alert("Não conseguimos buscar seus registros de transações. Por favor, entre em contato com o suporte.")
+    alert(
+      "Não conseguimos buscar seus registros de transações. Por favor, entre em contato com o suporte."
+    );
   }
 };
 
@@ -301,11 +313,11 @@ export const buscarSaques = async () => {
     return await response.json();
   } catch (err) {
     console.error("Erro ao buscar registros de transações:", err);
-    alert("Não conseguimos buscar seus registros de transações. Por favor, entre em contato com o suporte.")
+    alert(
+      "Não conseguimos buscar seus registros de transações. Por favor, entre em contato com o suporte."
+    );
   }
 };
-
-
 
 export const buscarSaldo = async () => {
   try {
@@ -323,6 +335,8 @@ export const buscarSaldo = async () => {
     return await response.json();
   } catch (err) {
     console.error("Erro ao buscar saldos:", err);
-    alert("Não conseguimos buscar seus dados de saldo. Por favor, entre em contato com o suporte.");
+    alert(
+      "Não conseguimos buscar seus dados de saldo. Por favor, entre em contato com o suporte."
+    );
   }
 };

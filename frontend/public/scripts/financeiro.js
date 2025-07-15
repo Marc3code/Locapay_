@@ -19,8 +19,12 @@ function formatarData(dataString) {
 async function atualizarSaldos() {
   try {
     const saldo = await buscarSaldo();
-    document.getElementById("saldoTotal").textContent = formatarValor(saldo.saldo_total ?? 0);
-    document.getElementById("saldoBloqueado").textContent = formatarValor(saldo.saldo_bloqueado ?? 0);
+    document.getElementById("saldoTotal").textContent = formatarValor(
+      saldo.saldo_total ?? 0
+    );
+    document.getElementById("saldoBloqueado").textContent = formatarValor(
+      saldo.saldo_bloqueado ?? 0
+    );
   } catch (error) {
     console.error("Erro ao buscar saldo:", error);
     document.getElementById("saldoTotal").textContent = "Erro";
@@ -63,7 +67,8 @@ async function renderizarMovimentacoes() {
     const movimentacoes = await buscarMovimentações();
     const tbody = document.getElementById("tabelaTransacoes");
     if (!movimentacoes.length) {
-      tbody.innerHTML = '<tr><td colspan="4">Nenhuma movimentação encontrada</td></tr>';
+      tbody.innerHTML =
+        '<tr><td colspan="4">Nenhuma movimentação encontrada</td></tr>';
       return;
     }
 
@@ -83,7 +88,8 @@ async function renderizarMovimentacoes() {
   } catch (error) {
     console.error("Erro ao buscar movimentações:", error);
     const tbody = document.getElementById("tabelaTransacoes");
-    tbody.innerHTML = '<tr><td colspan="4">Erro ao carregar movimentações</td></tr>';
+    tbody.innerHTML =
+      '<tr><td colspan="4">Erro ao carregar movimentações</td></tr>';
   }
 }
 
@@ -94,10 +100,39 @@ async function init() {
   await renderizarMovimentacoes();
 }
 
-// Evento botão saque
-document.getElementById("btnSacar").addEventListener("click", () => {
-  alert("Solicitação de saque iniciada!");
-  // Aqui você pode abrir modal, redirecionar, etc.
+document.addEventListener("DOMContentLoaded", init);
+
+const modalSaque = document.getElementById("modalSaque");
+const btnSacar = document.getElementById("btnSacar");
+const btnConfirmar = document.getElementById("confirmarSaque");
+const btnCancelar = document.getElementById("cancelarSaque");
+const inputValor = document.getElementById("valorSaque");
+
+// Abrir modal
+btnSacar.addEventListener("click", () => {
+  inputValor.value = "";
+  modalSaque.style.display = "flex";
 });
 
-document.addEventListener("DOMContentLoaded", init);
+// Cancelar
+btnCancelar.addEventListener("click", () => {
+  modalSaque.style.display = "none";
+});
+
+// Confirmar saque
+btnConfirmar.addEventListener("click", () => {
+  const valor = parseFloat(inputValor.value);
+  if (isNaN(valor) || valor <= 2) {
+    alert("O valor mínimo para saque é R$ 2,01 (taxa de R$ 2,00 aplicada).");
+    return;
+  }
+
+  // Aqui você pode fazer a requisição de saque (fetch/post/etc)
+  alert(
+    `Saque solicitado: R$ ${valor.toFixed(2)} (R$ ${(valor - 2).toFixed(
+      2
+    )} líquidos após taxa).`
+  );
+
+  modalSaque.style.display = "none";
+});

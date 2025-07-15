@@ -79,6 +79,34 @@
       </section>
     </main>
 
+    <!-- Modal de Saque -->
+    <div id="modalSaque" class="modal-overlay" style="display: none">
+      <div class="modal-content">
+        <h3>Solicitar Saque</h3>
+        <p>
+          Informe o valor desejado para saque.
+          <strong>Taxa de R$ 2,00 será aplicada.</strong>
+        </p>
+        <input
+          type="number"
+          id="valorSaque"
+          placeholder="Ex: 50.00"
+          min="2.01"
+          step="0.01"
+        />
+        <div class="modal-actions">
+          <button id="confirmarSaque" class="filter-btn">Confirmar</button>
+          <button
+            id="cancelarSaque"
+            class="filter-btn"
+            style="background: var(--danger)"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="./scripts/financeiro.js"></script>
   </body>
 </html>
