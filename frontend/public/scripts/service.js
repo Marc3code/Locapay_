@@ -267,7 +267,7 @@ export const cadastrarInquilino = async (inquilino) => {
 
 export const buscarMovimentações = async () => {
   try {
-    const response = await fetch(`${API_BASE}/user/buscar-registros-transacoes`, {
+    const response = await fetch(`${API_BASE}/user/buscar-registro-transacoes`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
