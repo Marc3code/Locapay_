@@ -1,5 +1,5 @@
 const db = require("../database/dbconnect");
-const { transferirPix, criarContaDestinoPix } = require("./asaasService");
+const { transferirPix } = require("./asaasService");
 
 exports.criarLocador = async (locador) => {
   const [result] = await db.query(
