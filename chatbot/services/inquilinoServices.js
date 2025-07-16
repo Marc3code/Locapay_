@@ -18,9 +18,9 @@ const getInquilinoPorTelefone = async (numero) => {
   }
 };
 
-const buscarLinkPagamento = async (id) => {
+const buscarLinkPagamento = async (inquilino_id, locador_id) => {
   try {
-    const response = await fetch(`${API_BASE}/pagamentos/link_pagamento/${id}`);
+    const response = await fetch(`${API_BASE}/pagamentos/link_pagamento/${inquilino_id}/${locador_id}`);
 
     if (!response.ok) {
       console.error("Nenhum inquilino encontrado");

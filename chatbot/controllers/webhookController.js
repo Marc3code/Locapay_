@@ -32,7 +32,7 @@ exports.handleWebhook = async (req, res) => {
       `2️⃣ - Consultar a situação atual dos seus pagamentos\n\n` +
       `Digite o número correspondente à opção desejada.`;
   } else if (text === "1") {
-    const link = await inquilinosService.buscarLinkPagamento(inquilino.id);
+    const link = await inquilinosService.buscarLinkPagamento(inquilino.id, inquilino.locador_id);
     if (!link || !link.paymentLink) {
       resposta =
         "❌ Não foi possível localizar o link de pagamento para o mês atual. Por favor, tente novamente mais tarde ou entre em contato com o suporte.";
