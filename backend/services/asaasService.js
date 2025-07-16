@@ -88,6 +88,5 @@ const transferirPix = async ({ valor, chave_pix, tipoChavePix }) => {
 module.exports = {
   gerarPagamentoPix,
   criarClienteAsaas,
-  criarContaDestinoPix,
   transferirPix,
 };
