@@ -8,7 +8,7 @@ const BASE_URL = "https://www.asaas.com/api/v3";
 const gerarPagamentoPix = async (customerId, value, dueDate) => {
   try {
     const response = await axios.post(
-      `${BASE_URL_SANDBOX}/payments`,
+      `${BASE_URL}/payments`,
       {
         customer: customerId,
         billingType: "PIX",
@@ -18,7 +18,7 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY_SANDBOX,
+          access_token: process.env.ASAAS_API_KEY,
         },
       }
     );
@@ -38,12 +38,12 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
 const criarClienteAsaas = async (clienteData) => {
   try {
     const response = await axios.post(
-      `${BASE_URL_SANDBOX}/customers`,
+      `${BASE_URL}/customers`,
       clienteData,
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY_SANDBOX,
+          access_token: process.env.ASAAS_API_KEY,
         },
       }
     );
@@ -57,7 +57,7 @@ const criarClienteAsaas = async (clienteData) => {
 const criarContaDestinoPix = async ({ name, cpfCnpj, pixKey }) => {
   try {
     const response = await axios.post(
-      `${BASE_URL_SANDBOX}/account`,
+      `${BASE_URL}/account`,
       {
         name,
         cpfCnpj,
@@ -69,7 +69,7 @@ const criarContaDestinoPix = async ({ name, cpfCnpj, pixKey }) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY_SANDBOX,
+          access_token: process.env.ASAAS_API_KEY,
         },
       }
     );
