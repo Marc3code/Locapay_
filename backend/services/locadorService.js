@@ -208,19 +208,134 @@ exports.realizarSaque = async (valor, recipientAccountId) => {
 };
 
 exports.registrarSaque = async (locador_id, valor) => {
-  //tem que retornar o id do saque criado pra atualizar o status 
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/adicionar-registro`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+        body: JSON.stringify({ locador_id, valor }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.warn("Erro ao registrar saque:", response.status, errorText);
+      return { sucesso: false, erro: errorText };
+    }
+
+    const data = await response.json();
+    return { sucesso: true, id: data.id };
+  } catch (err) {
+    console.error("Erro ao registrar saque:", err.message);
+    return { sucesso: false, erro: err.message };
+  }
 };
 
-exports.atualizarStatusSaque = async (saque_id, status) => {};
+exports.atualizarStatusSaque = async (saque_id, status) => {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/atualizar-status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+        body: JSON.stringify({ saque_id, status }),
+      }
+    );
 
-exports.adicionarRegistroTransacao = async (
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.warn(
+        "Erro ao atualizar status do saque:",
+        response.status,
+        errorText
+      );
+      return { sucesso: false, erro: errorText };
+    }
+
+    return { sucesso: true };
+  } catch (err) {
+    console.error("Erro ao atualizar status do saque:", err.message);
+    return { sucesso: false, erro: err.message };
+  }
+};
+
+exports.registrarTransacao = async (locadorId, valor) => {
+  const descricao = `Saque via Pix`;
+
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/transacoes_saldo/adicionar`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+        body: JSON.stringify({
+          locador_id: locadorId,
+          tipo: "saída",
+          descricao,
+          valor,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.warn(
+        "Erro ao registrar transação de saque:",
+        response.status,
+        errorText
+      );
+      return { success: false, error: errorText };
+    }
+
+    await response.json();
+    return { success: true };
+  } catch (err) {
+    console.error("Erro ao registrar transação de saque:", err.message);
+    return { success: false, error: err.message };
+  }
+};
+
+exports.atualizarSaldoAtual = async (
   locador_id,
-  tipo,
-  descricao,
-  valor,
-  origem_pagamento
-) => {};
+  saldo_total,
+  saldo_bloqueado
+) => {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/atualizar-pos-saque`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+        body: JSON.stringify({ locador_id, saldo_total, saldo_bloqueado }),
+      }
+    );
 
-exports.atualizarSaldoAtual = async (locador_id, saldo_total, saldo_bloqueado) {
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.warn(
+        "Erro ao atualizar saldo do locador:",
+        response.status,
+        errorText
+      );
+      return { sucesso: false, erro: errorText };
+    }
 
-}
+    return { sucesso: true };
+  } catch (err) {
+    console.error("Erro ao atualizar saldo do locador:", err.message);
+    return { sucesso: false, erro: err.message };
+  }
+};

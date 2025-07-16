@@ -150,34 +150,84 @@ exports.buscarRegistroSaques = async (req, res) => {
 exports.realizarSaque = async (req, res) => {
   const locadorId = req.userId;
   const valor = req.body.valor;
-  const chave_pix = req.body.chave_pix
-  const dadosLocador = locadorService.buscarDadosGerais()
+  const chave_pix = req.body.chave_pix;
 
   try {
-    const recipientAccountId = await locadorService.buscarRecipientId(
-      locadorId
+    // Buscar dados gerais do locador
+    const dadosLocador = await locadorService.buscarDadosGerais(locadorId);
+    if (!dadosLocador) {
+      return res.status(404).json({ erro: "Locador não encontrado." });
+    }
+
+    // Verificar se já existe recipientAccountId
+    let recipientAccountId = await locadorService.buscarRecipientId(locadorId);
+
+    // Se não tiver, cria e salva
+    if (!recipientAccountId) {
+      const resultadoCriacao = await locadorService.cadastrarContaDestinoPix(
+        dadosLocador.nome,
+        dadosLocador.cpf_cnpj,
+        chave_pix
+      );
+
+      if (!resultadoCriacao.sucesso) {
+        return res.status(500).json({
+          erro: "Erro ao cadastrar conta destino Pix: " + resultadoCriacao.erro,
+        });
+      }
+
+      recipientAccountId = resultadoCriacao.recipientAccountId;
+
+      // Aqui você pode criar a função locadorService.salvarRecipientId se quiser salvar no banco
+      await locadorService.salvarRecipientId(locadorId, recipientAccountId);
+    }
+
+    // Registrar o saque (retorna id do saque)
+    const registro = await locadorService.registrarSaque(locadorId, valor);
+    if (!registro.sucesso) {
+      return res
+        .status(500)
+        .json({ erro: "Erro ao registrar solicitação de saque." });
+    }
+    const saqueId = registro.id;
+
+    // Efetuar a transferência Pix via Asaas
+    const resultadoTransferencia = await locadorService.realizarSaque(
+      valor,
+      recipientAccountId
     );
 
-    if (recipientAccountId === null){
-      try{
-        const cadastrarRecipientId = await locadorService.cadastrarContaDestinoPix(dadosLocador.nome, dadosLocador.cpf_cnpj, chave_pix)
-      }catch(err){}
+    if (!resultadoTransferencia.sucesso) {
+      await locadorService.atualizarStatusSaque(saqueId, "recusado");
+      return res.status(500).json({ erro: resultadoTransferencia.erro });
     }
 
-    const resultado = await realizarSaque(valor, recipientAccountId);
+    // Atualizar status do saque
+    await locadorService.atualizarStatusSaque(saqueId, "pago");
 
-    if (!resultado.sucesso) {
-      return res.status(500).json({ erro: resultado.erro });
-    }
+    // Registrar a transação
+    await locadorService.registrarTransacao(locadorId, valor);
 
-    
+    // Atualizar saldo
+    const saldoAtual = await locadorService.buscarSaldoLocador(locadorId);
+    const novoSaldo = {
+      saldo_total: parseFloat(saldoAtual.saldo_total) - valor,
+      saldo_bloqueado: parseFloat(saldoAtual.saldo_bloqueado),
+    };
+
+    await locadorService.atualizarSaldoAtual(
+      locadorId,
+      novoSaldo.saldo_total,
+      novoSaldo.saldo_bloqueado
+    );
 
     return res.status(200).json({
       mensagem: "Saque realizado com sucesso!",
-      transferencia: resultado.dados,
+      transferencia: resultadoTransferencia.dados,
     });
   } catch (err) {
-    console.error("Erro no controller:", err.message);
+    console.error("Erro no controller de saque:", err.message);
     return res.status(500).json({ erro: "Erro ao processar saque." });
   }
 };
+
