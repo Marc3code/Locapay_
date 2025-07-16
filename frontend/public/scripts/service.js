@@ -77,13 +77,12 @@ export const buscarDadosGerais = async () => {
 
 // ======================= DADOS BANCÁRIOS =======================
 // Buscar dados bancarios do locador logado
-export const buscarDadosBancarios = async (id) => {
+export const buscarDadosBancarios = async () => {
   try {
     const response = await fetch(`${API_BASE}/bkdt/dados-bancarios`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
-      body: JSON.stringify(id),
     });
 
     if (!response.ok) {
@@ -361,6 +360,29 @@ export const buscarSaldo = async () => {
     console.error("Erro ao buscar saldos:", err);
     alert(
       "Não conseguimos buscar seus dados de saldo. Por favor, entre em contato com o suporte."
+    );
+  }
+};
+
+export const realizarSaque = async (valor, chave_pix) => {
+  try {
+    const response = await fetch(`${API_BASE}/user/realizar-saque`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({valor: parseFloat(valor), chave_pix: chave_pix.trim()})
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Erro ao realizar saque:", err);
+    alert(
+      "Não foi possível realizar o saque. Entre em contato com o suporte para solicitar diretamente!"
     );
   }
 };

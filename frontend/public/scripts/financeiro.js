@@ -3,6 +3,8 @@ import {
   buscarMovimentações,
   buscarSaques,
   cadastrarChavePix,
+  buscarDadosBancarios,
+  realizarSaque,
 } from "./service.js";
 import { carregarHeader } from "./header/renderHeader.js";
 
@@ -125,14 +127,28 @@ btnCancelar.addEventListener("click", () => {
 });
 
 // Confirmar saque
-btnConfirmar.addEventListener("click", () => {
+btnConfirmar.addEventListener("click", async () => {
   const valor = parseFloat(inputValor.value);
   if (isNaN(valor) || valor <= 2) {
     alert("O valor mínimo para saque é R$ 2,01 (taxa de R$ 2,00 aplicada).");
     return;
   }
 
-  // Aqui você pode fazer a requisição de saque (fetch/post/etc)
+  try {
+    const dadosBancarios = await buscarDadosBancarios();
+    const chave_pix = dadosBancarios.chave_pix;
+    const saque = await realizarSaque(valor, chave_pix);
+
+    if (saque?.erro) {
+      alert(
+        `Erro ao realizar saque: ${saque.erro}.\n Entre em contato com o suporte e envie um print dessa mensagem!`
+      );
+      return;
+    }
+
+    alert("Saque realizado com sucesso!");
+    modalSaque.style.display = "none";
+  } catch (err) {}
   alert(
     `Saque solicitado: R$ ${valor.toFixed(2)} (R$ ${(valor - 2).toFixed(
       2
