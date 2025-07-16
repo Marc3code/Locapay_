@@ -54,37 +54,6 @@ const criarClienteAsaas = async (clienteData) => {
   }
 };
 
-const criarContaDestinoPix = async ({ name, cpfCnpj, pixKey }) => {
-  try {
-    const response = await axios.post(
-      `${BASE_URL}/account`,
-      {
-        name,
-        cpfCnpj,
-        bankAccount: {
-          type: "PIX",
-          pixKey,
-        },
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
-        },
-      }
-    );
-
-    return response.data.walletId;
-  } catch (err) {
-    console.error(
-      "Erro ao criar conta de destino:",
-      err.response?.data || err.message
-    );
-    throw new Error(
-      err.response?.data?.message || "Erro ao criar conta de destino"
-    );
-  }
-};
 
 const transferirPix = async ({ valor, chave_pix, tipoChavePix }) => {
   try {
