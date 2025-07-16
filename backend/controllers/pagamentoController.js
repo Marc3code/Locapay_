@@ -13,11 +13,21 @@ async function listarTodos(req, res) {
 }
 
 async function buscarLinkPagamento(req, res) {
-  const { inquilino_id } = req.params;
+  const { inquilino_id, locador_id } = req.params;
   const locadorId = req.userId;
-
+  var link;
   try {
-    const link = await pagamentoService.getLinkPagamentoPendente(inquilino_id, locadorId);
+    if (locadorId) {
+      link = await pagamentoService.getLinkPagamentoPendente(
+        inquilino_id,
+        locadorId
+      );
+    } else if (locador_id) {
+      link = await pagamentoService.getLinkPagamentoPendente(
+        inquilino_id,
+        locador_id
+      );
+    }
     if (link) {
       res.json({ success: true, paymentLink: link });
     } else {
@@ -37,7 +47,10 @@ async function buscarPagamentosAtrasados(req, res) {
   const locadorId = req.userId;
 
   try {
-    const pagamentos = await pagamentoService.buscarPagamentosAtrasados(id, locadorId);
+    const pagamentos = await pagamentoService.buscarPagamentosAtrasados(
+      id,
+      locadorId
+    );
     if (pagamentos.length > 0) {
       res.json(pagamentos);
     } else {
@@ -57,7 +70,10 @@ async function buscarPagamentosPendentes(req, res) {
   const locadorId = req.userId;
 
   try {
-    const pagamentos = await pagamentoService.buscarPagamentosPendentes(id, locadorId);
+    const pagamentos = await pagamentoService.buscarPagamentosPendentes(
+      id,
+      locadorId
+    );
     if (pagamentos.length > 0) {
       res.json(pagamentos);
     } else {
@@ -83,7 +99,10 @@ async function atualizarStatusPagamento(req, res) {
   }
 
   try {
-    const result = await pagamentoService.atualizarStatusPagamento(paymentId, status);
+    const result = await pagamentoService.atualizarStatusPagamento(
+      paymentId,
+      status
+    );
 
     if (result && result.success) {
       return res.json({

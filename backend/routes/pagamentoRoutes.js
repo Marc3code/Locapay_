@@ -5,7 +5,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 
 router.get("/", authMiddleware, controller.listarTodos);
-router.get("/link_pagamento/:inquilino_id", controller.buscarLinkPagamento);
+router.get("/link_pagamento/:inquilino_id/:locador_id", controller.buscarLinkPagamento);
 router.put("/updt_statusPagamento", controller.atualizarStatusPagamento);
 router.get("/atrasados/:id", controller.buscarPagamentosAtrasados);
 router.get("/pendentes/:id", controller.buscarPagamentosPendentes);
