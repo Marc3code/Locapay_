@@ -1,16 +1,14 @@
 const axios = require("axios");
-require('dotenv').config();
+require("dotenv").config();
 
-
-const BASE_URL = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
-// Para produção: 'https://www.asaas.com/api/v3'
+const BASE_URL_SANDBOX = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
+const BASE_URL = "https://www.asaas.com/api/v3";
 
 //Função para gerar fatura Pix
 const gerarPagamentoPix = async (customerId, value, dueDate) => {
- 
   try {
     const response = await axios.post(
-      `${BASE_URL}/payments`,
+      `${BASE_URL_SANDBOX}/payments`,
       {
         customer: customerId,
         billingType: "PIX",
@@ -20,7 +18,7 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
+          access_token: process.env.ASAAS_API_KEY_SANDBOX,
         },
       }
     );
@@ -37,29 +35,29 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
   }
 };
 
-
 const criarClienteAsaas = async (clienteData) => {
-    
   try {
-    const response = await axios.post(`${BASE_URL}/customers`, clienteData, {
-      headers: {
-        "Content-Type": "application/json",
-        access_token: process.env.ASAAS_API_KEY,
-      },
-    });
+    const response = await axios.post(
+      `${BASE_URL_SANDBOX}/customers`,
+      clienteData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          access_token: process.env.ASAAS_API_KEY_SANDBOX,
+        },
+      }
+    );
     return response.data.id;
-
   } catch (err) {
     console.error("Erro ao criar cliente:", err.response?.data || err.message);
     throw new Error(err.response?.data?.message || "Erro ao criar cliente");
   }
 };
 
-
 const criarContaDestinoPix = async ({ name, cpfCnpj, pixKey }) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}/recipientAccount`,
+      `${BASE_URL_SANDBOX}/account`,
       {
         name,
         cpfCnpj,
@@ -71,27 +69,32 @@ const criarContaDestinoPix = async ({ name, cpfCnpj, pixKey }) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
-        }
+          access_token: process.env.ASAAS_API_KEY_SANDBOX,
+        },
       }
     );
 
-    return response.data.id;
+    return response.data.walletId;
   } catch (err) {
-    console.error("Erro ao criar conta de destino:", err.response?.data || err.message);
-    throw new Error(err.response?.data?.message || "Erro ao criar conta de destino");
+    console.error(
+      "Erro ao criar conta de destino:",
+      err.response?.data || err.message
+    );
+    throw new Error(
+      err.response?.data?.message || "Erro ao criar conta de destino"
+    );
   }
 };
 
-
-
-const transferirPix = async ({ valor, recipientAccountId }) => {
+const transferirPix = async ({ valor, chave_pix, tipoChavePix }) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}/transfers`,
+      `https://www.asaas.com/api/v3/transfers`,
       {
         value: valor,
-        recipientAccountId: recipientAccountId,
+        pixAddressKey: chave_pix,
+        pixAddressKeyType: tipoChavePix, // ex: "CPF", "PHONE"
+        description: "Saque direto via Pix",
       },
       {
         headers: {
@@ -103,15 +106,19 @@ const transferirPix = async ({ valor, recipientAccountId }) => {
 
     return response.data;
   } catch (err) {
-    console.error("Erro ao transferir via Pix:", err.response?.data || err.message);
-    throw new Error(err.response?.data?.message || "Erro ao transferir via Pix");
+    console.error(
+      "Erro ao transferir via Pix:",
+      err.response?.data || err.message
+    );
+    throw new Error(
+      err.response?.data?.message || "Erro ao transferir via Pix"
+    );
   }
 };
-
 
 module.exports = {
   gerarPagamentoPix,
   criarClienteAsaas,
   criarContaDestinoPix,
-  transferirPix
+  transferirPix,
 };

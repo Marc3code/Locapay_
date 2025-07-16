@@ -149,6 +149,7 @@ exports.buscarRegistroSaques = async (req, res) => {
 
 exports.realizarSaque = async (req, res) => {
   const locadorId = req.userId;
+  console.log(req.body)
   const valor = req.body.valor;
   const chave_pix = req.body.chave_pix;
 
@@ -159,28 +160,6 @@ exports.realizarSaque = async (req, res) => {
       return res.status(404).json({ erro: "Locador não encontrado." });
     }
 
-    // Verificar se já existe recipientAccountId
-    let recipientAccountId = await locadorService.buscarRecipientId(locadorId);
-
-    // Se não tiver, cria e salva
-    if (!recipientAccountId) {
-      const resultadoCriacao = await locadorService.cadastrarContaDestinoPix(
-        dadosLocador.nome,
-        dadosLocador.cpf_cnpj,
-        chave_pix
-      );
-
-      if (!resultadoCriacao.sucesso) {
-        return res.status(500).json({
-          erro: "Erro ao cadastrar conta destino Pix: " + resultadoCriacao.erro,
-        });
-      }
-
-      recipientAccountId = resultadoCriacao.recipientAccountId;
-
-      // Aqui você pode criar a função locadorService.salvarRecipientId se quiser salvar no banco
-      await locadorService.salvarRecipientId(locadorId, recipientAccountId);
-    }
 
     // Registrar o saque (retorna id do saque)
     const registro = await locadorService.registrarSaque(locadorId, valor);
@@ -194,7 +173,8 @@ exports.realizarSaque = async (req, res) => {
     // Efetuar a transferência Pix via Asaas
     const resultadoTransferencia = await locadorService.realizarSaque(
       valor,
-      recipientAccountId
+      dadosLocador.chave_pix,
+      "CPF"
     );
 
     if (!resultadoTransferencia.sucesso) {

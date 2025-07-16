@@ -187,11 +187,12 @@ exports.cadastrarContaDestinoPix = async (
   }
 };
 
-exports.realizarSaque = async (valor, recipientAccountId) => {
+exports.realizarSaque = async (valor, chave_pix, tipoChavePix) => {
   try {
     const resultado = await transferirPix({
       valor,
-      recipientAccountId,
+      chave_pix,
+      tipoChavePix,
     });
 
     return {
@@ -210,7 +211,7 @@ exports.realizarSaque = async (valor, recipientAccountId) => {
 exports.registrarSaque = async (locador_id, valor) => {
   try {
     const response = await fetch(
-      `${process.env.API_BASE_ASSINATURAS}/adicionar-registro`,
+      `${process.env.API_BASE_ASSINATURAS}/saques/adicionar-registro`,
       {
         method: "POST",
         headers: {
@@ -238,7 +239,7 @@ exports.registrarSaque = async (locador_id, valor) => {
 exports.atualizarStatusSaque = async (saque_id, status) => {
   try {
     const response = await fetch(
-      `${process.env.API_BASE_ASSINATURAS}/atualizar-status`,
+      `${process.env.API_BASE_ASSINATURAS}/saques/atualizar-status`,
       {
         method: "PUT",
         headers: {
