@@ -314,7 +314,7 @@ async function atualizarStatusSaque(saque_id, status) {
 async function desbloquearSaldoLocador(saque_id) {
   try {
     const response = await fetch(
-      `${process.env.API_BASE_ASSINATURAS}/saques/desbloquear-saldo`,
+      `${process.env.API_BASE_ASSINATURAS}/saldos_locadores/desbloquear-saldo`,
       {
         method: "PUT",
         headers: {
