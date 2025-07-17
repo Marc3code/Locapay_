@@ -151,7 +151,6 @@ exports.realizarSaque = async (req, res) => {
   const locadorId = req.userId;
   console.log(req.body);
   const valor = req.body.valor;
-  const chave_pix = req.body.chave_pix;
 
   try {
     // Buscar dados gerais do locador
