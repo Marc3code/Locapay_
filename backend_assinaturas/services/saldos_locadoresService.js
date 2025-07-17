@@ -41,7 +41,7 @@ exports.atualizarSaldoLocadorSaque = async (
     const [result] = await db.query(
       `
       UPDATE saldos_locadores 
-      SET saldo_total = ? AND SET saldo_bloqueado = ?
+      SET saldo_total = ?, saldo_bloqueado = ?
       WHERE locador_id = ?;
     `,
       [saldo_total, saldo_bloqueado, locador_id]
