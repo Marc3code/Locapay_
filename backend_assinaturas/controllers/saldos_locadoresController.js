@@ -1,7 +1,7 @@
 const saldoService = require("../services/saldos_locadoresService");
 
 async function atualizarSaldo(req, res) {
-  const { locador_id, valor} = req.body;
+  const { locador_id, valor } = req.body;
 
   if (!locador_id || !valor) {
     return res.status(400).json({
@@ -11,7 +11,10 @@ async function atualizarSaldo(req, res) {
   }
 
   try {
-    const resultado = await saldoService.atualizarSaldoLocador(locador_id, valor);
+    const resultado = await saldoService.atualizarSaldoLocador(
+      locador_id,
+      valor
+    );
     return res.status(200).json(resultado);
   } catch (error) {
     console.error("Erro no controller ao atualizar saldo:", error);
@@ -23,9 +26,9 @@ async function atualizarSaldo(req, res) {
 }
 
 async function atualizarSaldoSaque(req, res) {
-  const { locador_id, saldo_total, saldo_bloqueado} = req.body;
+  const { locador_id, saldo_total, saldo_bloqueado } = req.body;
 
-  if (!locador_id || !saldo_total || !saldo_bloqueado) {
+  if (locador_id == null || saldo_total == null || saldo_bloqueado == null) {
     return res.status(400).json({
       sucesso: false,
       mensagem: "locador_id, saldo total ou saldo bloqueado nao informados.",
@@ -33,7 +36,11 @@ async function atualizarSaldoSaque(req, res) {
   }
 
   try {
-    const resultado = await saldoService.atualizarSaldoLocadorSaque(locador_id, saldo_total, saldo_bloqueado);
+    const resultado = await saldoService.atualizarSaldoLocadorSaque(
+      locador_id,
+      saldo_total,
+      saldo_bloqueado
+    );
     return res.status(200).json(resultado);
   } catch (error) {
     console.error("Erro no controller ao atualizar saldo pós saque:", error);
@@ -43,7 +50,6 @@ async function atualizarSaldoSaque(req, res) {
     });
   }
 }
-
 
 async function AdicionarSaldo(req, res) {
   const { locador_id } = req.body;
@@ -70,7 +76,7 @@ async function AdicionarSaldo(req, res) {
 async function buscarSaldo(req, res) {
   const { locador_id } = req.params;
 
-  if (!locador_id ) {
+  if (!locador_id) {
     return res.status(400).json({
       sucesso: false,
       mensagem: "locador_id é obrigatório.",
@@ -93,5 +99,5 @@ module.exports = {
   atualizarSaldo,
   AdicionarSaldo,
   buscarSaldo,
-  atualizarSaldoSaque
+  atualizarSaldoSaque,
 };
