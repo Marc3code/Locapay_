@@ -149,7 +149,7 @@ exports.buscarRegistroSaques = async (req, res) => {
 
 exports.realizarSaque = async (req, res) => {
   const locadorId = req.userId;
-  console.log(req.body)
+  console.log(req.body);
   const valor = req.body.valor;
   const chave_pix = req.body.chave_pix;
 
@@ -159,7 +159,6 @@ exports.realizarSaque = async (req, res) => {
     if (!dadosLocador) {
       return res.status(404).json({ erro: "Locador não encontrado." });
     }
-
 
     // Registrar o saque (retorna id do saque)
     const registro = await locadorService.registrarSaque(locadorId, valor);
@@ -190,10 +189,21 @@ exports.realizarSaque = async (req, res) => {
 
     // Atualizar saldo
     const saldoAtual = await locadorService.buscarSaldoLocador(locadorId);
+
+    // Garante que os valores estão definidos e numéricos
+    const saldoTotalAtual = parseFloat(saldoAtual?.saldo_total || 0);
+    const saldoBloqueadoAtual = parseFloat(saldoAtual?.saldo_bloqueado || 0);
+
     const novoSaldo = {
-      saldo_total: parseFloat(saldoAtual.saldo_total) - valor,
-      saldo_bloqueado: parseFloat(saldoAtual.saldo_bloqueado),
+      saldo_total: saldoTotalAtual - valor,
+      saldo_bloqueado: saldoBloqueadoAtual,
     };
+
+    console.log("Dados enviados para atualização de saldo:", 
+      locadorId,
+      novoSaldo.saldo_total,
+      novoSaldo.saldo_bloqueado,
+    );
 
     await locadorService.atualizarSaldoAtual(
       locadorId,
@@ -210,4 +220,3 @@ exports.realizarSaque = async (req, res) => {
     return res.status(500).json({ erro: "Erro ao processar saque." });
   }
 };
-
