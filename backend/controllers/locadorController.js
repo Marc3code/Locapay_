@@ -182,7 +182,7 @@ exports.realizarSaque = async (req, res) => {
     }
 
     // Atualizar status do saque
-    await locadorService.atualizarStatusSaque(saqueId, "pago");
+    await locadorService.atualizarStatusSaque(saqueId, "processando");
 
     // Registrar a transação
     await locadorService.registrarTransacao(locadorId, valor);
@@ -196,7 +196,7 @@ exports.realizarSaque = async (req, res) => {
 
     const novoSaldo = {
       saldo_total: saldoTotalAtual - valor,
-      saldo_bloqueado: saldoBloqueadoAtual,
+      saldo_bloqueado: saldoBloqueadoAtual + valor,
     };
 
     console.log("Dados enviados para atualização de saldo:", 
