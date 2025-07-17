@@ -9,5 +9,6 @@ router.put('/atualizar', auth, saldosCtrl.atualizarSaldo);
 router.put('/atualizar-pos-saque', auth, saldosCtrl.atualizarSaldoSaque)
 router.post('/adicionar', auth, saldosCtrl.AdicionarSaldo);
 router.get('/buscar/:locador_id', auth, saldosCtrl.buscarSaldo);
+router.put('/desbloquear-saldo', auth, saldosCtrl.desbloquearSaldoLocador);
 
 module.exports = router;

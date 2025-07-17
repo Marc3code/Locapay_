@@ -65,7 +65,9 @@ async function adicionarTransferId(req, res) {
       mensagem: "Erro interno ao adicionar transfer id.",
     });
   }
-}
+};
+
+
 
 module.exports = {
   buscarSaques,

@@ -117,3 +117,40 @@ exports.buscarSaldoLocador = async (locadorId) => {
     };
   }
 };
+
+exports.desbloquearSaldoLocador = async (saque_id) => {
+  try {
+    // Buscar o locador_id com base no saque_id
+    const [saqueResult] = await db.query(
+      "SELECT locador_id FROM saques WHERE id = ?",
+      [saque_id]
+    );
+
+    if (saqueResult.length === 0) {
+      return {
+        mensagem: "Saque não encontrado",
+        erro: true,
+      };
+    }
+
+    const locador_id = saqueResult[0].locador_id;
+
+    // Atualizar o saldo_bloqueado para 0
+    const [updateResult] = await db.query(
+      "UPDATE saldos_locadores SET saldo_bloqueado = 0.00 WHERE locador_id = ?",
+      [locador_id]
+    );
+
+    return {
+      mensagem: "Saldo bloqueado desbloqueado com sucesso",
+      linhasAfetadas: updateResult.affectedRows,
+      erro: false,
+    };
+  } catch (err) {
+    console.error("Erro ao desbloquear saldo do locador:", err);
+    return {
+      mensagem: "Erro ao desbloquear saldo do locador",
+      erro: err,
+    };
+  }
+};

@@ -95,9 +95,25 @@ async function buscarSaldo(req, res) {
   }
 }
 
+async function desbloquearSaldoLocador(req, res) {
+  const { saque_id } = req.body;
+
+  try {
+    const resultado = await saldoService.desbloquearSaldoLocador(saque_id);
+    return res.status(200).json(resultado);
+  } catch (error) {
+    console.error("Erro no controller ao desbloquear saldo:", error);
+    return res.status(500).json({
+      sucesso: false,
+      mensagem: "Erro interno ao desbloquear saldo.",
+    });
+  }
+}
+
 module.exports = {
   atualizarSaldo,
   AdicionarSaldo,
   buscarSaldo,
   atualizarSaldoSaque,
+  desbloquearSaldoLocador
 };
