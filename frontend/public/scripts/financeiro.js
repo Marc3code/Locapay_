@@ -129,34 +129,48 @@ btnCancelar.addEventListener("click", () => {
 // Confirmar saque
 btnConfirmar.addEventListener("click", async () => {
   const valor = parseFloat(inputValor.value);
-  if (isNaN(valor) || valor <= 2) {
-    alert("O valor mínimo para saque é R$ 2,01 (taxa de R$ 2,00 aplicada).");
+  if (isNaN(valor) || valor <= 0) {
+    alert("Informe um valor válido para saque.");
     return;
   }
 
   try {
+    const saldo = await buscarSaldo();
+    const saldoDisponivel = parseFloat(saldo.saldo_total ?? 0);
+
+    if (valor > saldoDisponivel) {
+      alert(
+        `Valor do saque excede o saldo disponível de ${formatarValor(
+          saldoDisponivel
+        )}.`
+      );
+      return;
+    }
+
     const dadosBancarios = await buscarDadosBancarios();
     const chave_pix = dadosBancarios.chave_pix;
     const saque = await realizarSaque(valor, chave_pix);
 
     if (saque?.erro) {
       alert(
-        `Erro ao realizar saque: ${saque.erro}.\n Entre em contato com o suporte e envie um print dessa mensagem!`
+        `Erro ao realizar saque: ${saque.erro}.\nEntre em contato com o suporte.`
       );
       return;
     }
 
-    alert("Saque realizado com sucesso!");
+    alert(`Saque de ${formatarValor(valor)} solicitado com sucesso!`);
     modalSaque.style.display = "none";
-  } catch (err) {}
-  alert(
-    `Saque solicitado: R$ ${valor.toFixed(2)} (R$ ${(valor - 2).toFixed(
-      2
-    )} líquidos após taxa).`
-  );
 
-  modalSaque.style.display = "none";
+    // Atualiza saldos e tabelas após saque
+    await atualizarSaldos();
+    await renderizarSaques();
+    await renderizarMovimentacoes();
+  } catch (err) {
+    console.error("Erro ao realizar saque:", err);
+    alert("Erro ao realizar saque. Tente novamente mais tarde.");
+  }
 });
+
 
 const modalChavePix = document.getElementById("modalChavePix");
 const btnChavePix = document.getElementById("btnChavePix");
