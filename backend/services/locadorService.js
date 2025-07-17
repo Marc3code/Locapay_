@@ -313,7 +313,7 @@ exports.atualizarSaldoAtual = async (
 ) => {
   try {
     const response = await fetch(
-      `${process.env.API_BASE_ASSINATURAS}/atualizar-pos-saque`,
+      `${process.env.API_BASE_ASSINATURAS}/saldos_locadores/atualizar-pos-saque`,
       {
         method: "PUT",
         headers: {
