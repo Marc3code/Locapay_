@@ -149,8 +149,8 @@ exports.buscarRegistroSaques = async (req, res) => {
 
 exports.realizarSaque = async (req, res) => {
   const locadorId = req.userId;
-  console.log(req.body);
-  const valor = req.body.valor;
+  console.log("Dados recebidos na requisição de saque:", req.body);
+  const valor = parseFloat(req.body.valor);
 
   try {
     // Buscar dados gerais do locador
@@ -167,6 +167,7 @@ exports.realizarSaque = async (req, res) => {
         .json({ erro: "Erro ao registrar solicitação de saque." });
     }
     const saqueId = registro.id;
+    console.log("Saque registrado com ID:", saqueId);
 
     // Efetuar a transferência Pix via Asaas
     const resultadoTransferencia = await locadorService.realizarSaque(
@@ -177,39 +178,47 @@ exports.realizarSaque = async (req, res) => {
     );
 
     if (!resultadoTransferencia.sucesso) {
+      console.log(
+        "Transferência falhou. Atualizando status do saque para 'recusado'."
+      );
       await locadorService.atualizarStatusSaque(saqueId, "recusado");
       return res.status(500).json({ erro: resultadoTransferencia.erro });
     }
 
-    // Atualizar status do saque
+    console.log(
+      "Transferência realizada com sucesso. Atualizando status para 'processando'."
+    );
     await locadorService.atualizarStatusSaque(saqueId, "processando");
 
     // Registrar a transação
+    console.log("Registrando transação de saque...");
     await locadorService.registrarTransacao(locadorId, valor);
 
-    // Atualizar saldo
+    // Buscar saldo atual
     const saldoAtual = await locadorService.buscarSaldoLocador(locadorId);
+    console.log("Saldo atual encontrado:", saldoAtual);
 
-    // Garante que os valores estão definidos e numéricos
+    // Garantir que os valores estão definidos e numéricos
     const saldoTotalAtual = parseFloat(saldoAtual?.saldo_total || 0);
     const saldoBloqueadoAtual = parseFloat(saldoAtual?.saldo_bloqueado || 0);
+    console.log("Saldo total atual:", saldoTotalAtual);
+    console.log("Saldo bloqueado atual:", saldoBloqueadoAtual);
 
+    // Calcular novo saldo
     const novoSaldo = {
       saldo_total: saldoTotalAtual - valor,
       saldo_bloqueado: saldoBloqueadoAtual + valor,
     };
+    console.log("Novo saldo calculado:", novoSaldo);
 
-    console.log("Dados enviados para atualização de saldo:", 
-      locadorId,
-      novoSaldo.saldo_total,
-      novoSaldo.saldo_bloqueado,
-    );
-
+    // Atualizar saldo
+    console.log("Atualizando saldo do locador...");
     await locadorService.atualizarSaldoAtual(
       locadorId,
       novoSaldo.saldo_total,
       novoSaldo.saldo_bloqueado
     );
+    console.log("Saldo atualizado com sucesso.");
 
     return res.status(200).json({
       mensagem: "Saque realizado com sucesso!",
