@@ -3,7 +3,7 @@ const transacoes_saldoService = require("../services/transacoes_saldoService");
 async function registrarTransacao(req, res) {
   const { locador_id, tipo, valor, origem_pagamento_id, descricao } = req.body;
 
-  if (!locador_id || !valor || !origem_pagamento_id || !tipo) {
+  if (!locador_id || !valor || !tipo) {
     return res.status(400).json({
       sucesso: false,
       mensagem: "locador_id e valor são obrigatórios.",
@@ -15,7 +15,7 @@ async function registrarTransacao(req, res) {
       locador_id,
       tipo,
       valor,
-      origem_pagamento_id,
+      origem_pagamento_id || null,
       descricao
     );
 
