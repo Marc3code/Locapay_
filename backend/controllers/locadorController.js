@@ -150,7 +150,7 @@ exports.buscarRegistroSaques = async (req, res) => {
 exports.realizarSaque = async (req, res) => {
   const locadorId = req.userId;
   console.log("Dados recebidos na requisição de saque:", req.body);
-  const valor = parseFloat(req.body.valor);
+  const valor = parseFloat(req.body.valor).toFixed(2);
 
   try {
     // Buscar dados gerais do locador
