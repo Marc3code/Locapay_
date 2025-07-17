@@ -56,7 +56,7 @@ async function adicionarTransferId(req, res) {
   const { saque_id, transfer_id } = req.body;
 
   try {
-    const resultado = await saqueService.registrarSaque(saque_id, transfer_id);
+    const resultado = await saqueService.adicionarTransferId(saque_id, transfer_id);
     return res.status(200).json(resultado);
   } catch (error) {
     console.error("Erro no controller ao adicionar transfer id:", error);
