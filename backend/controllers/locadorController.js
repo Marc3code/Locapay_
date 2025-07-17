@@ -173,7 +173,8 @@ exports.realizarSaque = async (req, res) => {
     const resultadoTransferencia = await locadorService.realizarSaque(
       valor,
       dadosLocador.chave_pix,
-      "CPF"
+      "CPF",
+      locadorId
     );
 
     if (!resultadoTransferencia.sucesso) {

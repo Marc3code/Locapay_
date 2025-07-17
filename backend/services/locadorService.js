@@ -187,12 +187,13 @@ exports.cadastrarContaDestinoPix = async (
   }
 };
 
-exports.realizarSaque = async (valor, chave_pix, tipoChavePix) => {
+exports.realizarSaque = async (valor, chave_pix, tipoChavePix, locador_id) => {
   try {
     const resultado = await transferirPix({
       valor,
       chave_pix,
       tipoChavePix,
+      locador_id
     });
 
     return {
