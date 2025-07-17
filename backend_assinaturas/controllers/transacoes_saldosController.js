@@ -19,35 +19,6 @@ async function registrarTransacao(req, res) {
       descricao
     );
 
-    if (resultado.sucesso) {
-      try {
-        const response = await fetch(
-          "https://backendassinaturas-production.up.railway.app/saldos_locadores/atualizar",
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
-            },
-            body: JSON.stringify({
-              locador_id: locador_id,
-              valor: valor,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          const erroTexto = await response.text();
-          console.warn(`Erro ao atualizar saldo do locador: ${erroTexto}`);
-        }
-      } catch (err) {
-        console.error(
-          "Erro de rede ao atualizar saldo do locador:",
-          err.message
-        );
-      }
-    }
-
     return res.status(200).json(resultado);
   } catch (error) {
     console.error("Erro no controller ao registrar transação:", error);
