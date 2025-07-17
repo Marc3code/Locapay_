@@ -52,8 +52,24 @@ async function registrarSaque(req, res) {
   }
 }
 
+async function adicionarTransferId(req, res) {
+  const { saque_id, transfer_id } = req.body;
+
+  try {
+    const resultado = await saqueService.registrarSaque(saque_id, transfer_id);
+    return res.status(200).json(resultado);
+  } catch (error) {
+    console.error("Erro no controller ao adicionar transfer id:", error);
+    return res.status(500).json({
+      sucesso: false,
+      mensagem: "Erro interno ao adicionar transfer id.",
+    });
+  }
+}
+
 module.exports = {
   buscarSaques,
   atualizarStatusSaque,
-  registrarSaque
+  registrarSaque,
+  adicionarTransferId
 };

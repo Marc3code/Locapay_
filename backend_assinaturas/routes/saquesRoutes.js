@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/buscar/:locador_id', auth, saquesCtrl.buscarSaques);
 router.put('/atualizar-status', auth, saquesCtrl.atualizarStatusSaque);
-router.post('/adicionar-registro', auth, saquesCtrl.registrarSaque)
+router.post('/adicionar-registro', auth, saquesCtrl.registrarSaque);
+router.put('/add-transfer-id', auth, saquesCtrl.adicionarTransferId);
 
 module.exports = router;

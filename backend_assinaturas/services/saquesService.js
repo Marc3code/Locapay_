@@ -55,6 +55,24 @@ exports.atualizarStatusSaque = async (saque_id, status) => {
   }
 };
 
+exports.adicionarTransferId = async (saque_id, transfer_id) => {
+  try {
+    const query = "UPDATE saques SET transfer_id = ? WHERE id = ?";
+
+    const [result] = await db.query(query, [transfer_id, saque_id]);
+
+    return {
+      linhasAfetadas: result.affectedRows,
+    };
+  } catch (err) {
+    console.error("Erro ao adicionar transfer id:", err);
+    return {
+      mensagem: "Erro ao atualizar adicionar transfer id",
+      erro: err,
+    };
+  }
+}
+
 
 
 
