@@ -85,8 +85,10 @@ async function processarEventosPagamento(event, payment) {
 async function processarEventosTransferencia(event, transfer) {
   if (event === "TRANSFER_CREATED") {
     console.log("Evento TRANSFER_CREATED recebido");
+    console.log("transfer: ", transfer);
   } else if (event === "TRANSFER_DONE") {
     console.log("Evento TRANSFER_DONE recebido");
+    console.log("transfer: ", transfer);
   }
 }
 
