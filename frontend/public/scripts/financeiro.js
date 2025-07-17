@@ -137,6 +137,17 @@ btnConfirmar.addEventListener("click", async () => {
   try {
     const saldo = await buscarSaldo();
     const saldoDisponivel = parseFloat(saldo.saldo_total ?? 0);
+    const saldoBloqueado = parseFloat(saldo.saldo_bloqueado ?? 0);
+
+    // Se já houver valor bloqueado, impedir novo saque
+    if (saldoBloqueado > 0) {
+      alert(
+        `Você já possui um saque em processamento no valor de ${formatarValor(
+          saldoBloqueado
+        )}. Aguarde a conclusão para solicitar um novo saque.`
+      );
+      return;
+    }
 
     if (valor > saldoDisponivel) {
       alert(
@@ -170,7 +181,6 @@ btnConfirmar.addEventListener("click", async () => {
     alert("Erro ao realizar saque. Tente novamente mais tarde.");
   }
 });
-
 
 const modalChavePix = document.getElementById("modalChavePix");
 const btnChavePix = document.getElementById("btnChavePix");
