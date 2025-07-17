@@ -6,7 +6,8 @@ async function receberEvento(req, res) {
   try {
     const event = req.body.event;
     const payment = req.body.payment;
-    await webhookService.processarEvento(event, payment);
+    const transfer = req.body.transfer
+    await webhookService.processarEvento(event, payment, transfer);
   } catch (err) {
     console.error("Erro no webhook:", err);
   }

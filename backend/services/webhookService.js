@@ -1,17 +1,29 @@
 const notificationService = require("../tarefas/services/notificationService");
 const formatarTelefone = require("../utils/formatarTelefone");
-const API_BACKEND = "https://backend-isolado-production.up.railway.app";
 require("dotenv").config();
 
-async function processarEvento(event, payment) {
+const API_BACKEND = "https://backend-isolado-production.up.railway.app";
+
+async function processarEvento(event, payment, transfer) {
+  if (!event) {
+    console.warn("Evento ausente.");
+    return { error: "Evento ausente." };
+  }
+
+  if (payment) {
+    await processarEventosPagamento(event, payment);
+  } else if (transfer) {
+    await processarEventosTransferencia(event, transfer);
+  } else {
+    console.log(`Evento ${event} não tratado.`);
+    return { message: `Evento ${event} não é suportado.` };
+  }
+}
+
+async function processarEventosPagamento(event, payment) {
   const inquilinoData = await buscarInquilinoData(payment.customer);
   const locadorData = await buscarLocadorPorInquilino(inquilinoData.id);
   const telefoneInquilino = formatarTelefone(inquilinoData.telefone);
-
-  if (!event || !payment.id) {
-    console.warn("Evento ou ID do pagamento ausente.");
-    return { error: "Evento ou ID do pagamento ausente." };
-  }
 
   if (event === "PAYMENT_RECEIVED") {
     console.log("Evento PAYMENT_RECEIVED recebido");
@@ -30,25 +42,35 @@ async function processarEvento(event, payment) {
       valorPagamento
     );
 
-    console.log("Status de pagamento atualizado:", atualizaStatus.success ? "sucesso" : "falha");
-    console.log("Registro de transação:", registraTransacao.success ? "sucesso" : "falha");
-    console.log("Atualização do saldo do locador:", atualizaSaldoLocador.success ? "sucesso" : "falha");
+    console.log(
+      "Status de pagamento atualizado:",
+      atualizaStatus.success ? "sucesso" : "falha"
+    );
+    console.log(
+      "Registro de transação:",
+      registraTransacao.success ? "sucesso" : "falha"
+    );
+    console.log(
+      "Atualização do saldo do locador:",
+      atualizaSaldoLocador.success ? "sucesso" : "falha"
+    );
 
     notificationService.enviarNotificacaoPagamentoRealizado(
       payment.dueDate,
       telefoneInquilino
     );
-
   } else if (event === "PAYMENT_OVERDUE") {
     console.log("Evento PAYMENT_OVERDUE recebido");
     const atualiza = await atualizarStatusPagamento("atrasado", payment.id);
-    console.log("Status de pagamento atualizado para atrasado:", atualiza.success ? "sucesso" : "falha");
+    console.log(
+      "Status de pagamento atualizado para atrasado:",
+      atualiza.success ? "sucesso" : "falha"
+    );
 
     notificationService.enviarNotificacaoPagamentoAtrasado(
       payment.dueDate,
       telefoneInquilino
     );
-
   } else if (event === "PAYMENT_CREATED") {
     console.log("Evento PAYMENT_CREATED recebido");
 
@@ -57,10 +79,14 @@ async function processarEvento(event, payment) {
       telefoneInquilino
     );
     return { message: "Pagamento criado, sem ação necessária." };
+  }
+}
 
-  } else {
-    console.log(`Evento ${event} não tratado.`);
-    return { message: `Evento ${event} não é suportado.` };
+async function processarEventosTransferencia(event, transfer) {
+  if (event === "TRANSFER_CREATED") {
+    console.log("Evento TRANSFER_CREATED recebido");
+  } else if (event === "TRANSFER_DONE") {
+    console.log("Evento TRANSFER_DONE recebido");
   }
 }
 
@@ -88,7 +114,6 @@ async function atualizarStatusPagamento(status, paymentId) {
   }
 }
 
-// Função para buscar dados do inquilino
 async function buscarInquilinoData(customerId) {
   try {
     const response = await fetch(
@@ -117,8 +142,13 @@ async function buscarLocadorPorInquilino(inquilinoId) {
   }
 }
 
-async function registrarTransacao(locadorId, nome_inquilino, valor, pagamentoId) {
-   const descricao = `Pagamento do inquilino ${nome_inquilino}`;
+async function registrarTransacao(
+  locadorId,
+  nome_inquilino,
+  valor,
+  pagamentoId
+) {
+  const descricao = `Pagamento do inquilino ${nome_inquilino}`;
 
   try {
     const response = await fetch(
@@ -162,6 +192,7 @@ async function atualizarSaldoLocador(locadorId, valorAdicionado) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+
         },
         body: JSON.stringify({
           locador_id: locadorId,
