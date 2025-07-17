@@ -55,7 +55,7 @@ const criarClienteAsaas = async (clienteData) => {
 };
 
 
-const transferirPix = async ({ valor, chave_pix, tipoChavePix, locador_id }) => {
+const transferirPix = async ({ valor, chave_pix, tipoChavePix, saque_id }) => {
   try {
     const response = await axios.post(
       `https://www.asaas.com/api/v3/transfers`,
@@ -63,7 +63,7 @@ const transferirPix = async ({ valor, chave_pix, tipoChavePix, locador_id }) => 
         value: valor,
         pixAddressKey: chave_pix,
         pixAddressKeyType: tipoChavePix,
-        description: `Saque via Pix - id: ${locador_id}`,
+        description: `Saque via Pix - id: ${saque_id}`,
       },
       {
         headers: {

@@ -174,7 +174,7 @@ exports.realizarSaque = async (req, res) => {
       valor,
       dadosLocador.chave_pix,
       "CPF",
-      locadorId
+      saqueId
     );
 
     if (!resultadoTransferencia.sucesso) {

@@ -27,6 +27,7 @@ async function processarEventosPagamento(event, payment) {
 
   if (event === "PAYMENT_RECEIVED") {
     console.log("Evento PAYMENT_RECEIVED recebido");
+
     const atualizaStatus = await atualizarStatusPagamento("pago", payment.id);
     const valorPagamento = payment.value - 1.99;
 
@@ -59,8 +60,11 @@ async function processarEventosPagamento(event, payment) {
       payment.dueDate,
       telefoneInquilino
     );
+
+    console.log("Evento PAYMENT_RECEIVED processado com sucesso.");
   } else if (event === "PAYMENT_OVERDUE") {
     console.log("Evento PAYMENT_OVERDUE recebido");
+
     const atualiza = await atualizarStatusPagamento("atrasado", payment.id);
     console.log(
       "Status de pagamento atualizado para atrasado:",
@@ -71,6 +75,8 @@ async function processarEventosPagamento(event, payment) {
       payment.dueDate,
       telefoneInquilino
     );
+
+    console.log("Evento PAYMENT_OVERDUE processado com sucesso.");
   } else if (event === "PAYMENT_CREATED") {
     console.log("Evento PAYMENT_CREATED recebido");
 
@@ -78,17 +84,46 @@ async function processarEventosPagamento(event, payment) {
       payment.dueDate,
       telefoneInquilino
     );
+
+    console.log("Evento PAYMENT_CREATED processado com sucesso.");
     return { message: "Pagamento criado, sem ação necessária." };
   }
 }
 
 async function processarEventosTransferencia(event, transfer) {
+  const descricao = transfer.description; // Ex: "Saque via Pix - id: 123"
+  const match = descricao?.match(/id:\s?(\d+)/);
+  let saqueId;
+
+  if (match) {
+    saqueId = parseInt(match[1]);
+  } else {
+    console.warn(
+      "Não foi possível extrair o saque_id da descrição:",
+      descricao
+    );
+    console.log(
+      `O evento ${event} não foi processado corretamente.\nPayload do evento:`,
+      transfer
+    );
+    return; // Encerra a função se não conseguir extrair o ID
+  }
+
   if (event === "TRANSFER_CREATED") {
     console.log("Evento TRANSFER_CREATED recebido");
-    console.log("transfer: ", transfer);
+    await adicionarTransferId(saqueId, transfer.id);
+    console.log(
+      `Transferência criada processada com sucesso. saqueId: ${saqueId}, transferId: ${transfer.id}`
+    );
   } else if (event === "TRANSFER_DONE") {
     console.log("Evento TRANSFER_DONE recebido");
-    console.log("transfer: ", transfer);
+    await atualizarStatusSaque(saqueId, "pago");
+    await desbloquearSaldoLocador(saqueId);
+    console.log(
+      `Transferência concluída com sucesso. saqueId: ${saqueId} marcado como pago.\n saldo bloqueado removido.`
+    );
+  } else {
+    console.log(`Evento ${event} não reconhecido. Nenhuma ação executada.`);
   }
 }
 
@@ -194,7 +229,6 @@ async function atualizarSaldoLocador(locadorId, valorAdicionado) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
-
         },
         body: JSON.stringify({
           locador_id: locadorId,
@@ -213,6 +247,94 @@ async function atualizarSaldoLocador(locadorId, valorAdicionado) {
   } catch (err) {
     console.error("Erro ao atualizar saldo do locador:", err.message);
     return { success: false, error: err.message };
+  }
+}
+
+async function adicionarTransferId(saqueId, transferId) {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/saques/add-transfer-id`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+        body: JSON.stringify({
+          saque_id: saqueId,
+          transfer_id: transferId,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.warn("Erro ao adicionar transfer id.");
+      return { success: false };
+    }
+
+    await response.json();
+    return { success: true };
+  } catch (err) {
+    console.error("Erro ao aadicionar transfer id:", err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+async function atualizarStatusSaque(saque_id, status) {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/saques/atualizar-status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+        body: JSON.stringify({ saque_id, status }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.warn(
+        "Erro ao atualizar status do saque:",
+        response.status,
+        errorText
+      );
+      return { sucesso: false, erro: errorText };
+    }
+
+    return { sucesso: true };
+  } catch (err) {
+    console.error("Erro ao atualizar status do saque:", err.message);
+    return { sucesso: false, erro: err.message };
+  }
+}
+
+async function desbloquearSaldoLocador(saque_id) {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_ASSINATURAS}/saques/desbloquear-saldo`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ASSINATURAS_API_KEY}`,
+        },
+        body: JSON.stringify({ saque_id }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.warn("Erro ao desbloquear saldo:", response.status, errorText);
+      return { sucesso: false, erro: errorText };
+    }
+
+    return { sucesso: true };
+  } catch (err) {
+    console.error("Erro ao desbloquear saldo:", err.message);
+    return { sucesso: false, erro: err.message };
   }
 }
 
