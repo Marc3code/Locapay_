@@ -22,3 +22,4 @@ export async function carregarHeader(paginaAtiva) {
     console.error("Erro ao injetar header:", err);
   }
 }
+

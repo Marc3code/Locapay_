@@ -254,7 +254,6 @@ tr:hover {
   gap: 15px;
 }
 
-
 .inquilino-name {
   font-weight: 500;
 }
@@ -351,7 +350,6 @@ footer {
   margin-bottom: 12px;
 }
 
-
 /* Responsividade */
 @media (max-width: 992px) {
   .status-cards {
@@ -370,13 +368,17 @@ footer {
 }
 
 @media (max-width: 768px) {
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+  
+}
+
+/* Responsividade da tabela */
+@media (max-width: 768px) {
+  /* Ajustes adicionais de fonte para mobile */
+  body {
+    font-size: 14px;
   }
 
-  .filters {
+ .filters {
     width: 100%;
     overflow-x: auto;
     padding-bottom: 10px;
@@ -387,9 +389,128 @@ footer {
     margin-top: 15px;
   }
 
-  .section-header {
-    flex-direction: column;
+  /* Transformar tabela em cards em mobile */
+  table {
+    border: 0;
+  }
+
+  table thead {
+    display: none;
+  }
+
+  table tr {
+    display: block;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 15px;
+    background: white;
+  }
+
+  table td {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--light-gray);
+    text-align: left;
+  }
+
+  table td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--gray);
+    text-transform: uppercase;
+    font-size: 13px;
+    margin-right: 15px;
+    flex-shrink: 0;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+
+  .inquilino-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+
+  /* Ajustes específicos para células */
+  td[data-label="Inquilino"] {
+   flex-direction: row; 
     align-items: flex-start;
+  }
+
+  td[data-label="Inquilino"] .inquilino-info {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  td[data-label="Inquilino"] .inquilino-avatar {
+    margin-left: 0;
+    margin-right: 15px;
+  }
+
+  .table-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+
+  .inquilinos-table {
+    display: inline-block;
+    min-width: 100%;
+    white-space: nowrap;
+  }
+
+  .inquilinos-table tr {
+    display: inline-block;
+    vertical-align: top;
+    width: 280px;
+    margin-right: 16px;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .status-card {
+    padding: 20px;
+  }
+
+  .card-value {
+    font-size: 24px;
+  }
+
+  .filter-btn {
+    padding: 6px 15px;
+    font-size: 14px;
+  }
+
+  /* Ajustes para telas muito pequenas */
+  table td {
+    flex-direction: row; /* Alterado de column para row */
+    align-items: center; /* Alterado de flex-start para center */
+    padding: 8px 15px;
+  }
+
+  table td:before {
+    margin-bottom: 0; /* Removido */
+    margin-right: 15px; /* Restaurado */
+    align-self: center; /* Alterado de flex-start para center */
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
     gap: 15px;
+  }
+
+  .footer-links a {
+    margin: 0 10px;
   }
 }
