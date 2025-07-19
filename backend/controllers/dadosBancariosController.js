@@ -4,6 +4,7 @@ const dadosBancariosService = require("../services/dadosBancariosService");
 exports.salvar = async (req, res) => {
   const id = req.userId;
   const dados = req.body;
+  console.log(req.body);
 
   try {
     const resposta = await dadosBancariosService.enviarDados(id, dados);
