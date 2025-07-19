@@ -11,16 +11,7 @@ const enviarNotificacaoBoasVindas = (telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      template: {
-        name: "boas_vindas_01",
-        language: { code: "pt_BR" },
-        components: [
-          {
-            type: "body",
-            parameters: [{ type: "text" }],
-          },
-        ],
-      },
+      contentSid: "HX1aa7a2b13f5aeacf70355803619f56ab"
     })
     .then((message) => {
       console.log("✅ Mensagem de boas-vindas enviada:", message.sid);
