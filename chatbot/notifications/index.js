@@ -1,8 +1,10 @@
-const { enviarNotificacaoCobrancaDoMes } = require("./cobrancaDoMes");
-const { enviarNotificacao3DiasAntes } = require("./aviso3DiasAntes");
-const { enviarNotificacaoPagamentoAtrasado } = require("./pagamentoAtrasado");
-const { enviarNotificacaoPagamentoRealizado } = require("./pagamentoRealizado");
-const { enviarNotificacaoBoasVindas } = require("./inquilinoAdicionado");
+const { enviarNotificacaoCobrancaDoMes } = require("./inquilino/cobrancaDoMes");
+const { enviarNotificacao3DiasAntes } = require("./inquilino/aviso3DiasAntes");
+const { enviarNotificacaoPagamentoAtrasado } = require("./inquilino/pagamentoAtrasado");
+const { enviarNotificacaoPagamentoRealizado } = require("./inquilino/pagamentoRealizado");
+const { enviarNotificacaoBoasVindas } = require("./inquilino/inquilinoAdicionado");
+
+const { enviarNotificacaoSaqueSolicitado } = require('./admin/saqueSolicitado');
 
 module.exports = {
   enviarNotificacaoCobrancaDoMes,
@@ -10,4 +12,6 @@ module.exports = {
   enviarNotificacaoPagamentoAtrasado,
   enviarNotificacaoPagamentoRealizado,
   enviarNotificacaoBoasVindas,
+
+  enviarNotificacaoSaqueSolicitado
 };

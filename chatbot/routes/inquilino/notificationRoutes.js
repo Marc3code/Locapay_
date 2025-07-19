@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const notificationController = require("../controllers/notificationsController");
+const notificationController = require("../../controllers/inquilino/notificationsController");
 
 // Rota raiz (opcional)
 router.get("/", (req, res) => {

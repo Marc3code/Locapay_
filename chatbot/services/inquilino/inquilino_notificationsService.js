@@ -1,4 +1,4 @@
-const notificacoes = require("../notifications/index");
+const notificacoes = require("../../notifications/index");
 
 async function enviarNotificacaoCobrancadoMesService (data, telefone)  {
   try {

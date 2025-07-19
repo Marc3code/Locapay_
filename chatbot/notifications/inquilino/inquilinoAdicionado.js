@@ -1,8 +1,8 @@
 const {
   formatarNumeroWhatsappSemNonoDigito,
-} = require("../utils/formatNumber");
+} = require("../../utils/formatNumber");
 
-const { client, FROM_NUMBER } = require("./twilioClient");
+const { client, FROM_NUMBER } = require("../twilioClient");
 
 const enviarNotificacaoBoasVindas = (telefone) => {
   const numeroFormatado = formatarNumeroWhatsappSemNonoDigito(telefone);
