@@ -96,7 +96,7 @@ export const buscarDadosBancarios = async () => {
   }
 };
 
-export const cadastrarChavePix = async (chave) => {
+export const cadastrarChavePix = async (chave, tipo) => {
   try {
     const response = await fetch(`${API_BASE}/bkdt/dados-bancarios/`, {
       method: "POST",
@@ -104,7 +104,7 @@ export const cadastrarChavePix = async (chave) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      body: JSON.stringify({ chave_pix: chave }),
+      body: JSON.stringify({ chave_pix: chave, tipo_chave_pix: tipo}),
     });
 
     const data = await response.json();

@@ -208,7 +208,7 @@ btnSalvarChave.addEventListener("click", async () => {
     return;
   }
   try {
-    const cadastro = await cadastrarChavePix(chave, tipo_chave_pix);
+    const cadastro = await cadastrarChavePix(chave, tipo);
 
     if (cadastro?.erro) {
       alert(`Erro ao cadastrar chave Pix: ${cadastro.erro}`);
