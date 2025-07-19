@@ -3,13 +3,14 @@ const saldoService = require("../services/saldos_locadoresService");
 async function atualizarSaldo(req, res) {
   const { locador_id, valor } = req.body;
 
-  if (!locador_id || !valor) {
+  if (locador_id === null || valor === null) {
     return res.status(400).json({
       sucesso: false,
       mensagem: "locador_id e valor são obrigatórios.",
     });
   }
 
+  console.log("Atualizando saldo do locador", locador_id, "com valor", valorAdicionado);
   try {
     const resultado = await saldoService.atualizarSaldoLocador(
       locador_id,
