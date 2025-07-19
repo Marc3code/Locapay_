@@ -34,7 +34,7 @@ exports.buscarDadosGerais = async (id) => {
       d.conta_digito,
       d.tipo_conta,
       d.chave_pix,
-      d.tipo_chave_pix
+      d.tipo_chave_pix,
       d.data_ultima_atualizacao
     FROM
       locadores l
