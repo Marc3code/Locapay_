@@ -13,7 +13,7 @@ const enviarNotificacaoPagamentoRealizado = (data, telefone) => {
       to: "whatsapp:" + numeroFormatado,
       contentSid: "HX66b27c80c8b178aa949e9921dd928e8b",
       contentVariables: JSON.stringify({
-        data: dataFormatada, 
+        1: dataFormatada, 
       }),
     })
     .then((message) => {

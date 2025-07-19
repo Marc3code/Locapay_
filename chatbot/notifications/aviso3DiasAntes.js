@@ -14,7 +14,7 @@ const enviarNotificacao3DiasAntes = (data, telefone) => {
       to: "whatsapp:" + numeroFormatado,
       contentSid: "HX7d6c0d03040f3be31e8fb8cae992898a",
       contentVariables: JSON.stringify({
-        data: dataFormatada, 
+        1: dataFormatada, 
       }),
     })
     .then((message) => {

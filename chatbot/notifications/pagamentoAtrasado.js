@@ -13,7 +13,7 @@ const enviarNotificacaoPagamentoAtrasado = (data, telefone) => {
       to: "whatsapp:" + numeroFormatado,
       contentSid: "HX3f0dc1be41625a8b0250566e09577972",
       contentVariables: JSON.stringify({
-        data: dataFormatada, 
+        1: dataFormatada, 
       }),
     })
     .then((message) => {
