@@ -35,7 +35,7 @@ exports.registrarTransacao = async (
 
 exports.buscarTransacoes = async (locador_id) => {
   try {
-    const query = "SELECT * FROM transacoes_saldo WHERE locador_id = ?";
+    const query = "SELECT * FROM transacoes_saldo WHERE locador_id = ? ORDER BY id DESC";
 
     const [result] = await db.query(query, [locador_id]);
 

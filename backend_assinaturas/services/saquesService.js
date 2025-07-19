@@ -2,7 +2,7 @@ const db = require("../database/dbconnect");
 
 exports.buscarSaques = async (locador_id) => {
   try {
-    const query = "SELECT * FROM saques WHERE locador_id = ?";
+    const query = "SELECT * FROM saques WHERE locador_id = ? ORDER BY id DESC";
 
     const [result] = await db.query(query, [locador_id]);
 
