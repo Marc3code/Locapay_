@@ -10,7 +10,7 @@ async function atualizarSaldo(req, res) {
     });
   }
 
-  console.log("Atualizando saldo do locador", locador_id, "com valor", valorAdicionado);
+  console.log("Atualizando saldo do locador", locador_id, "com valor", valor);
   try {
     const resultado = await saldoService.atualizarSaldoLocador(
       locador_id,
