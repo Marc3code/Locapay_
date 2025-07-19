@@ -15,13 +15,14 @@ exports.salvarDadosBancarios = async (locadorId, dados) => {
   const conta = dados.conta ?? dadosAntigos.conta ?? null;
   const conta_digito = dados.conta_digito ?? dadosAntigos.conta_digito ?? null;
   const tipo_conta = dados.tipo_conta ?? dadosAntigos.tipo_conta ?? null;
+  const tipo_chave_pix = dados.tipo_chave_pix ?? dadosAntigos.tipo_chave_pix ?? null;
   const chave_pix = dados.chave_pix ?? dadosAntigos.chave_pix ?? null;
 
   await db.query(
     `
     INSERT INTO dados_bancarios_locadores (
-      locador_id, banco_codigo, banco_nome, agencia, conta, conta_digito, tipo_conta, chave_pix
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      locador_id, banco_codigo, banco_nome, agencia, conta, conta_digito, tipo_conta, chave_pix, tipo_chave_pix
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
       banco_codigo = VALUES(banco_codigo),
       banco_nome = VALUES(banco_nome),
@@ -41,6 +42,7 @@ exports.salvarDadosBancarios = async (locadorId, dados) => {
       conta_digito,
       tipo_conta,
       chave_pix,
+      tipo_chave_pix
     ]
   );
 };
