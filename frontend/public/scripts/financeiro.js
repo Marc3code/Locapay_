@@ -199,14 +199,32 @@ btnCancelarChave.addEventListener("click", () => {
   modalChavePix.style.display = "none";
 });
 
+
+// Função para formatar telefone para o padrão +55...
+function formatarTelefone(chave) {
+  const apenasNumeros = chave.replace(/\D/g, "");
+  if (apenasNumeros.length === 11) {
+    return `+55${apenasNumeros}`;
+  }
+  return chave; // retorna como está se não tiver 11 dígitos
+}
+
+
 // Salvar chave Pix
 btnSalvarChave.addEventListener("click", async () => {
-  const chave = inputChavePix.value.trim();
-   const tipo = document.getElementById("tipoChavePix").value;
+  let chave = inputChavePix.value.trim();
+  const tipo = document.getElementById("tipoChavePix").value;
+
   if (!chave || !tipo) {
     alert("Por favor, preencha a chave Pix e o tipo.");
     return;
   }
+
+  // Formatar chave se for telefone
+  if (tipo === "PHONE") {
+    chave = formatarTelefone(chave);
+  }
+
   try {
     const cadastro = await cadastrarChavePix(chave, tipo);
 
