@@ -183,7 +183,7 @@ btnConfirmar.addEventListener("click", async () => {
     console.error("Erro ao realizar saque:", err);
     alert("Erro ao realizar saque. Tente novamente mais tarde.");
   }finally{
-    btnSacar.disabled = false
+    btnConfirmar.disabled = false
   }
 });
 
