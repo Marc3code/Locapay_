@@ -39,7 +39,7 @@ async function processarEventosPagamento(event, payment) {
     );
 
     const atualizaSaldoLocador = await atualizarSaldoLocador(
-      locadorData.id,
+      locadorData.locador_id,
       valorPagamento
     );
 
