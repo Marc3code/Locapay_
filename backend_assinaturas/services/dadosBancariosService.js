@@ -31,6 +31,7 @@ exports.salvarDadosBancarios = async (locadorId, dados) => {
       conta_digito = VALUES(conta_digito),
       tipo_conta = VALUES(tipo_conta),
       chave_pix = VALUES(chave_pix),
+      tipo_chave_pix = VALUES(tipo_chave_pix)
       data_ultima_atualizacao = NOW()
   `,
     [
