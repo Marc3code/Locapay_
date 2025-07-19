@@ -11,7 +11,10 @@ const enviarNotificacaoPagamentoAtrasado = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      contentSid: "HX3f0dc1be41625a8b0250566e09577972"
+      contentSid: "HX3f0dc1be41625a8b0250566e09577972",
+      contentVariables: JSON.stringify({
+        data: dataFormatada, 
+      }),
     })
     .then((message) => {
       console.log("✅ Notificação de pagamento atrasado enviada:", message.sid);

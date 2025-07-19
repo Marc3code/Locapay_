@@ -12,7 +12,10 @@ const enviarNotificacao3DiasAntes = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      contentSid: "HX7d6c0d03040f3be31e8fb8cae992898a"
+      contentSid: "HX7d6c0d03040f3be31e8fb8cae992898a",
+      contentVariables: JSON.stringify({
+        data: dataFormatada, 
+      }),
     })
     .then((message) => {
       console.log("✅ Notificação de cobrança 3 dias antes enviada:", message.sid);

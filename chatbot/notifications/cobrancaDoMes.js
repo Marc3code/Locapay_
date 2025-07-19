@@ -12,7 +12,10 @@ const enviarNotificacaoCobrancaDoMes = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      contentSid: "HX03c7a4a5c7c94d1b19dd891fc1164dd7"
+      contentSid: "HX03c7a4a5c7c94d1b19dd891fc1164dd7",
+      contentVariables: JSON.stringify({
+        data: dataFormatada, 
+      }),
     })
     .then((message) => {
       console.log("✅ Notificação de cobrança do mês enviada:", message.sid);
