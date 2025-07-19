@@ -208,3 +208,23 @@ tr:hover {
     text-align: center;
   }
 }
+
+.table-scroll {
+  max-height: 300px;  
+  overflow-y: auto;
+  border-top: 1px solid var(--light-gray);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.table-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--gray);
+  border-radius: 10px;
+}
+
+.table-scroll table {
+  width: 100%;
+}
