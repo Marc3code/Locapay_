@@ -11,7 +11,18 @@ const enviarNotificacaoPagamentoRealizado = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      body: `✅ Pagamento recebido com sucesso!\nConfirmamos o recebimento da sua fatura com vencimento em ${dataFormatada}.\n\nO comprovante está disponível no mesmo link utilizado para o pagamento. Muito obrigado!`,
+      template: {
+        name: "pagamento_realizado",
+        language: { code: "pt_BR" },
+        components: [
+          {
+            type: "body",
+            parameters: [
+              { type: "text", text: dataFormatada },
+            ],
+          },
+        ],
+      },
     })
     .then((message) => {
       console.log(
