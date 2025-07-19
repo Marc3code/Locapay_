@@ -202,12 +202,13 @@ btnCancelarChave.addEventListener("click", () => {
 // Salvar chave Pix
 btnSalvarChave.addEventListener("click", async () => {
   const chave = inputChavePix.value.trim();
-  if (!chave) {
-    alert("Por favor, preencha a chave Pix.");
+   const tipo = document.getElementById("tipoChavePix").value;
+  if (!chave || !tipo) {
+    alert("Por favor, preencha a chave Pix e o tipo.");
     return;
   }
   try {
-    const cadastro = await cadastrarChavePix(chave);
+    const cadastro = await cadastrarChavePix(chave, tipo_chave_pix);
 
     if (cadastro?.erro) {
       alert(`Erro ao cadastrar chave Pix: ${cadastro.erro}`);
