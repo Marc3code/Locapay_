@@ -1,4 +1,4 @@
-const  notificationService  = require("../services/notificationsService");
+const  notificationService  = require("../../services/inquilino_notificationsService");
 
 async function enviarNotificacaoCobrancadoMesController (req, res) {
   try {
