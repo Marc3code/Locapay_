@@ -11,18 +11,7 @@ const enviarNotificacaoPagamentoRealizado = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      template: {
-        name: "pagamento_realizado",
-        language: { code: "pt_BR" },
-        components: [
-          {
-            type: "body",
-            parameters: [
-              { type: "text", text: dataFormatada },
-            ],
-          },
-        ],
-      },
+      contentSid:"HX66b27c80c8b178aa949e9921dd928e8b"
     })
     .then((message) => {
       console.log(

@@ -12,7 +12,7 @@ const enviarNotificacao3DiasAntes = (data, telefone) => {
     .create({
       from: "whatsapp:" + FROM_NUMBER,
       to: "whatsapp:" + numeroFormatado,
-      body: `📢 Lembrete: sua fatura de aluguel com vencimento em ${dataFormatada} irá vencer em 3 dias.\nPara pagar, é só digitar 1.`,
+      contentSid: "HX7d6c0d03040f3be31e8fb8cae992898a"
     })
     .then((message) => {
       console.log("✅ Notificação de cobrança 3 dias antes enviada:", message.sid);
