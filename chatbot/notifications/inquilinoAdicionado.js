@@ -17,7 +17,7 @@ const enviarNotificacaoBoasVindas = (telefone) => {
         components: [
           {
             type: "body",
-            parameters: [{ type: "text", text: dataFormatada }],
+            parameters: [{ type: "text" }],
           },
         ],
       },
