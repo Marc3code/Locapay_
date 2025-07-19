@@ -134,6 +134,9 @@ btnConfirmar.addEventListener("click", async () => {
     return;
   }
 
+
+  btnConfirmar.disabled = true;
+
   try {
     const saldo = await buscarSaldo();
     const saldoDisponivel = parseFloat(saldo.saldo_total ?? 0);
@@ -179,6 +182,8 @@ btnConfirmar.addEventListener("click", async () => {
   } catch (err) {
     console.error("Erro ao realizar saque:", err);
     alert("Erro ao realizar saque. Tente novamente mais tarde.");
+  }finally{
+    btnSacar.disabled = false
   }
 });
 
