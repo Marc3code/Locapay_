@@ -15,8 +15,26 @@ exports.registrar = async (req, res) => {
   });
 
   try {
+    // 🔔 Notificar admin via chatbot
+    const notificacaoAdmin = await fetch(
+      `${process.env.API_BASE_CHATBOT}/notifications-admin/novo-user-cadastrado`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nome, telefone }),
+      }
+    );
+
+    if (!notificacaoAdmin.ok) {
+      const erroNotificacao = await notificacaoAdmin.text();
+      console.warn("⚠️ Não foi possível notificar o admin:", erroNotificacao);
+    }
+
+    // 📦 Registrar assinatura
     const respostaAssinatura = await fetch(
-      "https://backendassinaturas-production.up.railway.app/assinaturas",
+      `${process.env.API_BASE_ASSINATURAS}/assinaturas`,
       {
         method: "POST",
         headers: {
