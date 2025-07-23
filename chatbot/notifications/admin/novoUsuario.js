@@ -1,5 +1,3 @@
-const { formatarData } = require("../../utils/formatDate");
-
 const { client, FROM_NUMBER } = require("../twilioClient");
 
 const enviarNotificacaoNovoUsuario = (telefone, nome) => {
