@@ -1,15 +1,10 @@
-const {
-  formatarNumeroWhatsappSemNonoDigito,
-} = require("../../utils/formatNumber");
-
 const { client, FROM_NUMBER } = require("../twilioClient");
 
-const enviarNotificacaoSaqueSolicitado = (telefone) => {
-  const numeroFormatado = formatarNumeroWhatsappSemNonoDigito(telefone);
+const enviarNotificacaoSaqueSolicitado = () => {
   return client.messages
     .create({
       from: "whatsapp:" + FROM_NUMBER,
-      to: "whatsapp:" + numeroFormatado,
+      to: "whatsapp:" + process.env.numeroAdmin,
       contentSid: "HXa53ab4900d7901a86d3d08b41d2aa25b",
     })
     .then((message) => {

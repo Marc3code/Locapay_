@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const webhookRoutes = require("./routes/webhook");
 const inquilinoNotificationRoutes = require('./routes/inquilino/notificationRoutes')
+const adminNotificationRoutes = require('./routes/admin/notificationRoutes')
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/notifications", inquilinoNotificationRoutes);
+app.use("/notifications-admin", adminNotificationRoutes);
 app.use("/", webhookRoutes);
 
 const PORT = process.env.PORT || 3000;
