@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = await res.json();
 
         if (res.ok) {
-          showSuccess('Cadastro realizado com sucesso!');
+          showSuccess('Cadastro realizado com sucesso! Logo mais nossa equipe entrará em contato. Até já!');
           signupForm.reset();
           
           // Recarrega a página após 2 segundos
