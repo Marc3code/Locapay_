@@ -5,7 +5,7 @@ const enviarNotificacaoNovoUsuario = (telefone, nome) => {
   return client.messages
     .create({
       from: "whatsapp:" + FROM_NUMBER,
-      to: "whatsapp:" + numeroAdmin,
+      to: "whatsapp:" + process.env.numeroAdmin,
       contentSid: "HX786141c251f0b683b2976403532b3cba",
       contentVariables: JSON.stringify({
         1: nome, 2: telefone
