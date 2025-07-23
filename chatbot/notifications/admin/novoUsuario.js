@@ -23,4 +23,4 @@ const enviarNotificacaoNovoUsuario = (telefone, nome) => {
     });
 };
 
-module.exports = { enviarNotificacao3DiasAntes };
+module.exports = { enviarNotificacaoNovoUsuario };
