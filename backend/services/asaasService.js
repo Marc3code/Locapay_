@@ -6,8 +6,6 @@ const BASE_URL = "https://www.asaas.com/api/v3";
 
 const gerarPagamentoPix = async (customerId, value, dueDate, locador_api_key) => {
 
-  console.log("api key no asaas service: ", locador_api_key);
-
   try {
     const response = await axios.post(
       `${BASE_URL}/payments`,
