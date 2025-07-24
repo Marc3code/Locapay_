@@ -69,5 +69,5 @@ async function gerarCobrancasDoMes() {
   }
 }
 
-gerarCobrancasDoMes()
+
 module.exports = gerarCobrancasDoMes;

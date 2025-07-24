@@ -173,11 +173,27 @@ const configurarWebhookSubconta = async (apiKeySubconta, urlWebhook, locador_ema
   }
 };
 
+const verificarDocumentosPendentes =  async (locador_api_key) => {
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/myAccount/documents`, {
+      method: "GET",
+      headers: {
+        access_token: locador_api_key
+      }
+    })
+
+    return response.json();
+
+  }catch(err){
+    console.log("erro ao buscar documentos pendentes")
+  }
+}
 
 module.exports = {
   gerarPagamentoPix,
   criarClienteAsaas,
   transferirPix,
   criarSubconta,
-  configurarWebhookSubconta
+  configurarWebhookSubconta,
+  verificarDocumentosPendentes
 };
