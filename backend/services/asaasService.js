@@ -4,7 +4,6 @@ require("dotenv").config();
 const BASE_URL_SANDBOX = "https://sandbox.asaas.com/api/v3";
 const BASE_URL = "https://www.asaas.com/api/v3";
 
-//Função para gerar fatura Pix
 const gerarPagamentoPix = async (customerId, value, dueDate, locador_api_key) => {
   try {
     const response = await axios.post(
@@ -18,22 +17,21 @@ const gerarPagamentoPix = async (customerId, value, dueDate, locador_api_key) =>
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: locador_api_key,  
+          access_token: locador_api_key,
         },
       }
     );
     console.log("Cobrança criada com sucesso!");
     return response.data;
   } catch (err) {
-    console.error(
-      "Erro ao criar pagamento:",
-      err?.response?.data || err.message,
-      "\nDetalhes completos:",
-      err
-    );
-    throw new Error(err?.response?.data?.message || "Erro ao criar pagamento");
+    const status = err?.response?.status;
+    const message = err?.response?.data?.message || err.message;
+
+    console.error(`Erro ao criar pagamento (${status}): ${message}`);
+    throw new Error(message);
   }
 };
+
 
 const criarClienteAsaas = async (clienteData, locador_api_key) => {
   try {
