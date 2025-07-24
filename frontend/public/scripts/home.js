@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
       msgDiv.className = "message";
 
       const nome = signupForm.nome.value.trim();
+      const dataNascimento = signupForm.dataNascimento.value.trim()
       const email = signupForm.email.value.trim();
       const senha = signupForm.senha.value;
       const cpf_cnpj = signupForm.cpf_cnpj.value.trim();
@@ -210,6 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               nome,
+              dataNascimento,
               email,
               senha,
               cpf_cnpj,
