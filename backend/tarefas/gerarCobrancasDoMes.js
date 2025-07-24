@@ -32,7 +32,7 @@ async function gerarCobrancasDoMes() {
 
         // 4. Gera a cobrança no sistema de pagamentos
 
-        console.log(inquilino);
+        console.log("Vai chamar gerarPagamentoPix com api_key:", inquilino.asaas_api_key);
         const cobrancaGerada = await cobrancaService.gerarCobranca({
           contrato_id: inquilino.contrato_id,
           id_asaas: inquilino.id_asaas,
@@ -42,6 +42,7 @@ async function gerarCobrancasDoMes() {
           locador_api_key: inquilino.asaas_api_key // api key do locador vinculado a esse inquilino
 
         });
+        console.log(inquilino.asaas_api_key);
 
         // 5. Atualiza próxima data de vencimento
         const novaDataVencimento = gerarProximaData(inquilino.data_vencimento);

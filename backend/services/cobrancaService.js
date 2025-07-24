@@ -64,12 +64,13 @@ const criarCobrancaPix = async ({
   data_vencimento,
   contrato_id,
   cpf_cnpj,
+  locador_api_key
 }) => {
   const pagamento = await asaasService.gerarPagamentoPix(
     id_asaas,
     valor,
     data_vencimento,
-    cpf_cnpj
+    locador_api_key
   );
 
   const query = `

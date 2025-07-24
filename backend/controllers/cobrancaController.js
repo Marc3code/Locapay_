@@ -78,14 +78,15 @@ const getPendenciasInquilino = async (req, res) => {
 
 
 async function criarCobrancaPix(req, res) {
-  const { id_asaas, valor, data_vencimento, contrato_id } = req.body;
+  const { id_asaas, valor, data_vencimento, contrato_id, locador_api_key } = req.body;
 
   try {
     const pagamento = await cobrancaService.criarCobrancaPix({
       id_asaas,
       valor,
       data_vencimento,
-      contrato_id
+      contrato_id,
+      locador_api_key
     });
 
     res.json(pagamento);
