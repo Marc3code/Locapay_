@@ -25,23 +25,27 @@ const getCobrancasPendentes = async (locadorId) => {
 const getCobrancasSeremFeitas = async () => {
   const [results] = await db.query(
     `SELECT 
-      i.id AS inquilino_id,
-      i.nome AS nome_inquilino,
-      i.telefone AS telefone_inquilino,
-      i.cpf_cnpj,
-      i.id_asaas,
-      i.locador_id,
+  i.id AS inquilino_id,
+  i.nome AS nome_inquilino,
+  i.telefone AS telefone_inquilino,
+  i.cpf_cnpj,
+  i.id_asaas,
+  i.locador_id,
 
-      c.id AS contrato_id,
-      c.valor_aluguel,
-      c.data_vencimento,
-      c.status AS contrato_status,
+  c.id AS contrato_id,
+  c.valor_aluguel,
+  c.data_vencimento,
+  c.status AS contrato_status,
 
-      im.id AS imovel_id
-    FROM contratos c
-    JOIN inquilinos i ON c.inquilino_id = i.id
-    JOIN imoveis im ON c.imovel_id = im.id
-    WHERE c.status = 'ativo';`
+  im.id AS imovel_id,
+
+  l.asaas_api_key -- <- Aqui a chave da subconta do locador
+FROM contratos c
+JOIN inquilinos i ON c.inquilino_id = i.id
+JOIN imoveis im ON c.imovel_id = im.id
+JOIN locadores l ON i.locador_id = l.id -- <- Junta com a tabela de locadores
+WHERE c.status = 'ativo';
+`
   );
   return results;
 };

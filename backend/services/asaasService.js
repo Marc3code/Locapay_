@@ -5,7 +5,7 @@ const BASE_URL_SANDBOX = "https://sandbox.asaas.com/api/v3";
 const BASE_URL = "https://www.asaas.com/api/v3";
 
 //Função para gerar fatura Pix
-const gerarPagamentoPix = async (customerId, value, dueDate) => {
+const gerarPagamentoPix = async (customerId, value, dueDate, locador_api_key) => {
   try {
     const response = await axios.post(
       `${BASE_URL}/payments`,
@@ -18,7 +18,7 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
+          access_token: locador_api_key,  
         },
       }
     );
