@@ -18,7 +18,7 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY_SANDBOX,
+          access_token: process.env.ASAAS_API_KEY,
         },
       }
     );
@@ -43,7 +43,7 @@ const criarClienteAsaas = async (clienteData) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY_SANDBOX,
+          access_token: process.env.ASAAS_API_KEY,
         },
       }
     );
@@ -68,7 +68,7 @@ const transferirPix = async ({ valor, chave_pix, tipoChavePix, saque_id }) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY_SANDBOX,
+          access_token: process.env.ASAAS_API_KEY,
         },
       }
     );
@@ -89,6 +89,7 @@ const transferirPix = async ({ valor, chave_pix, tipoChavePix, saque_id }) => {
 const criarSubconta = async (locador) => {
   const payload = {
     name: locador.nome,
+    birthDate: locador.dataNascimento,
     email: locador.email,
     cpfCnpj: locador.cpf_cnpj,
     mobilePhone: locador.telefone,
@@ -103,11 +104,11 @@ const criarSubconta = async (locador) => {
   };
 
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${BASE_URL_SANDBOX}/accounts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.ASAAS_API_KEY_SANDBOX}`,
+        access_token: `${process.env.ASAAS_API_KEY}`,
       },
       body: JSON.stringify(payload),
     });
@@ -122,7 +123,8 @@ const criarSubconta = async (locador) => {
       ok: true,
       id: data.id,
       apiKey: data.apiKey,
-      status: data.status
+      status: data.status,
+      walletId: data.walletId
     };
   } catch (err) {
     console.error("Erro ao criar subconta no Asaas:", err);

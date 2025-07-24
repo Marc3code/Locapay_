@@ -1,12 +1,13 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const locadorService = require("../services/locadorService");
+const asaasService = require("../services/asaasService")
 
 require("dotenv").config();
-
 exports.registrar = async (req, res) => {
   const {
     nome,
+    dataNascimento,
     email,
     senha,
     cpf_cnpj,
@@ -20,24 +21,29 @@ exports.registrar = async (req, res) => {
     cep,
   } = req.body;
 
-  const senha_hash = await bcrypt.hash(senha, 10);
-
-  const locadorId = await locadorService.criarLocador({
-    nome,
-    email,
-    senha_hash,
-    cpf_cnpj,
-    telefone,
-    rendaMensal,
-    rua,
-    numeroEndereco,
-    complemento,
-    bairro,
-    cep,
-  });
-
   try {
+    console.log("🔐 Iniciando hash da senha...");
+    const senha_hash = await bcrypt.hash(senha, 10);
+
+    console.log("👤 Criando locador no banco de dados...");
+    const locadorId = await locadorService.criarLocador({
+      nome,
+      dataNascimento,
+      email,
+      senha_hash,
+      cpf_cnpj,
+      telefone,
+      rendaMensal,
+      rua,
+      numeroEndereco,
+      complemento,
+      bairro,
+      cep,
+    });
+    console.log("✅ Locador criado com sucesso. ID:", locadorId);
+
     // 🔔 Notificar admin via chatbot
+    console.log("📢 Enviando notificação para admin...");
     const notificacaoAdmin = await fetch(
       `${process.env.API_BASE_CHATBOT}/notifications-admin/novo-user-cadastrado`,
       {
@@ -51,10 +57,13 @@ exports.registrar = async (req, res) => {
 
     if (!notificacaoAdmin.ok) {
       const erroNotificacao = await notificacaoAdmin.text();
-      console.warn("⚠️ Não foi possível notificar o admin:", erroNotificacao);
+      console.warn("⚠️ Falha ao notificar o admin:", erroNotificacao);
+    } else {
+      console.log("✅ Notificação para admin enviada com sucesso.");
     }
 
     // 📦 Registrar assinatura
+    console.log("💳 Registrando assinatura do plano...");
     const respostaAssinatura = await fetch(
       `${process.env.API_BASE_ASSINATURAS}/assinaturas`,
       {
@@ -69,17 +78,21 @@ exports.registrar = async (req, res) => {
 
     if (!respostaAssinatura.ok) {
       const erro = await respostaAssinatura.text();
-      console.warn("Assinatura não registrada, mas locador foi criado:", erro);
+      console.warn("⚠️ Assinatura não registrada:", erro);
       return res.status(201).json({
         locadorId,
         aviso:
           "Locador registrado, mas ocorreu um erro ao registrar a assinatura.",
       });
+    } else {
+      console.log("✅ Assinatura registrada com sucesso.");
     }
 
     // 🧩 Criar subconta no Asaas
+    console.log("🏦 Criando subconta no Asaas...");
     const subconta = await asaasService.criarSubconta({
       nome,
+      dataNascimento,
       email,
       cpf_cnpj,
       telefone,
@@ -92,14 +105,14 @@ exports.registrar = async (req, res) => {
     });
 
     if (subconta.ok) {
+      console.log("✅ Subconta no Asaas criada com sucesso. Salvando dados...");
       await locadorService.salvarDadosAsaas(locadorId, subconta);
+      console.log("✅ Dados da subconta salvos com sucesso.");
     } else {
-      console.warn(
-        "⚠️ Locador criado mas subconta não foi registrada:",
-        subconta.error
-      );
+      console.warn("⚠️ Subconta no Asaas não criada:", subconta.error);
     }
 
+    console.log("🎉 Processo de registro finalizado com sucesso.");
     res.status(201).json({
       locadorId,
       ...(subconta.ok
@@ -110,7 +123,7 @@ exports.registrar = async (req, res) => {
           }),
     });
   } catch (err) {
-    console.error("Erro no registro:", err);
+    console.error("❌ Erro inesperado durante o registro:", err);
     res.status(500).json({ erro: "Erro no registro do locador." });
   }
 };

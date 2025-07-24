@@ -15,9 +15,10 @@ exports.criarLocador = async (locador) => {
       numeroEndereco,
       complemento,
       bairro,
-      cep
+      cep,
+      dataNascimento
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
     [
       locador.nome,
@@ -31,18 +32,19 @@ exports.criarLocador = async (locador) => {
       locador.complemento || "",
       locador.bairro,
       locador.cep,
+      locador.dataNascimento
     ]
   );
 
   return result.insertId;
 };
 
-exports.salvarDadosAsaas = async (locadorId, { id, apiKey, status }) => {
+exports.salvarDadosAsaas = async (locadorId, { id, apiKey, status, walletId }) => {
   await db.query(
     `UPDATE locadores
-     SET asaas_account_id = ?, asaas_api_key = ?, asaas_status = ?
+     SET asaas_account_id = ?, asaas_api_key = ?, asaas_status = ?, walletId = ?
      WHERE id = ?`,
-    [id, apiKey, status, locadorId]
+    [id, apiKey, status, walletId, locadorId]
   );
 };
 
