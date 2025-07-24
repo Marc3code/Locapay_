@@ -131,9 +131,53 @@ const criarSubconta = async (locador) => {
   }
 };
 
+const configurarWebhookSubconta = async (apiKeySubconta, urlWebhook, locador_email) => {
+  const payload = {
+    name: "Webhook Subconta LocaPay",
+    url: urlWebhook,
+    email: locador_email,
+    enabled: true,
+    apiVersion: '3',
+    interrupted: false,
+    sendType: "SIMULTANEOUSLY",
+    events: [
+      "PAYMENT_CREATED",
+      "PAYMENT_RECEIVED",
+      "PAYMENT_OVERDUE",
+      "TRANSFER_CREATED",
+      "TRANSFER_DONE"
+    ]
+  };
+
+  try {
+    const response = await fetch("https://www.asaas.com/api/v3/webhook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: apiKeySubconta
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.errors?.[0]?.description || "Erro ao configurar webhook");
+    }
+
+    console.log("Webhook configurado com sucesso para a subconta!");
+    return { ok: true, id: data.id };
+  } catch (err) {
+    console.error("Erro ao configurar webhook:", err.message);
+    return { ok: false, error: err.message };
+  }
+};
+
+
 module.exports = {
   gerarPagamentoPix,
   criarClienteAsaas,
   transferirPix,
-  criarSubconta
+  criarSubconta,
+  configurarWebhookSubconta
 };

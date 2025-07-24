@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const locadorService = require("../services/locadorService");
-const asaasService = require("../services/asaasService")
+const asaasService = require("../services/asaasService");
 
 require("dotenv").config();
 exports.registrar = async (req, res) => {
@@ -108,8 +108,20 @@ exports.registrar = async (req, res) => {
       console.log("✅ Subconta no Asaas criada com sucesso. Salvando dados...");
       await locadorService.salvarDadosAsaas(locadorId, subconta);
       console.log("✅ Dados da subconta salvos com sucesso.");
-    } else {
-      console.warn("⚠️ Subconta no Asaas não criada:", subconta.error);
+
+      // 🌐 Configurar webhook para a subconta
+      console.log("🔗 Configurando webhook para subconta...");
+      const webhookResponse = await asaasService.configurarWebhookSubconta(
+        subconta.apiKey,
+        "https://backend-isolado-production.up.railway.app/asaas-events",
+        email
+      );
+
+      if (webhookResponse.ok) {
+        console.log("✅ Webhook configurado com sucesso para a subconta.");
+      } else {
+        console.warn("⚠️ Falha ao configurar webhook:", webhookResponse.error);
+      }
     }
 
     console.log("🎉 Processo de registro finalizado com sucesso.");
@@ -314,8 +326,8 @@ exports.realizarSaque = async (req, res) => {
   }
 };
 
-exports.buscarinfosubConta = async(req, res) => {
-  const {locadorId} = req.params;
+exports.buscarinfosubConta = async (req, res) => {
+  const { locadorId } = req.params;
 
   try {
     const response = await locadorService.buscarInfoSubConta(locadorId);
@@ -331,4 +343,4 @@ exports.buscarinfosubConta = async(req, res) => {
     console.error("Erro ao buscar informações de subconta:", error);
     return res.status(500).json({ erro: "Erro interno do servidor." });
   }
-}
+};
