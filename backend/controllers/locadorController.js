@@ -1,17 +1,39 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const locadorService = require("../services/locadorService");
+
 require("dotenv").config();
 
 exports.registrar = async (req, res) => {
-  const { nome, senha, cpf_cnpj, telefone, plano } = req.body;
+  const {
+    nome,
+    email,
+    senha,
+    cpf_cnpj,
+    telefone,
+    plano,
+    rendaMensal,
+    rua,
+    numeroEndereco,
+    complemento,
+    bairro,
+    cep,
+  } = req.body;
+
   const senha_hash = await bcrypt.hash(senha, 10);
 
   const locadorId = await locadorService.criarLocador({
     nome,
+    email,
     senha_hash,
     cpf_cnpj,
     telefone,
+    rendaMensal,
+    rua,
+    numeroEndereco,
+    complemento,
+    bairro,
+    cep,
   });
 
   try {
@@ -55,7 +77,38 @@ exports.registrar = async (req, res) => {
       });
     }
 
-    res.status(201).json({ locadorId });
+    // 🧩 Criar subconta no Asaas
+    const subconta = await asaasService.criarSubconta({
+      nome,
+      email,
+      cpf_cnpj,
+      telefone,
+      rendaMensal,
+      rua,
+      numeroEndereco,
+      complemento,
+      bairro,
+      cep,
+    });
+
+    if (subconta.ok) {
+      await locadorService.salvarDadosAsaas(locadorId, subconta);
+    } else {
+      console.warn(
+        "⚠️ Locador criado mas subconta não foi registrada:",
+        subconta.error
+      );
+    }
+
+    res.status(201).json({
+      locadorId,
+      ...(subconta.ok
+        ? {}
+        : {
+            aviso:
+              "Locador registrado, mas a subconta no Asaas não foi criada.",
+          }),
+    });
   } catch (err) {
     console.error("Erro no registro:", err);
     res.status(500).json({ erro: "Erro no registro do locador." });

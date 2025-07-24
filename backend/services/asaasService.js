@@ -18,7 +18,7 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
+          access_token: process.env.ASAAS_API_KEY_SANDBOX,
         },
       }
     );
@@ -43,7 +43,7 @@ const criarClienteAsaas = async (clienteData) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
+          access_token: process.env.ASAAS_API_KEY_SANDBOX,
         },
       }
     );
@@ -68,7 +68,7 @@ const transferirPix = async ({ valor, chave_pix, tipoChavePix, saque_id }) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
+          access_token: process.env.ASAAS_API_KEY_SANDBOX,
         },
       }
     );
@@ -85,8 +85,54 @@ const transferirPix = async ({ valor, chave_pix, tipoChavePix, saque_id }) => {
   }
 };
 
+
+const criarSubconta = async (locador) => {
+  const payload = {
+    name: locador.nome,
+    email: locador.email,
+    cpfCnpj: locador.cpf_cnpj,
+    mobilePhone: locador.telefone,
+    incomeValue: locador.rendaMensal,
+    address: locador.rua,
+    addressNumber: locador.numeroEndereco,
+    complement: locador.complemento || "",
+    province: locador.bairro,
+    postalCode: locador.cep,
+    city: locador.cidade,
+    state: locador.estado
+  };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.ASAAS_API_KEY_SANDBOX}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.errors?.[0]?.description || "Erro ao criar subconta no Asaas");
+    }
+
+    return {
+      ok: true,
+      id: data.id,
+      apiKey: data.apiKey,
+      status: data.status
+    };
+  } catch (err) {
+    console.error("Erro ao criar subconta no Asaas:", err);
+    return { ok: false, error: err.message };
+  }
+};
+
 module.exports = {
   gerarPagamentoPix,
   criarClienteAsaas,
   transferirPix,
+  criarSubconta
 };

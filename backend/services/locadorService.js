@@ -4,13 +4,46 @@ const { transferirPix } = require("./asaasService");
 exports.criarLocador = async (locador) => {
   const [result] = await db.query(
     `
-    INSERT INTO locadores (nome, senha_hash, cpf_cnpj, telefone)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO locadores (
+      nome,
+      email,
+      senha_hash,
+      cpf_cnpj,
+      telefone,
+      rendaMensal,
+      rua,
+      numeroEndereco,
+      complemento,
+      bairro,
+      cep
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
-    [locador.nome, locador.senha_hash, locador.cpf_cnpj, locador.telefone]
+    [
+      locador.nome,
+      locador.email,
+      locador.senha_hash,
+      locador.cpf_cnpj,
+      locador.telefone,
+      locador.rendaMensal,
+      locador.rua,
+      locador.numeroEndereco,
+      locador.complemento || "",
+      locador.bairro,
+      locador.cep,
+    ]
   );
 
   return result.insertId;
+};
+
+exports.salvarDadosAsaas = async (locadorId, { id, apiKey, status }) => {
+  await db.query(
+    `UPDATE locadores
+     SET asaas_account_id = ?, asaas_api_key = ?, asaas_status = ?
+     WHERE id = ?`,
+    [id, apiKey, status, locadorId]
+  );
 };
 
 exports.buscarPorCpf_Cnpj = async (cpf_cnpj) => {
@@ -24,6 +57,7 @@ exports.buscarDadosGerais = async (id) => {
   const [rows] = await db.query(
     `SELECT
       l.nome,
+      l.email,
       l.telefone,
       l.cpf_cnpj,
       l.data_cadastro,
@@ -194,7 +228,7 @@ exports.realizarSaque = async (valor, chave_pix, tipoChavePix, saque_id) => {
       valor,
       chave_pix,
       tipoChavePix,
-      saque_id
+      saque_id,
     });
 
     return {
