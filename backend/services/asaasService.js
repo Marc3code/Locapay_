@@ -104,7 +104,7 @@ const criarSubconta = async (locador) => {
   };
 
   try {
-    const response = await fetch(`${BASE_URL_SANDBOX}/accounts`, {
+    const response = await fetch(`${BASE_URL}/accounts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
