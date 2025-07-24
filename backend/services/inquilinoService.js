@@ -82,7 +82,7 @@ const atualizarDataVencimento = async (novaData, id) => {
 };
 
 // ------------------ SERVICES POST ------------------
-const criarInquilino = async (name, phone, cpf_cnpj, locador_id) => {
+const criarInquilino = async (name, phone, cpf_cnpj, locador_id, locador_api_key) => {
   const connection = await db.getConnection();
   try {
     await connection.beginTransaction();
@@ -96,7 +96,7 @@ const criarInquilino = async (name, phone, cpf_cnpj, locador_id) => {
       name,
       phone,
       cpfCnpj: cpf_cnpj,
-    });
+    }, locador_api_key);
 
     await connection.query("UPDATE inquilinos SET id_asaas = ? WHERE id = ?", [
       id_asaas,

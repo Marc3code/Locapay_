@@ -1,7 +1,7 @@
 const axios = require("axios");
 require("dotenv").config();
 
-const BASE_URL_SANDBOX = "https://sandbox.asaas.com/api/v3"; // para ambiente de testes
+const BASE_URL_SANDBOX = "https://sandbox.asaas.com/api/v3";
 const BASE_URL = "https://www.asaas.com/api/v3";
 
 //Função para gerar fatura Pix
@@ -35,7 +35,7 @@ const gerarPagamentoPix = async (customerId, value, dueDate) => {
   }
 };
 
-const criarClienteAsaas = async (clienteData) => {
+const criarClienteAsaas = async (clienteData, locador_api_key) => {
   try {
     const response = await axios.post(
       `${BASE_URL}/customers`,
@@ -43,7 +43,7 @@ const criarClienteAsaas = async (clienteData) => {
       {
         headers: {
           "Content-Type": "application/json",
-          access_token: process.env.ASAAS_API_KEY,
+          access_token: locador_api_key,
         },
       }
     );

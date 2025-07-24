@@ -12,7 +12,6 @@ async function listarTodos(req, res) {
   }
 }
 
-
 async function buscarPorId(req, res) {
   const { id } = req.params;
   try {
@@ -49,7 +48,6 @@ async function listarComImovel(req, res) {
     res.status(500).json({ erro: "Erro ao buscar inquilinos com imóvel" });
   }
 }
-
 
 // ------------------ controllers PUT ------------------
 
@@ -88,12 +86,23 @@ async function criarInquilino(req, res) {
   const locadorId = req.userId;
 
   try {
+    const response = await fetch(
+      `${process.env.API_BASE}/user/buscar-info-subconta/${locadorId}`
+    );
+    const locadorSC = await response.json();
+
+    if (!locadorSC.asaas_api_key) {
+      return res.status(400).json({ erro: "Chave da subconta não encontrada" });
+    }
+
     const novoInquilino = await inquilinoService.criarInquilino(
       name,
       phone,
       cpfCnpj,
-      locadorId
+      locadorId,
+      locadorSC.asaas_api_key
     );
+
     res.status(201).json(novoInquilino);
   } catch (err) {
     console.error("Erro ao adicionar inquilino:", err);
@@ -111,7 +120,6 @@ async function vincularInquilinoImovel(req, res) {
     res.status(500).json({ erro: "Erro ao vincular inquilino a imóvel" });
   }
 }
-
 
 async function bsucarTelefonePorCustomerId(req, res) {
   const { customerId } = req.params;

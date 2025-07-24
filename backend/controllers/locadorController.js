@@ -313,3 +313,22 @@ exports.realizarSaque = async (req, res) => {
     return res.status(500).json({ erro: "Erro ao processar saque." });
   }
 };
+
+exports.buscarinfosubConta = async(req, res) => {
+  const {locadorId} = req.params;
+
+  try {
+    const response = await locadorService.buscarInfoSubConta(locadorId);
+
+    if (!response) {
+      return res
+        .status(404)
+        .json({ erro: "Erro ao buscar informações de subconta" });
+    }
+
+    return res.json(response);
+  } catch (error) {
+    console.error("Erro ao buscar informações de subconta:", error);
+    return res.status(500).json({ erro: "Erro interno do servidor." });
+  }
+}

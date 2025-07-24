@@ -378,3 +378,17 @@ exports.atualizarSaldoAtual = async (
     return { sucesso: false, erro: err.message };
   }
 };
+
+exports.buscarInfoSubConta = async (locadorId) => {
+   const query =
+    "SELECT asaas_api_key, walletId, asaas_account_id FROM locadores WHERE id = ?";
+  try {
+    const [rows] = await db.query(query, [locadorId]);
+    if (rows.length === 0) return null;
+    console.log(rows)
+    return rows[0];
+  } catch (err) {
+    console.error("Erro ao buscar informações de subconta:", err);
+    console.log("Erro ao buscar informações de subconta");
+  }
+}
